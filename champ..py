@@ -102,8 +102,34 @@ def gerar_gols(time_casa, time_fora):
     return gols_casa, gols_fora
 
 
+import random
 
+def simular_penaltis(time1, time2):
+    # Número inicial de cobranças
+    num_cobrancas = 5
+    gols_time1 = 0
+    gols_time2 = 0
 
+    while True:
+        for i in range(num_cobrancas):
+            # Time 1 cobra
+            if random.random() < 0.75:  # 80% de chance de gol
+                gols_time1 += 1
+
+            # Time 2 cobra (somente se ainda houver cobranças restantes)
+            if i < num_cobrancas - 1:
+                if random.random() < 0.75:  # 80% de chance de gol
+                    gols_time2 += 1
+        
+        # Verifica se os gols são diferentes
+        if gols_time1 != gols_time2:
+            break  # Sai do loop se houver um vencedor
+
+        # Se os gols forem iguais, resetamos para uma nova rodada
+        gols_time1 = 0
+        gols_time2 = 0
+
+    return gols_time1, gols_time2
 
 
 
@@ -221,7 +247,7 @@ def agrupar_rivais_por_pote_intercalados(confrontos, time):
 
 def exibir_playoffs(classificacao):
     # Obtém os classificados para os playoffs (9º a 24º)
-    classificados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)
+    classificados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
     
     print("\nConfrontos dos playoffs:")
     print("\n")
@@ -243,9 +269,7 @@ def exibir_playoffs(classificacao):
 def simular_playoff(classificacao):
     # Obtém os classificados para os playoffs (9º a 24º)
     classificados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)
-    
-    print("\nResultados dos playoffs:")
-    print("\n")
+
     confrontos_playoffs = [
         (classificados[8][0], classificados[23][0]),  # 9º x 24º
         (classificados[9][0], classificados[22][0]),  # 10º x 23º
@@ -258,54 +282,238 @@ def simular_playoff(classificacao):
     ]
 
     resultados_ida = {}
-    
+    print("\n")
+    print("Jogo de ida - Playoffs:\n")
     for time1, time2 in confrontos_playoffs:
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    resultados_volta = {}
+    print("\n")
+    print("Jogo de volta - Playoffs:\n")
+    for time2, time1 in confrontos_playoffs:
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
+        
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    return resultados_ida, resultados_volta
+
+
+    
+
+    
+
+
+
+def placar_final_playoffs(classificacao):
+    resultados_ida, resultados_volta = simular_playoff(classificacao)
+    vencedores = []
+    print("\n")
+    print("\nPlacar Agregado - Playoffs:")
+    print("\n")
+
+    for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
+        gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
+        total_time1 = gols_ida1 + gols_volta1
+        total_time2 = gols_ida2 + gols_volta2
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+
+        if total_time1 == total_time2:
+            gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
+            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            vencedor = time1 if gols_penaltis1 > gols_penaltis2 else time2
+            vencedores.append(vencedor)
+        else:
+            vencedor = time1 if total_time1 > total_time2 else time2
+            vencedores.append(vencedor)
+
+    print("\nVencedores dos playoffs:\n")
+    for vencedor in vencedores:
+        print("{:<16}".format(vencedor)) 
+    return vencedores
+
+
+
+
+
+
+
+
+           
+def exibir_oitavas(classificacao, vencedores):
+    # Obtém os 8 primeiros colocados
+    primeiros_colocados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)[:8]
+    
+    print("\nConfrontos das Oitavas de Final:")
+    print("\n")
+    
+    confrontos_oitavas = [
+        (primeiros_colocados[0][0], vencedores[0]),  # 1º x Vencedor 1
+        (primeiros_colocados[1][0], vencedores[1]),  # 2º x Vencedor 2
+        (primeiros_colocados[2][0], vencedores[2]),  # 3º x Vencedor 3
+        (primeiros_colocados[3][0], vencedores[3]),  # 4º x Vencedor 4
+        (primeiros_colocados[4][0], vencedores[4]),  # 5º x Vencedor 5
+        (primeiros_colocados[5][0], vencedores[5]),  # 6º x Vencedor 6
+        (primeiros_colocados[6][0], vencedores[6]),  # 7º x Vencedor 7
+        (primeiros_colocados[7][0], vencedores[7]),  # 8º x Vencedor 8
+    ]
+    
+    for time1, time2 in confrontos_oitavas:
+        print("{:>20} x {:<20}".format(time1, time2))
+
+    return confrontos_oitavas
+
+def simular_oitavas(classificacao, vencedores):
+    primeiros_colocados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)
+
+    confrontos_oitavas = [
+        (primeiros_colocados[0][0], vencedores[0]),  # 1º x Vencedor 1
+        (primeiros_colocados[1][0], vencedores[1]),  # 2º x Vencedor 2
+        (primeiros_colocados[2][0], vencedores[2]),  # 3º x Vencedor 3
+        (primeiros_colocados[3][0], vencedores[3]),  # 4º x Vencedor 4
+        (primeiros_colocados[4][0], vencedores[4]),  # 5º x Vencedor 5
+        (primeiros_colocados[5][0], vencedores[5]),  # 6º x Vencedor 6
+        (primeiros_colocados[6][0], vencedores[6]),  # 7º x Vencedor 7
+        (primeiros_colocados[7][0], vencedores[7]),  # 8º x Vencedor 8
+    ]
+
+    resultados_ida = {}
+    print("\n")
+    print("Jogos de ida - Oitavas de final:\n")
+    for time1, time2 in confrontos_oitavas:
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    resultados_volta = {}
+    print("\n")
+    print("Jogos de volta - Oitavas de final:\n")
+    for time2, time1 in confrontos_oitavas:
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
+        
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    return resultados_ida, resultados_volta
+
+def placar_final_oitavas(classificacao, vencedores):
+    resultados_ida, resultados_volta = simular_oitavas(classificacao, vencedores)
+    vencedores_oitavas = []
+    print("\n")
+    print("\nPlacar Agregado:")
+    print("\n")
+
+    for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
+        gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
+        total_time1 = gols_ida1 + gols_volta1
+        total_time2 = gols_ida2 + gols_volta2
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+
+        if total_time1 == total_time2:
+            gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
+            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            vencedor_oitavas = time1 if gols_penaltis1 > gols_penaltis2 else time2
+            vencedores_oitavas.append(vencedor_oitavas)
+        else:
+            vencedor_oitavas = time1 if total_time1 > total_time2 else time2
+            vencedores_oitavas.append(vencedor_oitavas)
+
+    print("\nVencedores das oitavas:\n")
+    for vencedor_oitavas in vencedores_oitavas:
+        print("{:<16}".format(vencedor_oitavas)) 
+    return vencedores_oitavas
+
+
+
+
+
+def sortear_quartas(vencedores_oitavas):
+    # Embaralhar aleatoriamente os vencedores
+    random.shuffle(vencedores_oitavas)
+    
+    # Formar 4 pares (confrontos) com os 8 times
+    quartas_de_final = [(vencedores_oitavas[i], vencedores_oitavas[i + 1]) for i in range(0, len(vencedores_oitavas), 2)]
+    
+    return quartas_de_final
+
+def exibir_confrontos_quartas(quartas_de_final):
+    print("\nConfrontos das Quartas de Final:")
+    print("\n")
+    for time1, time2 in quartas_de_final:
+        print("{:>20} x {:<20}".format(time1, time2))
+
+def simular_quartas(quartas_de_final):
+    resultados_ida = {}
+    print("\n")
+    print("Jogos de ida - Quartas de Final:\n")
+    
+    # Simula jogos de ida
+    for time1, time2 in quartas_de_final:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
-    return resultados_ida
-
-def simular_playoff_volta(classificacao):
-    # Obtém os classificados para os playoffs (9º a 24º)
-    classificados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)
-    
-    print("\nResultados da volta:")
-    print("\n")
-    confrontos_playoffs = [
-        (classificados[23][0], classificados[8][0]),  # 9º x 24º
-        (classificados[22][0], classificados[9][0]),  # 10º x 23º
-        (classificados[21][0], classificados[10][0]),  # 11º x 22º
-        (classificados[20][0], classificados[11][0]),  # 12º x 21º
-        (classificados[19][0], classificados[12][0]),  # 13º x 20º
-        (classificados[18][0], classificados[13][0]),  # 14º x 19º
-        (classificados[17][0], classificados[14][0]),  # 15º x 18º
-        (classificados[16][0], classificados[15][0]),  # 16º x 17º
-    ]
-
     resultados_volta = {}
+    print("\n")
+    print("Jogos de volta - Quartas de Final:\n")
     
-    for time1, time2 in confrontos_playoffs:
+    # Simula jogos de volta
+    for time2, time1 in quartas_de_final:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
         resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
-    return resultados_volta
+    return resultados_ida, resultados_volta
 
-
-def placar_final_playoffs(classificacao):
-    resultados_ida = simular_playoff(classificacao)
-    resultados_volta = simular_playoff_volta(classificacao)
-
+def placar_final_quartas(quartas_de_final):
+    resultados_ida, resultados_volta = simular_quartas(quartas_de_final)
+    vencedores_quartas = []
     print("\n")
-    print("\nResultados dos Playoffs:")
+    print("\nPlacar Agregado - Quartas de Final:")
     print("\n")
-    
+
+    # Calcula o placar agregado e determina os vencedores
     for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
-        gols_volta1, gols_volta2 = resultados_volta[(time2, time1)]  # Inverte os times para pegar os resultados da volta
-        total_time1 = gols_ida1 + gols_volta2
-        total_time2 = gols_ida2 + gols_volta1
+        gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
+        total_time1 = gols_ida1 + gols_volta1
+        total_time2 = gols_ida2 + gols_volta2
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+
+        # Caso de empate no placar agregado, simula pênaltis
+        if total_time1 == total_time2:
+            gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
+            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            vencedor_quartas = time1 if gols_penaltis1 > gols_penaltis2 else time2
+            vencedores_quartas.append(vencedor_quartas)
+        else:
+            vencedor_quartas = time1 if total_time1 > total_time2 else time2
+            vencedores_quartas.append(vencedor_quartas)
+
+    # Exibe os vencedores das quartas de final
+    print("\nVencedores das quartas de final:\n")
+    for vencedor_quartas in vencedores_quartas:
+        print("{:<16}".format(vencedor_quartas)) 
+    return vencedores_quartas
+
+
+def exibir_semi_final(vencedores_quartas):
+    if len(vencedores_quartas) != 4:
+        print("Erro: A lista de vencedores das quartas deve ter exatamente 4 times.")
+        return
+
+    print("\nConfrontos das Semifinais:\n")
+    
+    # Confronto 1: [0] vs [1]
+    print("{:>20} x {:<20}".format(vencedores_quartas[0], vencedores_quartas[1]))
+    
+    # Confronto 2: [2] vs [3]
+    print("{:>20} x {:<20}".format(vencedores_quartas[2], vencedores_quartas[3]))
+
+
 
 
 
@@ -421,68 +629,109 @@ def main():
         home_away = assign_home_away(confrontos)
         classificacao = inicializar_classificacao(potes)
 
-
         # Exibe os confrontos sorteados na ordem dos potes
         print("\nConfrontos sorteados:")
         print("\n")
-
         for time in sorted(confrontos.keys()):
             rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
             # Imprime apenas uma linha formatada para cada time
             print("{:<20}¦ {}".format(time, ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
 
-
-
-
         # Pergunta ao usuário se ele quer simular as partidas ou sortear novamente
-        escolha = input("\nAperte 'S' para simular as partidas ou 'R' para sortear novamente: ").strip().upper()
+        escolha = input("\n1 - Simular partidas\nENTER - Sortear novamente\n").strip().upper()
 
-        if escolha == 'S':
+        if escolha == '1':
             resultados = {}
             print("\nSimulando partidas...")
             resultados_partidas = simular_confrontos(home_away, resultados, classificacao)
             print("\nResultados das partidas:")
             print("\n".join(resultados_partidas))
 
-            # Nova condição para exibir a tabela de classificação
+            # Nova condição para exibir a tabela de classificação ou playoffs
             while True:
-                escolha_tabela = input("\nAperte 'T' para exibir a tabela de classificação, 'P' para ver play-offs ou 'R' para sair: ").strip().upper()
+                escolha_tabela = input("\n1 - Exibir tabela de classificação\n2 - Sair\nENTER - Exibir confrontos dos play-offs\n").strip().upper()
                 
-                if escolha_tabela == 'T':
+                if escolha_tabela == '1':
                     exibir_classificacao(classificacao)
-                elif escolha_tabela == 'P':
+                
+                elif escolha_tabela == '':
                     print("\n")
                     exibir_playoffs(classificacao)
-                    continuar = input("\nDeseja continuar a simulação dos playoffs? (S para continuar, R para sair): ").strip().upper()
-                    if continuar == 'S':
-                        # Aqui você pode adicionar a lógica para simular as partidas dos playoffs
-                        
-                        print("Continuando a simulação dos playoffs...")
+                    continuar = input("\n1 - Sair\nENTER - Simular play-offs\n").strip().upper()
+                    
+                    if continuar == '':
+                        vencedores = placar_final_playoffs(classificacao)
                         print("\n")
-                        simular_playoff(classificacao)
+                       
+                        
                         # Após a simulação dos playoffs, pergunta se deseja simular a volta
-                        simular_volta_opcao = input("\nDeseja simular os jogos de volta? (S para continuar, R para sair): ").strip().upper()
-                        if simular_volta_opcao == 'S':
-                            print("Simulando os jogos de volta...")
-                            print("\n")
-                            simular_playoff_volta(classificacao)
-                            print("\n")
-                            placar_final_playoffs(classificacao)
-                        elif simular_volta_opcao == 'R':
+                        simular_volta_opcao = input("\n1 - Sair\nENTER - Continuar\n").strip().upper()
+                        
+                        if simular_volta_opcao == '':
+
+                            # Exibe opções após resultados finais dos playoffs
+                            while True:
+                                escolha_finais = input("\n1 - Exibir tabela de classificação\n2 - Sair\nENTER - Exibir confrontos das oitavas\n").strip().upper()
+
+                                if escolha_finais == '1':
+                                    exibir_classificacao(classificacao)
+
+                                elif escolha_finais == '':
+                                    exibir_oitavas(classificacao, vencedores)
+                                    print("\n")
+                                    oitavas = input("ENTER - Simular oitavas de final\n")
+                                    print("\n")
+                                    
+                                    if oitavas == '':
+                                        vencedores_oitavas = placar_final_oitavas(classificacao, vencedores)
+                                        print("\n")
+                                        quartas = input("ENTER - Exibir confrontos das quartas").strip().upper()
+                                        print("\n")                                       
+                                        if quartas == '':
+                                            # Sorteia e exibe os confrontos das quartas sem repetir a simulação
+                                            quartas_de_final = sortear_quartas(vencedores_oitavas)
+                                            
+                                            exibir_confrontos_quartas(quartas_de_final)
+                                            print("\n")
+                                            simular_quartas = input("ENTER - Simular quartas de final\n")
+                                            print("\n")
+                                            if simular_quartas == '':
+                                                vencedores_quartas = placar_final_quartas(quartas_de_final)
+                                                print("\n")
+                                                semis = input("ENTER - Exibir confrontos das semifinais").strip().upper()
+                                                print("\n")
+                                                if semis == '':
+                                                    exibir_semi_final(vencedores_quartas)
+
+
+                                        
+
+                                
+                                elif escolha_finais == '2':
+                                    print("\nSaindo do programa.")
+                                    return
+                                
+                                else:
+                                    print("\nOpção inválida. Por favor, tente novamente.")
+                        
+                        elif simular_volta_opcao == '1':
                             print("\nSaindo do programa.")
                             return
-
-
-                    elif continuar == 'R':
+                    
+                    elif continuar == '1':
                         print("\nSaindo do programa.")
                         return
+                    
                     else:
                         print("\nOpção inválida. Por favor, tente novamente.")
-                elif escolha_tabela == 'R':
+                
+                elif escolha_tabela == '2':
                     print("\nSaindo do programa.")
                     return
+                
                 else:
                     print("\nOpção inválida. Por favor, tente novamente.")
+
 
 
 # Executa o programa
