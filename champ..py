@@ -501,10 +501,6 @@ def placar_final_quartas(quartas_de_final):
 
 
 def exibir_semi_final(vencedores_quartas):
-    if len(vencedores_quartas) != 4:
-        print("Erro: A lista de vencedores das quartas deve ter exatamente 4 times.")
-        return
-
     print("\nConfrontos das Semifinais:\n")
     
     # Confronto 1: [0] vs [1]
@@ -513,6 +509,90 @@ def exibir_semi_final(vencedores_quartas):
     # Confronto 2: [2] vs [3]
     print("{:>20} x {:<20}".format(vencedores_quartas[2], vencedores_quartas[3]))
 
+
+def simular_semifinais(vencedores_quartas):
+    resultados_ida = {}
+    print("\nJogos de ida - Semifinais:\n")
+    
+    # Simula os jogos de ida
+    for i in range(2):  # 2 jogos nas semifinais
+        time1 = vencedores_quartas[i]
+        time2 = vencedores_quartas[i + 2]
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    resultados_volta = {}
+    print("\nJogos de volta - Semifinais:\n")
+    
+    # Simula os jogos de volta
+    for i in range(2):  # 2 jogos nas semifinais
+        time1 = vencedores_quartas[i]
+        time2 = vencedores_quartas[i + 2]
+        gols_time2, gols_time1 = gerar_gols(time2, time1)  # Inverte os times para simular o jogo de volta
+        resultados_volta[(time2, time1)] = (gols_time2, gols_time1)
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time2, gols_time2, gols_time1, time1))
+
+    return resultados_ida, resultados_volta
+
+def placar_final_semis(vencedores_quartas):
+    resultados_ida, resultados_volta = simular_semifinais(vencedores_quartas)
+    vencedores_semis = []
+    print("\n")
+    print("\nPlacar Agregado - Semifinais:")
+    print("\n")
+
+    # Calcula o placar agregado e determina os vencedores
+    for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
+        gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
+        total_time1 = gols_ida1 + gols_volta1
+        total_time2 = gols_ida2 + gols_volta2
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+
+        # Caso de empate no placar agregado, simula pênaltis
+        if total_time1 == total_time2:
+            gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
+            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            vencedor_semis = time1 if gols_penaltis1 > gols_penaltis2 else time2
+            vencedores_semis.append(vencedor_semis)
+        else:
+            vencedor_semis = time1 if total_time1 > total_time2 else time2
+            vencedores_semis.append(vencedor_semis)
+
+    # Exibe os vencedores das semifinais
+    print("\nVencedores das semifinais:\n")
+    for vencedor_semis in vencedores_semis:
+        print("{:<16}".format(vencedor_semis)) 
+    return vencedores_semis
+
+
+
+
+
+
+def exibir_final(vencedores_semis):
+    print("\nFinal:\n")
+    # Confronto 1: [0] vs [1]
+    print("{:>20} x {:<20}".format(vencedores_semis[0], vencedores_semis[1]))
+
+def simular_final(vencedores_semis):
+    resultado = {}
+    print("\nJogos de ida - Final:\n")
+   
+    for i in range(2):  # 2 jogos nas semifinais
+        time1 = vencedores_semis[i]
+        time2 = vencedores_semis[i + 2]
+        gols_time1, gols_time2 = gerar_gols(time1, time2)
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+    return resultado
+
+def placar_final_final(vencedores_semis):
+    resultado = simular_final(vencedores_semis)
+    print("\n")
+    print("\nResultado da final:")
+    print("\n")
 
 
 
@@ -698,10 +778,19 @@ def main():
                                             if simular_quartas == '':
                                                 vencedores_quartas = placar_final_quartas(quartas_de_final)
                                                 print("\n")
-                                                semis = input("ENTER - Exibir confrontos das semifinais").strip().upper()
+                                                semis = input("ENTER - Exibir confrontos das semifinais\n").strip().upper()
                                                 print("\n")
                                                 if semis == '':
                                                     exibir_semi_final(vencedores_quartas)
+                                                    print("\n")
+                                                    simular_semis = input("ENTER - Simular semifinais\n").strip().upper()
+                                                    print("\n")
+                                                    if simular_semis == '':
+                                                        vencedores_semis = placar_final_semis(vencedores_quartas)
+                                                        final = input("ENTER - Exibir final\n").strip().upper()
+                                                        print("\n")
+                                                        if final == '':
+                                                            exibir_final(vencedores_semis)
 
 
                                         
