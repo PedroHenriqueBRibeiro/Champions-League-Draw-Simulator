@@ -512,28 +512,30 @@ def exibir_semi_final(vencedores_quartas):
 
 def simular_semifinais(vencedores_quartas):
     resultados_ida = {}
+    resultados_volta = {}
+
     print("\nJogos de ida - Semifinais:\n")
     
-    # Simula os jogos de ida
-    for i in range(2):  # 2 jogos nas semifinais
+    # Simula os jogos de ida para os dois confrontos
+    for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
         time1 = vencedores_quartas[i]
-        time2 = vencedores_quartas[i + 2]
+        time2 = vencedores_quartas[i + 1]
         gols_time1, gols_time2 = gerar_gols(time1, time2)
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
-    resultados_volta = {}
     print("\nJogos de volta - Semifinais:\n")
     
-    # Simula os jogos de volta
-    for i in range(2):  # 2 jogos nas semifinais
+    # Simula os jogos de volta para os dois confrontos
+    for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
         time1 = vencedores_quartas[i]
-        time2 = vencedores_quartas[i + 2]
-        gols_time2, gols_time1 = gerar_gols(time2, time1)  # Inverte os times para simular o jogo de volta
+        time2 = vencedores_quartas[i + 1]
+        gols_time2, gols_time1 = gerar_gols(time2, time1)  # Inverte os times para o jogo de volta
         resultados_volta[(time2, time1)] = (gols_time2, gols_time1)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time2, gols_time2, gols_time1, time1))
 
     return resultados_ida, resultados_volta
+
 
 def placar_final_semis(vencedores_quartas):
     resultados_ida, resultados_volta = simular_semifinais(vencedores_quartas)
@@ -562,7 +564,7 @@ def placar_final_semis(vencedores_quartas):
     # Exibe os vencedores das semifinais
     print("\nVencedores das semifinais:\n")
     for vencedor_semis in vencedores_semis:
-        print("{:<16}".format(vencedor_semis)) 
+        print("{:<16}".format(vencedor_semis))
     return vencedores_semis
 
 
@@ -577,24 +579,38 @@ def exibir_final(vencedores_semis):
 
 def simular_final(vencedores_semis):
     resultado = {}
-    print("\nJogos de ida - Final:\n")
-   
-    for i in range(2):  # 2 jogos nas semifinais
-        time1 = vencedores_semis[i]
-        time2 = vencedores_semis[i + 2]
-        gols_time1, gols_time2 = gerar_gols(time1, time2)
-        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+    
+    time1 = vencedores_semis[0]
+    time2 = vencedores_semis[1]
+    
+    # Simula o único jogo da final
+    gols_time1, gols_time2 = gerar_gols(time1, time2)
+    resultado[(time1, time2)] = (gols_time1, gols_time2)
 
     return resultado
 
+
+
 def placar_final_final(vencedores_semis):
     resultado = simular_final(vencedores_semis)
-    print("\n")
-    print("\nResultado da final:")
-    print("\n")
+    vencedor_final = []
+    print("\nResultado Final:\n")
 
+    # Calcula o placar final e determina o vencedor
+    for (time1, time2), (gols_time1, gols_time2) in resultado.items():
+        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Caso de empate no tempo normal, simula pênaltis
+        if gols_time1 == gols_time2:
+            gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
+            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            vencedor = time1 if gols_penaltis1 > gols_penaltis2 else time2
+            vencedor_final.append(vencedor)
+        else:
+            vencedor = time1 if gols_time1 > gols_time2 else time2
+            vencedor_final.append(vencedor)
+
+    return vencedor_final[0]
 
 
 
@@ -682,6 +698,22 @@ def simular_confrontos(home_away, resultados, classificacao):
         for adversario in home_away[time]["away"]:
             resultados_partidas.append(simular_partida(adversario, time, resultados, classificacao))
     return resultados_partidas
+
+
+def print_trophy(vencedorFinal):
+    print(f"""
+             ___________
+            '._==_==_=_.'
+            .-\:      /-.
+           | (|:.     |) |
+            '-|:.     |-'
+              \::.    /
+               '::. .'
+                 ){vencedorFinal}´´´´
+               _.' '._
+          `"""""""`
+    """)
+
 
 
 
@@ -787,10 +819,25 @@ def main():
                                                     print("\n")
                                                     if simular_semis == '':
                                                         vencedores_semis = placar_final_semis(vencedores_quartas)
-                                                        final = input("ENTER - Exibir final\n").strip().upper()
+                                                        final = input("\nENTER - Exibir final\n").strip().upper()
                                                         print("\n")
                                                         if final == '':
                                                             exibir_final(vencedores_semis)
+                                                            print("\n")
+                                                            
+                                                            # Simula a final
+                                                            simular_Final = input("ENTER - Simular final\n").strip().upper()
+                                                            print("\n")
+                                                            print("\n")
+                                                            print("\n")
+                                                            if simular_Final == '':
+                                                                # Define e exibe o vencedor final
+                                                                vencedorFinal = placar_final_final(vencedores_semis)
+                                                                print("\n")
+                                                                print("{:>16}\nCampeão: {}".format('', vencedorFinal))
+                                                                print("\n")
+                                                                print_trophy(vencedorFinal)
+                                                                
 
 
                                         
@@ -826,6 +873,3 @@ def main():
 # Executa o programa
 if __name__ == "__main__":
     main()
-
-
-
