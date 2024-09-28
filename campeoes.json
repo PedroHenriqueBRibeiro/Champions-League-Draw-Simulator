@@ -1,0 +1,42 @@
+[
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 4
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": 3
+        }
+    },
+    {
+        "campeao": {
+            "time": "Juventus",
+            "gols": "2 (4 PEN)"
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": "2 (2 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Chelsea",
+            "gols": "3 (5 PEN)"
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": "3 (1 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": "1 (4 PEN)"
+        },
+        "vice": {
+            "time": "Chelsea",
+            "gols": "1 (3 PEN)"
+        }
+    }
+]
