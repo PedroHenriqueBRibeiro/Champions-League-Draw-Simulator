@@ -58,5 +58,15 @@
             "time": "Manchester City",
             "gols": "1 (1 PEN)"
         }
+    },
+    {
+        "campeao": {
+            "time": "Barcelona",
+            "gols": "0 (4 PEN)"
+        },
+        "vice": {
+            "time": "Borussia Dortmund",
+            "gols": "0 (2 PEN)"
+        }
     }
 ]
