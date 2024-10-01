@@ -347,7 +347,7 @@ def placar_final_playoffs(classificacao):
            
 def exibir_oitavas(classificacao, vencedores):
     # Obtém os 8 primeiros colocados
-    primeiros_colocados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)[:8]
+    primeiros_colocados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)[:8]
     
     print("\nConfrontos das Oitavas de Final:")
     print("\n")
@@ -369,7 +369,7 @@ def exibir_oitavas(classificacao, vencedores):
     return confrontos_oitavas
 
 def simular_oitavas(classificacao, vencedores):
-    primeiros_colocados = sorted(classificacao.items(), key=lambda x: x[1]['pontos'], reverse=True)
+    primeiros_colocados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
 
     confrontos_oitavas = [
         (primeiros_colocados[0][0], vencedores[0]),  # 1º x Vencedor 1
@@ -609,22 +609,30 @@ def placar_final_final(vencedores_semis):
         if gols_time1 == gols_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
             print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
-            vencedor = time1 if gols_penaltis1 > gols_penaltis2 else time2
-            vencedor_final.append(vencedor)
-            vice = time1 if gols_penaltis1 < gols_penaltis2 else time2
-            vice_final.append(vice)
-            gols_vencedor = (f"{gols_time1} ({gols_penaltis1} PEN)")
-            gols_vice = (f"{gols_time2} ({gols_penaltis2} PEN)")
+            
+            if gols_penaltis1 > gols_penaltis2:
+                vencedor = time1
+                vice = time2
+                gols_vencedor = f"{gols_time1} ({gols_penaltis1} PEN)"
+                gols_vice = f"{gols_time2} ({gols_penaltis2} PEN)"
+            else:
+                vencedor = time2
+                vice = time1
+                gols_vencedor = f"{gols_time2} ({gols_penaltis2} PEN)"
+                gols_vice = f"{gols_time1} ({gols_penaltis1} PEN)"
         else:
+            # Vencedor no tempo normal
             vencedor = time1 if gols_time1 > gols_time2 else time2
-            vencedor_final.append(vencedor)
-            vice = time1 if gols_time1 < gols_time2 else time2
-            vice_final.append(vice)
+            vice = time2 if vencedor == time1 else time1
             gols_vencedor = gols_time1 if vencedor == time1 else gols_time2
             gols_vice = gols_time2 if vencedor == time1 else gols_time1
 
+        # Adiciona o vencedor e o vice às listas
+        vencedor_final.append(vencedor)
+        vice_final.append(vice)
+
     # Salva os resultados da final (campeão, vice, e os gols)
-    #salvar_resultado_final(vencedor_final[0], gols_vencedor, vice_final[0], gols_vice)
+    # salvar_resultado_final(vencedor_final[0], gols_vencedor, vice_final[0], gols_vice)
 
     return vencedor_final[0], gols_vencedor, vice_final[0], gols_vice
 
@@ -769,7 +777,7 @@ def salvar_resultado_final(vencedor_final, gols_vencedor, vice_final, gols_vice)
     with open(nome_arquivo, 'w') as file:
         json.dump(historico_finais, file, indent=4)
 
-def exibir_campeoes():
+def exibir_finais():
     nome_arquivo = "campeoes.json"
     if os.path.exists(nome_arquivo):
         with open(nome_arquivo, 'r') as file:
@@ -780,12 +788,64 @@ def exibir_campeoes():
     else:
         print("Nenhum campeão registrado ainda.")
 
+def contar_campeoes():
+    nome_arquivo = "campeoes.json"
+    if os.path.exists(nome_arquivo):
+        with open(nome_arquivo, 'r') as file:
+            historico_finais = json.load(file)
+
+            # Dicionário para contar os títulos de cada time
+            contador_titulos = {}
+
+            # Contabiliza os títulos de cada time
+            for final in historico_finais:
+                campeao = final['campeao']['time']
+
+                # Se o time já estiver no dicionário, incrementa o número de títulos
+                if campeao in contador_titulos:
+                    contador_titulos[campeao] += 1
+                else:
+                    # Se for a primeira vez, inicializa com 1 título
+                    contador_titulos[campeao] = 1
+
+            return contador_titulos
+    else:
+        print("Nenhum campeão registrado ainda.")
+        return {}
+
+def listar_campeoes_ordenados():
+    # Conta os campeões e seus títulos
+    campeoes = contar_campeoes()
+
+    if campeoes:
+        # Soma o total de títulos (simulações realizadas)
+        total_simulacoes = sum(campeoes.values())
+
+        # Ordena os campeões pelo número de títulos em ordem decrescente
+        campeoes_ordenados = sorted(campeoes.items(), key=lambda item: item[1], reverse=True)
+
+        # Exibe a frase com o número total de simulações
+        print(f"\nLista de campeões após {total_simulacoes} simulação(ões):")
+        print("\n")
+        
+        # Exibe os campeões em formato numerado
+        for i, (time, titulos) in enumerate(campeoes_ordenados, start=1):
+             print(f"{i:<4}{time:<30} {titulos} título(s)")
+    else:
+        print("\n")
+        print("\nNenhum campeão registrado ainda.")
+
+
 def verificar_time_nos_potes(nome_time):
     """Verifica se o time existe nos potes"""
-    nome_time = nome_time.capitalize()
+    # Transforma o nome_time em minúsculas para uma comparação consistente
+    nome_time = nome_time.lower()
+    
     for pote in potes:
-        if nome_time in pote:  # Verifica se o time está na lista de potes
-            return True
+        for time in pote:
+            # Compara os nomes convertidos para minúsculas para garantir consistência
+            if nome_time == time.lower():
+                return True
     return False
 
 def pesquisar_campeao_por_time(nome_time):
@@ -803,18 +863,31 @@ def pesquisar_campeao_por_time(nome_time):
 
             # Verifica se o time foi campeão
             for final in historico_finais:
-                if final['campeao']['time'].capitalize() == nome_time.capitalize():
+                campeao_time = final['campeao']['time'].lower()  # Converte o nome do time para minúsculas
+                if campeao_time == nome_time.lower():  # Compara ambos os nomes em minúsculas
                     contador += 1  # Incrementa o contador se o time for campeão
-
 
     if contador == 0:
         print(f"\nO time {nome_time.upper()} não foi campeão até agora.")
-    else: 
+    else:
         print("\n")        
         print(f"O time {nome_time.upper()} foi campeão {contador} vez(es).")
         print("\n")
-    
+
     return contador
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -827,219 +900,272 @@ def pesquisar_campeao_por_time(nome_time):
 
 def main():
     while True:
-        # Inicializa e sorteia confrontos
-        confrontos = inicializa_confrontos(potes)
-        assign_all_internal_rivals(potes, confrontos)
-        success = assign_all_external_rivals(potes, confrontos)
+        # Menu principal
+        print("\n--- Menu Principal ---\n")
+        escolha_menu = input("\nENTER - Entrar no simulador\n2 - Sair\n\n".upper()).strip().upper()
 
-        if not success:
-            print("Falha ao sortear os confrontos.")
-            continue
+        if escolha_menu == '2':
+            print("\n")
+            print("\nSaindo do programa...")
+            break  # Encerra o programa
 
-        home_away = assign_home_away(confrontos)
-        classificacao = inicializar_classificacao(potes)
+        elif escolha_menu == '':  # Inicia o simulador
+            while True:
+                # Inicializa e sorteia confrontos
+                confrontos = inicializa_confrontos(potes)
+                assign_all_internal_rivals(potes, confrontos)
+                success = assign_all_external_rivals(potes, confrontos)
 
-        # Exibe os confrontos sorteados na ordem dos potes
-        print("\nConfrontos sorteados:")
-        print("\n")
-        for time in sorted(confrontos.keys()):
-            rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
-            # Imprime apenas uma linha formatada para cada time
-            print("{:<20}¦ {}".format(time, ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
-
-        # Pergunta ao usuário se ele quer simular as partidas ou sortear novamente
-        escolha = input("\n1 - Simular partidas\n2 - Pesquisar dados\nENTER - Sortear novamente\n").strip().upper()
-        if escolha == '2':
-            while True:  # Loop secundário para voltar à pesquisa
-                procurar_dados = input("\n1 - Exibir todas as finais\n2 - Pesquisar por time\n3 - Voltar para o sorteio\n")
-                
-                if procurar_dados == '1':
-                    exibir_campeoes()
-                    print("\n")
-                    voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n")
-                    
-                    if voltar == '1':
-                        print("Voltando para pesquisa dados...\n")
-                        continue  # Volta para o loop de pesquisa
-                    
-                    elif voltar == '2':
-                        print("Voltando para o sorteio...\n")
-                        break  # Sai do loop de pesquisa e volta para o início
-                
-                elif procurar_dados == '2':
-                    while True:  # Novo loop para pesquisar por time até o usuário escolher sair
-                        print("\n")
-                        nome_time = input("Digite o nome do time que deseja pesquisar: \n")
-                        print("\n")
-                        nome_time = nome_time.capitalize()
-                        pesquisar_campeao_por_time(nome_time)
-        
-                        print("\n")
-                        voltar = input("1 - Pesquisar novamente\n2 - Voltar para pesquisa de dados\n3 - Voltar para sorteio\n")
-                        
-                        if voltar == '1':
-                            # Se o usuário escolher 1, o loop continua e volta para pesquisar outro time
-                            continue
-                        
-                        elif voltar == '2':
-                            print("Voltando para pesquisa de dados...\n")
-                            break  # Sai desse loop e volta para o menu de pesquisa de dados
-                        
-                        elif voltar == '3':
-                            print("Voltando para o sorteio...\n")
-                            break  # Sai desse loop e volta para o início da simulação
-                    
-                    if voltar == '3':  # Se o usuário escolheu voltar para sorteio, sai do loop de pesquisa de dados também
-                        break
-
-                elif procurar_dados == '3':
-                    break
-                elif procurar_dados == '':
-                    print("\nInsira uma opção válida\n")
+                if not success:
+                    print("Falha ao sortear os confrontos.")
                     continue
 
+                home_away = assign_home_away(confrontos)
+                classificacao = inicializar_classificacao(potes)
 
-        elif escolha == '1':
-            resultados = {}
-            print("\nSimulando partidas...")
-            resultados_partidas = simular_confrontos(home_away, resultados, classificacao)
-            print("\nResultados das partidas:")
-            print("\n".join(resultados_partidas))
+                # Exibe os confrontos sorteados na ordem dos potes
+                print("\n")
+                print("\nConfrontos sorteados:")
+                print("\n")
+                for time in sorted(confrontos.keys()):
+                    rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
+                    print("{:<20}¦ {}".format(time, ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
 
-            # Nova condição para exibir a tabela de classificação ou playoffs
-            while True:
-                escolha_tabela = input("\n1 - Exibir tabela de classificação\n2 - Sair\nENTER - Exibir confrontos dos play-offs\n").strip().upper()
-                
-                if escolha_tabela == '1':
-                    exibir_classificacao(classificacao)
-                
-                elif escolha_tabela == '':
+                # Pergunta ao usuário se ele quer simular as partidas, pesquisar dados ou voltar ao menu principal
+                print("\n")
+                print("\n")
+                escolha = input("\n1 - Simular partidas\n2 - Pesquisar dados\n3 - Menu Principal\nENTER - Sortear novamente\n\n".upper()).strip().upper()
+
+                if escolha == '1':
+                    resultados = {}
                     print("\n")
-                    exibir_playoffs(classificacao)
-                    continuar = input("\n1 - Sair\nENTER - Simular play-offs\n").strip().upper()
-                    
-                    if continuar == '':
-                        vencedores = placar_final_playoffs(classificacao)
+                    print("\nSimulando partidas...")
+                    print("\n")
+                    resultados_partidas = simular_confrontos(home_away, resultados, classificacao)
+                    print("\n")
+                    print("\nResultados das partidas:")
+                    print("\n")
+                    print("\n".join(resultados_partidas))
+                    print("\n")
+
+                    # Nova condição para exibir a tabela de classificação ou playoffs
+                    while True:
+                        escolha_tabela = input("\n1 - Exibir e simular confrontos dos play-offs\n2 - Exibir tabela de classificação\nENTER - Voltar para o Menu Sorteio\n\n".upper()).strip().upper()
                         print("\n")
-                    
-                        
-                        # Após a simulação dos playoffs, pergunta se deseja simular a volta
-                        simular_volta_opcao = input("\n1 - Sair\nENTER - Continuar\n").strip().upper()
-                        
-                        if simular_volta_opcao == '':
 
-                            # Exibe opções após resultados finais dos playoffs
-                            while True:
-                                escolha_finais = input("\n1 - Exibir tabela de classificação\n2 - Sair\nENTER - Exibir confrontos das oitavas\n").strip().upper()
+                        if escolha_tabela == '2':
+                            print("\n")
+                            exibir_classificacao(classificacao)
+                            print("\n")
 
-                                if escolha_finais == '1':
-                                    exibir_classificacao(classificacao)
+                        elif escolha_tabela == '1':
+                            print("\n")
+                            exibir_playoffs(classificacao)
+                            print("\n")
+                            continuar = input("\n1 - Voltar para menu principal\nENTER - Simular play-offs\n\n").strip().upper()
+                            print("\n")
 
-                                elif escolha_finais == '':
-                                    exibir_oitavas(classificacao, vencedores)
+                            if continuar == '':
+                                print("\n")
+                                vencedores = placar_final_playoffs(classificacao)
+                                print("\n")
+
+                                # Após a simulação dos playoffs, continua o fluxo
+                                while True:
+                                    escolha_finais = input("\n1 - Exibir tabela de classificação\nENTER - Exibir confrontos das oitavas\n\n").strip().upper()
                                     print("\n")
-                                    oitavas = input("ENTER - Simular oitavas de final\n")
-                                    print("\n")
-                                    
-                                    if oitavas == '':
-                                        vencedores_oitavas = placar_final_oitavas(classificacao, vencedores)
+
+                                    if escolha_finais == '1':
                                         print("\n")
-                                        quartas = input("ENTER - Exibir confrontos das quartas").strip().upper()
-                                        print("\n")                                       
-                                        if quartas == '':
-                                            # Sorteia e exibe os confrontos das quartas sem repetir a simulação
-                                            quartas_de_final = sortear_quartas(vencedores_oitavas)
-                                            
-                                            exibir_confrontos_quartas(quartas_de_final)
+                                        exibir_classificacao(classificacao)
+                                        print("\n")
+
+                                    elif escolha_finais == '':
+                                        exibir_oitavas(classificacao, vencedores)
+                                        print("\n")
+                                        print("\n")
+                                        oitavas = input("ENTER - Simular oitavas de final\n\n").strip().upper()
+                                        print("\n")
+
+                                        if oitavas == '':
+                                            vencedores_oitavas = placar_final_oitavas(classificacao, vencedores)
                                             print("\n")
-                                            simular_quartas = input("ENTER - Simular quartas de final\n")
                                             print("\n")
-                                            if simular_quartas == '':
-                                                vencedores_quartas = placar_final_quartas(quartas_de_final)
+                                            quartas = input("ENTER - Exibir confrontos das quartas\n\n").strip().upper()
+                                            print("\n")
+
+                                            if quartas == '':
+                                                quartas_de_final = sortear_quartas(vencedores_oitavas)
+                                                exibir_confrontos_quartas(quartas_de_final)
                                                 print("\n")
-                                                semis = input("ENTER - Exibir confrontos das semifinais\n").strip().upper()
                                                 print("\n")
-                                                if semis == '':
-                                                    exibir_semi_final(vencedores_quartas)
+                                                simular_quartas = input("ENTER - Simular quartas de final\n\n").strip().upper()
+                                                print("\n")
+
+                                                if simular_quartas == '':
+                                                    vencedores_quartas = placar_final_quartas(quartas_de_final)
                                                     print("\n")
-                                                    simular_semis = input("ENTER - Simular semifinais\n").strip().upper()
                                                     print("\n")
-                                                    if simular_semis == '':
-                                                        vencedores_semis = placar_final_semis(vencedores_quartas)
-                                                        final = input("\nENTER - Exibir final\n").strip().upper()
+                                                    semis = input("ENTER - Exibir confrontos das semifinais\n\n").strip().upper()
+                                                    print("\n")
+
+                                                    if semis == '':
+                                                        exibir_semi_final(vencedores_quartas)
                                                         print("\n")
-                                                        if final == '':
-                                                            exibir_final(vencedores_semis)
-                                                            print("\n")
-                                                            
-                                                            # Simula a final
-                                                            simular_Final = input("ENTER - Simular final\n").strip().upper()
-                                                            print("\n")
-                                                            print("\n")
-                                                            print("\n")
-                                                            if simular_Final == '':
-                                                                # Define e exibe o vencedor final
-                                                                vencedorFinal, gols_vencedor, viceFinal, gols_vice = placar_final_final(vencedores_semis)
+                                                        print("\n")
+                                                        simular_semis = input("ENTER - Simular semifinais\n\n").strip().upper()
+                                                        print("\n")
 
+                                                        if simular_semis == '':
+                                                            vencedores_semis = placar_final_semis(vencedores_quartas)
+                                                            print("\n")
+                                                            print("\n")
+                                                            final = input("\nENTER - Exibir final\n\n").strip().upper()
+                                                            print("\n")
+
+                                                            if final == '':
+                                                                exibir_final(vencedores_semis)
                                                                 print("\n")
-                                                                print("{:>16}\nCampeão: {}".format('', vencedorFinal))
                                                                 print("\n")
-                                                                print_trophy(vencedorFinal)
-                                                                salvar_resultado_final(vencedorFinal, gols_vencedor, viceFinal, gols_vice)
+                                                                simular_Final = input("ENTER - Simular final\n\n").strip().upper()
                                                                 print("\n")
-                                                                escolha_finais2 = input("\n1 - Exibir tabela de classificação\n2 - Simular novamente a partir das oitavas\nENTER - Encerrar simulação\n").strip().upper()
-                                                                if escolha_finais2 == '1':
-                                                                    exibir_classificacao(classificacao)
-                                                                    replay = input("\n1 - Simular novamente a partir das oitavas\nENTER - Encerrar simulação\n").strip().upper()
-                                                                    if replay == '1':
-                                                                        escolha_finais
-                                                                    elif replay == '':
-                                                                        print("\nSaindo do programa.")
-                                                                        return
-                                                                
-                                                                elif escolha_finais2 == '2':
-                                                                    escolha_finais
 
-                                                                elif escolha_finais2 == '':
-                                                                    print("\nSaindo do programa.")
-                                                                    return
-                                                                
-                                
-                                                                
+                                                                if simular_Final == '':
+                                                                    vencedorFinal, gols_vencedor, viceFinal, gols_vice = placar_final_final(vencedores_semis)
+                                                                    print("\n{:>16}\nCampeão: {}".format('', vencedorFinal))
+                                                                    print_trophy(vencedorFinal)
+                                                                    print("\n")
+                                                                    print("\n")
+                                                                    salvar_resultado_final(vencedorFinal, gols_vencedor, viceFinal, gols_vice)
 
-                                        
+                                                                    # Alterações nesta parte
+                                                                    while True:
+                                                                        escolha_finais2 = input("\n1 - Exibir tabela de classificação\n2 - Finalizar\n\n").strip().upper()
+                                                                        print("\n")
 
-                                
-                                elif escolha_finais == '2':
-                                    print("\nSaindo do programa.")
-                                    return
-                                
-                                else:
-                                    print("\nOpção inválida. Por favor, tente novamente.")
-                        
-                        elif simular_volta_opcao == '1':
-                            print("\nSaindo do programa.")
-                            return
-                    
-                    elif continuar == '1':
-                        print("\nSaindo do programa.")
-                        return
-                    
-                    else:
-                        print("\nOpção inválida. Por favor, tente novamente.")
-                
-                elif escolha_tabela == '2':
-                    print("\nSaindo do programa.")
-                    return
-                
+                                                                        if escolha_finais2 == '1':
+                                                                            print("\n")
+                                                                            exibir_classificacao(classificacao)
+                                                                            print("\n")
+                                                                            voltar_ao_sorteio = input("ENTER - Mais\n\n").strip().upper()
+                                                                            print("\n")
+
+                                                                            if voltar_ao_sorteio == '':
+                                                                                print("\n")
+                                                                                break_out = True
+                                                                                break  # Volta ao sorteio
+
+                                                                        elif escolha_finais2 == '2':
+                                                                            while True:  # Novo loop para Outras Opções
+                                                                                print("\n")
+                                                                                outras_opcoes = input("\nENTER - Mais\n\n").strip().upper()
+                                                                                print("\n")
+                                                                                if outras_opcoes == '':
+                                                                                    break_out = True  # Indicador para sair de todos os loops
+                                                                                    break
+
+                                                                                elif outras_opcoes == '':
+                                                                                    break_out = True
+                                                                                    break
+
+                                                                                else:
+                                                                                    print("\n")
+                                                                                    print("\nOpção inválida. Por favor, tente novamente.\n\n")
+
+                                                                            if break_out:
+                                                                                break  # Sai do loop "escolha_finais2" e reinicia o sorteio
+
+                                                                        else:
+                                                                            print("\n")
+                                                                            print("\nOpção inválida. Por favor, tente novamente.\n\n")
+
+                                                                    if break_out:
+                                                                        break  # Sai do loop de playoffs e recomeça o sorteio
+
+                                    else:
+                                        print("\n")
+                                        print("\nOpção inválida. Por favor, tente novamente.\n\n")
+
+                            elif continuar == '1':
+                                break  # Volta ao menu principal
+
+                        elif escolha_tabela == '':
+                            break  # Volta ao menu principal
+
+                        else:
+                            print("\n")
+                            print("\nOpção inválida. Por favor, tente novamente.\n\n")
+
+                elif escolha == '2':
+                    while True:  # Loop secundário para voltar à pesquisa
+                        print("\n")
+                        procurar_dados = input("\n1 - Exibir todas as finais\n2 - Listar campeões\n3 - Pesquisar por time\n4 - Voltar para o sorteio\n\n")
+                        print("\n")
+
+                        if procurar_dados == '1':
+                            print("\n")
+                            exibir_finais()
+                            print("\n")
+                            voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n")
+                            print("\n")
+
+                            if voltar == '1':
+                                continue  # Volta para o loop de pesquisa
+                            elif voltar == '2':
+                                break  # Sai do loop de pesquisa e volta para o início
+
+                        elif procurar_dados == '2':
+                            print("\n")
+                            listar_campeoes_ordenados()
+                            print("\n")
+                            voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n")
+                            print("\n")
+
+                            if voltar == '1':
+                                continue  # Volta para o loop de pesquisa
+                            elif voltar == '2':
+                                break  # Sai do loop de pesquisa e volta para o início
+
+                        elif procurar_dados == '3':
+                            while True:  # Novo loop para pesquisar por time até o usuário escolher sair
+                                print("\n")
+                                nome_time = input("Digite o nome do time que deseja pesquisar: \n\n")
+                                print("\n")
+                                print("\n")
+                                pesquisar_campeao_por_time(nome_time)
+
+                                print("\n")
+                                voltar = input("1 - Pesquisar novamente\n2 - Voltar para pesquisa de dados\n3 - Voltar para sorteio\n\n")
+                                print("\n")
+
+                                if voltar == '1':
+                                    continue  # Volta para pesquisar outro time
+                                elif voltar == '2':
+                                    break  # Volta para o menu de pesquisa de dados
+                                elif voltar == '3':
+                                    break  # Volta para o sorteio
+
+                            if voltar == '3':
+                                break
+
+                        elif procurar_dados == '4':
+                            break
+                        else:
+                            print("\n")
+                            print("\nInsira uma opção válida\n\n")
+                            continue
+
+                elif escolha == '3':
+                    break  # Volta ao menu principal
+
                 else:
-                    print("\nOpção inválida. Por favor, tente novamente.")
+                    continue  # Sorteia novamente
 
+        else:
+            print("\n")
+            print("\nOpção inválida. Por favor, tente novamente.\n\n")
 
 
 # Executa o programa
 if __name__ == "__main__":
     main()
-
-
-
