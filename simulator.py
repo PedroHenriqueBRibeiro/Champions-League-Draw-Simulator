@@ -107,33 +107,39 @@ def gerar_gols(time_casa, time_fora):
 import random
 
 def simular_penaltis(time1, time2):
-    # Número inicial de cobranças
-    num_cobrancas = 5
+    # Placar inicial
     gols_time1 = 0
     gols_time2 = 0
+    total_cobranças = 5
 
+    # Primeiras 5 cobranças alternadas
+    for i in range(total_cobranças):
+        # Time A bate
+        if random.random() < 0.75:
+            gols_time1 += 1
+
+        # Time B bate
+        if random.random() < 0.75:
+            gols_time2 += 1
+
+        # Verifica se há um vencedor após ambas as cobranças
+        if abs(gols_time1 - gols_time2) > total_cobranças - (i + 1):
+            return gols_time1, gols_time2
+
+    # Se chegar aqui, os placares estão empatados ou a disputa continua
+    # Disputa de pênaltis em morte súbita
     while True:
-        for i in range(num_cobrancas):
-            # Time 1 cobra
-            if random.random() < 0.75:  # 80% de chance de gol
-                gols_time1 += 1
-
-            # Time 2 cobra (somente se ainda houver cobranças restantes)
-            if i < num_cobrancas - 1:
-                if random.random() < 0.75:  # 80% de chance de gol
-                    gols_time2 += 1
+        # Time A bate
+        if random.random() < 0.75:
+            gols_time1 += 1
         
-        # Verifica se os gols são diferentes
+        # Time B bate
+        if random.random() < 0.75:
+            gols_time2 += 1
+
+        # Verifica se há um vencedor
         if gols_time1 != gols_time2:
-            break  # Sai do loop se houver um vencedor
-
-        # Se os gols forem iguais, resetamos para uma nova rodada
-        gols_time1 = 0
-        gols_time2 = 0
-
-    return gols_time1, gols_time2
-
-
+            return gols_time1, gols_time2
 
 
 
