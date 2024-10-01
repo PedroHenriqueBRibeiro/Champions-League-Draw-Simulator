@@ -68,5 +68,15 @@
             "time": "Borussia Dortmund",
             "gols": "0 (2 PEN)"
         }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 1
+        }
     }
 ]
