@@ -53,14 +53,6 @@ stats = {
     "Anderlecht": {"ataque": 67, "defesa": 65},
 }
 
-
-
-
-
-
-
-
-
 # Função para determinar o pote do time
 def get_pote(time):
     for idx, pote in enumerate(potes, start=1):
@@ -68,14 +60,32 @@ def get_pote(time):
             return idx
     return None
 
+
+
+
+
+
+
+
 # Função para calcular a média de gols e o desvio padrão com base nos stats
 def calcula_media_desvio(ataque_time, defesa_adversario):
-    # Fórmula para a média
-    media = max(0.5, (ataque_time - defesa_adversario) / 10 + 1.5)  # Fórmula ajustável
-    # Definimos o desvio padrão como uma fração da média (20% da média, por exemplo)
+    # Carregar a configuração atual
+    configuracao = carregar_configuracao()
+    nivel_gols = configuracao["nivel_gols"]
+    params = configuracao["configuracoes"][nivel_gols]
 
-    desvio = max(0.7, (50 - abs(ataque_time - defesa_adversario)) / 30)  # Exemplo de escala ajustável
+    # Aplicar os parâmetros configuráveis
+    media = max(params["media_base"], (ataque_time - defesa_adversario) / params["media_divisor"] + params["soma"])
+    desvio = max(params["desvio_base"], (60 - abs(ataque_time - defesa_adversario)) / params["desvio_divisor"])
+
     return media, desvio
+
+
+
+
+
+
+
 
 # Função para gerar gols usando o cálculo automático de médias e desvios
 def gerar_gols(time_casa, time_fora):
@@ -905,6 +915,89 @@ def menu_principal():
 
 
 
+# Carregar a configuração de gols do arquivo JSON
+def carregar_configuracao():
+    with open("configuracao_gols.json", "r") as file:
+        configuracao = json.load(file)
+    return configuracao
+
+# Função para salvar a configuração alterada pelo usuário
+def salvar_configuracao(nivel_gols):
+    configuracao = carregar_configuracao()
+    configuracao["nivel_gols"] = nivel_gols
+    with open("configuracao_gols.json", "w") as file:
+        json.dump(configuracao, file, indent=4)
+
+
+def configurar_nivel_gols():
+    config_atual = carregar_configuracao()
+    print("\n--- Configurações de Níveis de Gols ---\n")
+    print("Escolha o nível de gols para as simulações:")
+    print("1 - Média de gols baixa")
+    print("2 - Média de gols média (recomendado)")
+    print("3 - Média de gols alta")
+    print("4 - Detalhes")
+
+    escolha = input("Escolha uma opção (1, 2 ou 3): ").strip()
+
+    if escolha == "1":
+        nivel_gols = "baixa"
+    elif escolha == "2":
+        nivel_gols = "media"
+    elif escolha == "3":
+        nivel_gols = "alta"
+    else:
+        print("\n")
+        print(f"Opção inválida. Usando configuração atual ({config_atual['nivel_gols']}).")
+        print("\n")
+        return configurar_nivel_gols()
+
+    # Salvar a nova configuração
+    salvar_configuracao(nivel_gols)
+    print("\n\n")
+    print(f"Configuração de nível de gols ajustada para {nivel_gols} com sucesso!".upper())
+    print("\n\n")
+
+# Função para criar o arquivo JSON com configurações padrão
+def criar_configuracao_padrao():
+    configuracao_padrao = {
+        "nivel_gols": "media",
+        "configuracoes": {
+            "baixa": {
+                "media_base": 0.3,
+                "media_divisor": 15,
+                "desvio_base": 0.4,
+                "desvio_divisor": 60,
+                "soma": 1
+            },
+            "media": {
+                "media_base": 0.5,
+                "media_divisor": 10,
+                "desvio_base": 0.5,
+                "desvio_divisor": 50,
+                "soma": 1.2
+            },
+            "alta": {
+                "media_base": 0.7,
+                "media_divisor": 10,
+                "desvio_base": 0.6,
+                "desvio_divisor": 40,
+                "soma": 1.5
+            }
+        }
+    }
+
+    with open("configuracao_gols.json", "w") as file:
+        json.dump(configuracao_padrao, file, indent=4)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -917,9 +1010,17 @@ def menu_principal():
 
 
 def main():
+    if not os.path.exists("configuracao_gols.json"):
+        criar_configuracao_padrao()
     while True:
         menu_principal()        
-        escolha_menu = input("\nENTER - Entrar no simulador\n2 - Sair\n\n".upper()).strip().upper()
+        escolha_menu = input("\nENTER - Entrar no simulador\n2 - Sair\n3 - Configurações\n\n".upper()).strip().upper()
+
+        if escolha_menu == '3':
+            configs = input("\n1 - Editar média de gols no jogo\n")
+            if configs == '1':
+                configurar_nivel_gols()
+                continue
 
         if escolha_menu == '2':
             print("\n")
