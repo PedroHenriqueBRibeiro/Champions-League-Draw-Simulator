@@ -147,6 +147,8 @@ def simular_penaltis(time1, time2):
 
 
 
+
+
 # Função para inicializar os confrontos
 def inicializa_confrontos(potes):
     return {time: set() for pote in potes for time in pote}
@@ -882,13 +884,23 @@ def pesquisar_campeao_por_time(nome_time):
 
     return contador
 
+def menu_principal():
+    print("""  ____ _                           _                         
+ / ___| |__   __ _ _ __ ___  _ __ (_) ___  _ __  ___         
+| |   | '_ \ / _` | '_ ` _ \| '_ \| |/ _ \| '_ \/ __|        
+| |___| | | | (_| | | | | | | |_) | | (_) | | | \__ \        
+ \____|_| |_|\__,_|_| |_| |_| .__/|_|\___/|_| |_|___/        
+| |    ___  __ _  __ _ _   _|_|__  |  _ \ _ __ __ ___      __
+| |   / _ \/ _` |/ _` | | | |/ _ \ | | | | '__/ _` \ \ /\ / /
+| |__|  __/ (_| | (_| | |_| |  __/ | |_| | | | (_| |\ V  V / 
+|_____\___|\__,_|\__, |\__,_|\___| |____/|_|  \__,_| \_/\_/  
+/ ___|(_)_ __ ___|___/ _| | __ _| |_ ___  _ __               
+\___ \| | '_ ` _ \| | | | |/ _` | __/ _ \| '__|              
+ ___) | | | | | | | |_| | | (_| | || (_) | |                 
+|____/|_|_| |_| |_|\__,_|_|\__,_|\__\___/|_|        """) 
 
 
-
-
-
-
-
+    return
 
 
 
@@ -906,8 +918,7 @@ def pesquisar_campeao_por_time(nome_time):
 
 def main():
     while True:
-        # Menu principal
-        print("\n--- Menu Principal ---\n")
+        menu_principal()        
         escolha_menu = input("\nENTER - Entrar no simulador\n2 - Sair\n\n".upper()).strip().upper()
 
         if escolha_menu == '2':
@@ -1046,7 +1057,7 @@ def main():
 
                                                                     # Alterações nesta parte
                                                                     while True:
-                                                                        escolha_finais2 = input("\n1 - Exibir tabela de classificação\n2 - Finalizar\n\n").strip().upper()
+                                                                        escolha_finais2 = input("\n1 - Exibir tabela de classificação\nENTER - Finalizar\n\n").strip().upper()
                                                                         print("\n")
 
                                                                         if escolha_finais2 == '1':
@@ -1061,7 +1072,7 @@ def main():
                                                                                 break_out = True
                                                                                 break  # Volta ao sorteio
 
-                                                                        elif escolha_finais2 == '2':
+                                                                        elif escolha_finais2 == '':
                                                                             while True:  # Novo loop para Outras Opções
                                                                                 print("\n")
                                                                                 outras_opcoes = input("\nENTER - Mais\n\n").strip().upper()
