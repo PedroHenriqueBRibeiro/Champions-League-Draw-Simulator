@@ -931,21 +931,46 @@ def salvar_configuracao(nivel_gols):
 
 def configurar_nivel_gols():
     config_atual = carregar_configuracao()
+
+    print("\n")
     print("\n--- Configurações de Níveis de Gols ---\n")
+    print("\n")
     print("Escolha o nível de gols para as simulações:")
-    print("1 - Média de gols baixa")
-    print("2 - Média de gols média (recomendado)")
-    print("3 - Média de gols alta")
-    print("4 - Detalhes")
-
-    escolha = input("Escolha uma opção (1, 2 ou 3): ").strip()
-
+    print("\n")
+    escolha = input("\n1 - Média de gols baixa\n2 - Média de gols média (recomendado)\n3 - Média de gols alta\n4 - Média de gols muito alta\n5 - Detalhes\n\n")
+    print("\n")
     if escolha == "1":
         nivel_gols = "baixa"
     elif escolha == "2":
         nivel_gols = "media"
     elif escolha == "3":
         nivel_gols = "alta"
+    elif escolha == "4":
+        nivel_gols = "muito_alta"
+    elif escolha == '5':
+        # Exibe os detalhes da configuração atual
+        print("\n")
+        print("\n--- Detalhes da configuração atual ---".upper())
+        print("\n")
+        print("\n")
+        print(f"Nível de gols atual: {config_atual['nivel_gols']}")
+        print("\n")
+        print("Configurações disponíveis:")
+        print("\n")
+        for nivel, config in config_atual["configuracoes"].items():
+            print("\n")
+            print(f"\nNível: {nivel.capitalize()}")
+            print("\n")
+            print(f"  Média Base: {config['media_base']}")
+            print(f"  Divisor da Média: {config['media_divisor']}")
+            print(f"  Desvio Base: {config['desvio_base']}")
+            print(f"  Divisor do Desvio: {config['desvio_divisor']}")
+            print(f"  Soma: {config['soma']}")
+        print("\n")
+        
+        
+        # Após exibir os detalhes, retorna ao menu de configuração
+        return configurar_nivel_gols()
     else:
         print("\n")
         print(f"Opção inválida. Usando configuração atual ({config_atual['nivel_gols']}).")
@@ -983,6 +1008,13 @@ def criar_configuracao_padrao():
                 "desvio_base": 0.6,
                 "desvio_divisor": 40,
                 "soma": 1.5
+            },
+            "muito_alta": {
+                "media_base": 2.0,
+                "media_divisor": 5,
+                "desvio_base": 1.0,
+                "desvio_divisor": 30,
+                "soma": 1.8
             }
         }
     }
@@ -1017,9 +1049,14 @@ def main():
         escolha_menu = input("\nENTER - Entrar no simulador\n2 - Sair\n3 - Configurações\n\n".upper()).strip().upper()
 
         if escolha_menu == '3':
-            configs = input("\n1 - Editar média de gols no jogo\n")
+            print("\n")
+            configs = input("\n1 - Editar média de gols no jogo\n2 - Voltar\n\n".upper())
+            print("\n")
+            print("\n")
             if configs == '1':
                 configurar_nivel_gols()
+                continue
+            elif configs == '2':
                 continue
 
         if escolha_menu == '2':
