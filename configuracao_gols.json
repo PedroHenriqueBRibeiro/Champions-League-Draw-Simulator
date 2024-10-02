@@ -1,5 +1,5 @@
 {
-    "nivel_gols": "baixa",
+    "nivel_gols": "muito_alta",
     "configuracoes": {
         "baixa": {
             "media_base": 0.3,
@@ -21,6 +21,13 @@
             "desvio_base": 0.6,
             "desvio_divisor": 40,
             "soma": 1.5
+        },
+        "muito_alta": {
+            "media_base": 2.0,
+            "media_divisor": 5,
+            "desvio_base": 1.0,
+            "desvio_divisor": 30,
+            "soma": 1.8
         }
     }
 }

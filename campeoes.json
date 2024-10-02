@@ -78,5 +78,65 @@
             "time": "Barcelona",
             "gols": 1
         }
+    },
+    {
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": "1 (7 PEN)"
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": "1 (6 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 4
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Juventus",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 3
+        }
+    },
+    {
+        "campeao": {
+            "time": "Liverpool",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 2
+        }
+    },
+    {
+        "campeao": {
+            "time": "Liverpool",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 2
+        }
     }
 ]
