@@ -138,5 +138,136 @@
             "time": "Real Madrid",
             "gols": 2
         }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 6
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 5
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 0
+        }
+    },
+    {
+        "campeao": {
+            "time": "Barcelona",
+            "gols": "1 (6 PEN)"
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": "1 (5 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 2
+        }
+    },
+    {
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 3
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": "2 (3 PEN)"
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": "2 (1 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 4
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": 1
+        }
+    },
+    {
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Chelsea",
+            "gols": 0
+        }
+    },
+    {
+        "campeao": {
+            "time": "Real Madrid",
+            "gols": "1 (3 PEN)"
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": "1 (1 PEN)"
+        }
+    },
+    {
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": "2 (6 PEN)"
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": "2 (5 PEN)"
+        }
     }
 ]
