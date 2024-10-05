@@ -1538,6 +1538,38 @@ def criar_configuracao_padrao():
 
 
 
+def buscar_partidas_por_time(resultados):
+    """Busca e printa as partidas de um time específico na fase de grupos"""
+
+    # Solicita que o usuário insira o nome do time
+    nome_time = input("Digite o nome do time que deseja ver o trajeto: ")
+
+    # Verifica se o time existe nos potes
+    if not verificar_time_nos_potes(nome_time):
+        print(f"Time '{nome_time}' não encontrado.")
+        return
+
+    # Transforma o nome do time em minúsculas para facilitar a comparação
+    nome_time = nome_time.lower()
+    
+    print(f"\nPartidas jogadas pelo {nome_time.capitalize()} na fase de grupos:\n")
+
+    # Itera pelos resultados e printa apenas os jogos que envolvem o time pesquisado
+    encontrou_partidas = False
+    for (time_casa, time_fora), resultado in resultados.items():
+        # Verifica se o time jogou como casa ou visitante
+        if nome_time == time_casa.lower() or nome_time == time_fora.lower():
+            print(resultado)
+            encontrou_partidas = True
+
+    if not encontrou_partidas:
+        print(f"Nenhuma partida encontrada para o time '{nome_time}'.")
+
+
+
+
+
+
 
 
 
@@ -1881,7 +1913,7 @@ def main():
                                                                                                                             print("\n")
                                                                                                                             while True:
 
-                                                                                                                                voltar_ao_sorteio = input("\n1 - Voltar\nENTER - Finalizar\n\n").strip().upper()
+                                                                                                                                voltar_ao_sorteio = input("\n1 - Voltar\n2 - Pesquisar trajeto do time\nENTER - Finalizar\n\n").strip().upper()
                                     
                                                                                                                                 print("\n")
 
@@ -1890,6 +1922,10 @@ def main():
                                                                                                                                     print("\n")
                                                                                                                                     finalizar_simulacao()
                                                                                                                                     raise ExitLoops
+                                                                                                                                elif voltar_ao_sorteio == '2':
+                                                                                                                                    print("\n")
+                                                                                                                                    buscar_partidas_por_time(resultados)
+                                                                                                                                    
                                                                                                                                 elif voltar_ao_sorteio == '1':
                                                                                                                                     break
 
