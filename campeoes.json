@@ -665,5 +665,16 @@
             "time": "Liverpool",
             "gols": 0
         }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "PSG",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 2
+        }
     }
 ]

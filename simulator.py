@@ -392,6 +392,146 @@ def finalizar_simulacao():
 
 
 
+def historico_melhores_ataques():
+    """Lista o histórico de melhores ataques, somando todos os gols de cada time."""
+    # Carrega o histórico de gols
+    historico_gols = carregar_historico_gols()
+
+    # Inicializa um dicionário para armazenar os totais de gols
+    totais_gols = {}
+
+    # Soma todos os gols de cada simulação
+    for simulacao in historico_gols:
+        for time, gols in simulacao["gols"].items():
+            if time not in totais_gols:
+                totais_gols[time] = 0
+            totais_gols[time] += gols
+
+    # Ordena os times com base nos gols totais
+    melhores_ataques = sorted(totais_gols.items(), key=lambda x: x[1], reverse=True)
+
+    # Impressão dos melhores ataques
+    print("Histórico de Melhores Ataques:")
+    for time, gols in melhores_ataques:
+        print(f"{time}: {gols} gols")
+
+
+
+def historico_melhores_defesas():
+    """Lista o histórico de melhores defesas, somando todos os gols sofridos de cada time."""
+    # Carrega o histórico de gols
+    historico_gols = carregar_historico_gols()
+
+    # Inicializa um dicionário para armazenar os totais de gols sofridos
+    totais_gols_sofridos = {}
+
+    # Soma todos os gols sofridos de cada simulação
+    for simulacao in historico_gols:
+        # Verifica se a chave 'gols_sofridos' existe
+        if "gols_sofridos" in simulacao:
+            for time, gols_sofridos in simulacao["gols_sofridos"].items():
+                if time not in totais_gols_sofridos:
+                    totais_gols_sofridos[time] = 0
+                totais_gols_sofridos[time] += gols_sofridos
+
+    # Ordena os times com base nos gols sofridos
+    melhores_defesas = sorted(totais_gols_sofridos.items(), key=lambda x: x[1])
+
+    # Impressão das melhores defesas
+    print("Histórico de Melhores Defesas:")
+    for time, gols_sofridos in melhores_defesas:
+        print(f"{time}: {gols_sofridos} gols sofridos")
+
+
+
+
+
+def media_gols_feitos():
+    """Calcula e lista as médias de gols feitos por time, ordenando do melhor para o pior."""
+    # Carrega o histórico de gols
+    historico_gols = carregar_historico_gols()
+
+    # Inicializa um dicionário para armazenar os totais e partidas jogadas
+    totais_gols_feitos = {}
+    partidas_jogadas = {}
+
+    # Soma todos os gols feitos e partidas jogadas de cada simulação
+    for simulacao in historico_gols:
+        if "gols" in simulacao and "partidas_jogadas" in simulacao:
+            for time, gols in simulacao["gols"].items():
+                if time not in totais_gols_feitos:
+                    totais_gols_feitos[time] = 0
+                    partidas_jogadas[time] = 0
+                totais_gols_feitos[time] += gols
+                partidas_jogadas[time] += simulacao["partidas_jogadas"].get(time, 0)
+
+    # Calcula a média de gols feitos
+    medias_gols_feitos = {time: totais_gols_feitos[time] / partidas_jogadas[time] 
+                           for time in totais_gols_feitos}
+
+    # Ordena os times pela média de gols feitos
+    melhores_gols_feitos = sorted(medias_gols_feitos.items(), key=lambda x: x[1], reverse=True)
+
+    # Impressão das médias de gols feitos
+    print("Média de Gols Feitos:")
+    for time, media in melhores_gols_feitos:
+        print(f"{time}: {media:.2f} gols por partida")
+
+
+def media_gols_sofridos():
+    """Calcula e lista as médias de gols sofridos por time, ordenando do melhor para o pior."""
+    # Carrega o histórico de gols
+    historico_gols = carregar_historico_gols()
+
+    # Inicializa um dicionário para armazenar os totais e partidas jogadas
+    totais_gols_sofridos = {}
+    partidas_jogadas = {}
+
+    # Soma todos os gols sofridos e partidas jogadas de cada simulação
+    for simulacao in historico_gols:
+        if "gols_sofridos" in simulacao and "partidas_jogadas" in simulacao:
+            for time, gols_sofridos in simulacao["gols_sofridos"].items():
+                if time not in totais_gols_sofridos:
+                    totais_gols_sofridos[time] = 0
+                    partidas_jogadas[time] = 0
+                totais_gols_sofridos[time] += gols_sofridos
+                partidas_jogadas[time] += simulacao["partidas_jogadas"].get(time, 0)
+
+    # Calcula a média de gols sofridos
+    medias_gols_sofridos = {time: totais_gols_sofridos[time] / partidas_jogadas[time] 
+                             for time in totais_gols_sofridos}
+
+    # Ordena os times pela média de gols sofridos (menor média é melhor)
+    melhores_defesas = sorted(medias_gols_sofridos.items(), key=lambda x: x[1])
+
+    # Impressão das médias de gols sofridos
+    print("Média de Gols Sofridos:")
+    for time, media in melhores_defesas:
+        print(f"{time}: {media:.2f} gols sofridos por partida")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1402,7 +1542,16 @@ def pesquisar_campeao_por_time(nome_time):
         print(f"Vice-campeão: {contador_vice} vez(es)")
         print("\n")
 
+
     return contador_campeao, contador_vice
+
+
+
+
+
+
+
+
 
 
 def menu_principal():
@@ -1591,6 +1740,18 @@ def analisar_estatisticas():
     melhores_defesas = []
     piores_defesas = []
     
+    # Inicializa variáveis para médias
+    melhor_media_gols = float('-inf')
+    pior_media_gols = float('inf')
+    melhor_media_defensiva = float('inf')
+    pior_media_defensiva = float('-inf')
+
+    # Armazena os times correspondentes às melhores e piores médias
+    time_melhor_media_gols = None
+    time_pior_media_gols = None
+    time_melhor_media_defensiva = None
+    time_pior_media_defensiva = None
+
     # Análise das estatísticas
     for time in gols:
         # Melhor ataque
@@ -1617,39 +1778,68 @@ def analisar_estatisticas():
         elif gols_sofridos[time] == (piores_defesas[0]['gols_sofridos'] if piores_defesas else -1):
             piores_defesas.append({"time": time, "gols_sofridos": gols_sofridos[time], "partidas": partidas_jogadas.get(time, 0)})
 
+        # Cálculo das médias
+        if partidas_jogadas.get(time, 0) > 0:  # Evita divisão por zero
+            media_gols = gols[time] / partidas_jogadas[time]
+            media_defensiva = gols_sofridos[time] / partidas_jogadas[time]
+
+            # Melhor média de gols
+            if media_gols > melhor_media_gols:
+                melhor_media_gols = media_gols
+                time_melhor_media_gols = time
+            
+            # Pior média de gols
+            if media_gols < pior_media_gols:
+                pior_media_gols = media_gols
+                time_pior_media_gols = time
+
+            # Melhor média defensiva
+            if media_defensiva < melhor_media_defensiva:
+                melhor_media_defensiva = media_defensiva
+                time_melhor_media_defensiva = time
+            
+            # Pior média defensiva
+            if media_defensiva > pior_media_defensiva:
+                pior_media_defensiva = media_defensiva
+                time_pior_media_defensiva = time
+
     # Impressão das estatísticas
     print("Melhor(es) Ataque(s):")
     for ataque in melhores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
 
-
-        
     print("\nPior(es) Ataque(s):")
     for ataque in piores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
 
-        
     print("\nMelhor(es) Defesa(s):")
     for defesa in melhores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
 
-        
     print("\nPior(es) Defesa(s):")
     for defesa in piores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
 
     # Impressão das maiores goleadas
-    print("\n")
     print("\nMaior(es) Goleada(s):")
     print("\n")
     for goleada in maiores_goleadas:
         print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
 
-    print("\n")
     print("\nMaiores goleadas da fase de mata-mata:")
     print("\n")
     for goleada in maiores_goleadas_mata_mata:
         print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
+
+
+    print("\n")
+    # Impressão das novas estatísticas de médias
+    print("\nMelhor média de gols: {:.2f} ({})".format(melhor_media_gols, time_melhor_media_gols))
+    print("Pior média de gols: {:.2f} ({})".format(pior_media_gols, time_pior_media_gols))
+    print("Melhor média defensiva: {:.2f} ({})".format(melhor_media_defensiva, time_melhor_media_defensiva))
+    print("Pior média defensiva: {:.2f} ({})".format(pior_media_defensiva, time_pior_media_defensiva))
+
+
 
 
 
@@ -1986,7 +2176,7 @@ def main():
                             elif escolha == '2':
                                 while True:  # Loop secundário para voltar à pesquisa
                                     print("\n")
-                                    procurar_dados = input("\n1 - Exibir todas as finais\n2 - Listar campeões\n3 - Listar vice-campeões\n4 - Pesquisar por time\n5 - Voltar para o sorteio\n\n".upper())
+                                    procurar_dados = input("\n1 - Exibir todas as finais\n2 - Listar campeões\n3 - Listar vice-campeões\n4 - Melhores Ataques Histŕico\n5 - Melhores Defesas histórico\n6 - Exibir médias de ataque e defesa\n7 - Pesquisar por time\n8 - Voltar para o sorteio\n\n".upper())
                                     print("\n")
 
                                     if procurar_dados == '1':
@@ -2024,8 +2214,44 @@ def main():
                                             continue  # Volta para o loop de pesquisa
                                         elif voltar == '2':
                                             break  # Sai do loop de pesquisa e volta para o início
-
                                     elif procurar_dados == '4':
+                                        print("\n")
+                                        historico_melhores_ataques()
+                                        print("\n")
+                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        print("\n")
+
+                                        if voltar == '1':
+                                            continue  # Volta para o loop de pesquisa
+                                        elif voltar == '2':
+                                            break  # Sai do loop de pesquisa e volta para o início
+                                    elif procurar_dados == '5':
+                                        print("\n")
+                                        historico_melhores_defesas()
+                                        print("\n")
+                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        print("\n")
+
+                                        if voltar == '1':
+                                            continue  # Volta para o loop de pesquisa
+                                        elif voltar == '2':
+                                            break  # Sai do loop de pesquisa e volta para o início
+
+                                    elif procurar_dados == '6':
+                                        print("\n")
+                                        media_gols_feitos()
+                                        print("\n")
+                                        media_gols_sofridos()
+                                        print("\n")
+                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        print("\n")
+
+                                        if voltar == '1':
+                                            continue  # Volta para o loop de pesquisa
+                                        elif voltar == '2':
+                                            break  # Sai do loop de pesquisa e volta para o início
+
+                                    elif procurar_dados == '7':
                                         while True:  # Novo loop para pesquisar por time até o usuário escolher sair
                                             print("\n")
                                             nome_time = input("Digite o nome do time que deseja pesquisar: \n\n")
@@ -2047,7 +2273,7 @@ def main():
                                         if voltar == '3':
                                             break
 
-                                    elif procurar_dados == '5':
+                                    elif procurar_dados == '8':
                                         break
                                     else:
                                         print("\n")
