@@ -259,54 +259,75 @@ def agrupar_rivais_por_pote_intercalados(confrontos, time):
 
 
 
-
-
-
-
-
-gols_acumulados = {}
+gols_acumulados = {
+    "gols": {},
+    "gols_sofridos": {},
+    "partidas_jogadas": {}  # Novo dicionário para contabilizar partidas jogadas
+}
 
 def inicializar_gols_acumulados(classificacao):
     """Inicializa o dicionário que armazena os gols acumulados com base na classificação."""
     for time in classificacao.keys():
-        gols_acumulados[time] = classificacao[time]['gols_marcados']
+        gols_acumulados["gols"][time] = classificacao[time]['gols_marcados']
+        gols_acumulados["gols_sofridos"][time] = 0  # Inicializa os gols sofridos como 0
+        gols_acumulados["partidas_jogadas"][time] = 0  # Inicializa partidas jogadas como 0
 
-def atualizar_gols_acumulados(time, gols):
-    """Atualiza o total de gols de um time."""
-    if time in gols_acumulados:
-        gols_acumulados[time] += gols
+def atualizar_gols_acumulados(time, gols, tipo):
+    """Atualiza o total de gols de um time, seja marcados ou sofridos."""
+    if time in gols_acumulados[tipo]:
+        gols_acumulados[tipo][time] += gols
     else:
-        gols_acumulados[time] = gols
+        gols_acumulados[tipo][time] = gols
 
-    
+def atualizar_partidas_jogadas(time):
+    """Atualiza o total de partidas jogadas de um time no arquivo JSON."""
+    dados_atualizados = carregar_gols_acumulados()  # Carrega os dados atuais
+
+    # Atualiza a contagem de partidas jogadas
+    if time in dados_atualizados["partidas_jogadas"]:
+        dados_atualizados["partidas_jogadas"][time] += 1
+    else:
+        dados_atualizados["partidas_jogadas"][time] = 1
+
+    salvar_gols_acumulados(dados_atualizados)  # Salva os dados atualizados
+
 
 nome_arquivo_gols = "gols_simulacao_atual.json"
 
 def carregar_gols_acumulados():
-    """Carrega o arquivo de gols acumulados. Se o arquivo não existir, retorna um dicionário vazio."""
+    """Carrega o arquivo de gols acumulados. Se o arquivo não existir, retorna um dicionário com a estrutura inicial."""
     if os.path.exists(nome_arquivo_gols):
         with open(nome_arquivo_gols, 'r') as file:
             return json.load(file)
-    return {}
+    return {"gols": {}, "gols_sofridos": {}, "partidas_jogadas": {}}
 
 def salvar_gols_acumulados(gols_acumulados):
     """Salva o dicionário de gols acumulados no arquivo JSON."""
     with open(nome_arquivo_gols, 'w') as file:
         json.dump(gols_acumulados, file, indent=4)
 
-def atualizar_gols_acumulados_json(time, gols):
-    """Atualiza o total de gols de um time no arquivo JSON."""
-    gols_acumulados = carregar_gols_acumulados()
-    if time in gols_acumulados:
-        gols_acumulados[time] += gols  # Incrementa os gols existentes
+def atualizar_gols_acumulados_json(time, gols_marcados, gols_sofridos):
+    """Atualiza o total de gols marcados e sofridos de um time no arquivo JSON."""
+    dados_atualizados = carregar_gols_acumulados()
+    
+    # Atualiza os gols marcados
+    if time in dados_atualizados["gols"]:
+        dados_atualizados["gols"][time] += gols_marcados
     else:
-        gols_acumulados[time] = gols  # Inicializa se o time não está no arquivo ainda
+        dados_atualizados["gols"][time] = gols_marcados
+    
+    # Atualiza os gols sofridos
+    if time in dados_atualizados["gols_sofridos"]:
+        dados_atualizados["gols_sofridos"][time] += gols_sofridos
+    else:
+        dados_atualizados["gols_sofridos"][time] = gols_sofridos
 
-    salvar_gols_acumulados(gols_acumulados)
+    # Atualiza a contagem de partidas jogadas
+    atualizar_partidas_jogadas(time)  # Atualiza partidas jogadas
 
+    salvar_gols_acumulados(dados_atualizados)
 
-nome_arquivo_historico = "historico_gols.json" 
-
+nome_arquivo_historico = "historico_gols.json"
 
 def carregar_historico_gols():
     """Carrega o arquivo de histórico de gols. Se o arquivo não existir, retorna uma lista vazia."""
@@ -326,16 +347,16 @@ def resetar_arquivo_gols():
         os.remove(nome_arquivo_gols)
 
 def finalizar_simulacao():
-    """Transfere os gols da simulação atual para o histórico e reseta o arquivo de gols acumulados."""
+    """Transfere os gols marcados e sofridos da simulação atual para o histórico e reseta o arquivo de gols acumulados."""
     print("Finalização da simulação...")
-    
-    # Carrega os gols acumulados e o histórico
+
+    # Carrega os dados de gols acumulados
     gols_acumulados = carregar_gols_acumulados()
     
     # Verifica se há pelo menos 25 times
-    if len(gols_acumulados) < 25:
+    if len(gols_acumulados["gols"]) < 25:
         print("Erro: Não foi salvo no histórico!")
-        return  # Encerra a função sem salvar
+        return
     
     configuracao_atual = carregar_configuracao()
     nivel_gols_simulacao = configuracao_atual["nivel_gols"]
@@ -343,11 +364,13 @@ def finalizar_simulacao():
     # Carrega o histórico de gols
     historico_gols = carregar_historico_gols()
 
-    # Adiciona os gols da simulação atual ao histórico
+    # Adiciona os dados da simulação atual ao histórico
     historico_gols.append({
-        "simulacao": len(historico_gols) + 1,  # Número da simulação
+        "simulacao": len(historico_gols) + 1,
         "nivel_simulacao": nivel_gols_simulacao,
-        "gols": gols_acumulados  # Gols acumulados na simulação atual
+        "gols": gols_acumulados["gols"],
+        "gols_sofridos": gols_acumulados["gols_sofridos"],
+        "partidas_jogadas": gols_acumulados["partidas_jogadas"]  # Adiciona partidas jogadas
     })
 
     # Salva o novo histórico de gols
@@ -357,7 +380,6 @@ def finalizar_simulacao():
     resetar_arquivo_gols()
 
     print(f"Simulação finalizada! Os dados foram movidos para o histórico.")
-
 
 
 
@@ -416,30 +438,41 @@ def simular_playoff(classificacao):
     print("\n")
     print("Jogo de ida - Playoffs:\n")
     for time1, time2 in confrontos_playoffs:
+        # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
         
+        # Salva o resultado da partida de ida
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos no arquivo JSON
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
     print("\n")
     print("Jogo de volta - Playoffs:\n")
     for time2, time1 in confrontos_playoffs:
+        # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
         
+        # Salva o resultado da partida de volta
+        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos no arquivo JSON
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     return resultados_ida, resultados_volta
 
-
-    
-
-    
 
 
 
@@ -502,8 +535,10 @@ def exibir_oitavas(classificacao, vencedores):
     return confrontos_oitavas
 
 def simular_oitavas(classificacao, vencedores):
+    # Ordena os primeiros colocados pela pontuação, saldo de gols e gols marcados
     primeiros_colocados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
 
+    # Define os confrontos das oitavas de final
     confrontos_oitavas = [
         (primeiros_colocados[0][0], vencedores[0]),  # 1º x Vencedor 1
         (primeiros_colocados[1][0], vencedores[1]),  # 2º x Vencedor 2
@@ -519,22 +554,36 @@ def simular_oitavas(classificacao, vencedores):
     print("\n")
     print("Jogos de ida - Oitavas de final:\n")
     for time1, time2 in confrontos_oitavas:
+        # Gera os gols para o jogo de ida
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
         
+        # Salva o resultado do jogo de ida
+        resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos no arquivo JSON
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
     print("\n")
     print("Jogos de volta - Oitavas de final:\n")
     for time2, time1 in confrontos_oitavas:
+        # Gera os gols para o jogo de volta
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
         
+        # Salva o resultado do jogo de volta
+        resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos no arquivo JSON
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     return resultados_ida, resultados_volta
@@ -593,9 +642,16 @@ def simular_quartas(quartas_de_final):
     # Simula jogos de ida
     for time1, time2 in quartas_de_final:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
+        
+        # Salva os resultados
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
@@ -605,12 +661,20 @@ def simular_quartas(quartas_de_final):
     # Simula jogos de volta
     for time2, time1 in quartas_de_final:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
+        
+        # Salva os resultados
         resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     return resultados_ida, resultados_volta
+
 
 def placar_final_quartas(quartas_de_final):
     resultados_ida, resultados_volta = simular_quartas(quartas_de_final)
@@ -659,32 +723,45 @@ def simular_semifinais(vencedores_quartas):
     resultados_volta = {}
 
     print("\nJogos de ida - Semifinais:\n")
-    print("\n")
     
     # Simula os jogos de ida para os dois confrontos
     for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
         time1 = vencedores_quartas[i]
         time2 = vencedores_quartas[i + 1]
         gols_time1, gols_time2 = gerar_gols(time1, time2)
+        
+        # Salva os resultados
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     print("\nJogos de volta - Semifinais:\n")
-    print("\n")
     
     # Simula os jogos de volta para os dois confrontos
     for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
         time1 = vencedores_quartas[i]
         time2 = vencedores_quartas[i + 1]
         gols_time2, gols_time1 = gerar_gols(time2, time1)  # Inverte os times para o jogo de volta
+        
+        # Salva os resultados
         resultados_volta[(time2, time1)] = (gols_time2, gols_time1)
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
+        
+        # Atualiza os gols marcados e sofridos
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
+        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time2, gols_time2, gols_time1, time1))
 
     return resultados_ida, resultados_volta
+
 
 
 def placar_final_semis(vencedores_quartas):
@@ -726,7 +803,9 @@ def placar_final_semis(vencedores_quartas):
 
 
 def exibir_final(vencedores_semis):
+    print("\n")
     print("\nFinal:\n")
+    print("\n")
     # Confronto 1: [0] vs [1]
     print("{:>20} x {:<20}".format(vencedores_semis[0], vencedores_semis[1]))
 
@@ -756,8 +835,11 @@ def placar_final_final(vencedores_semis):
 
     # Calcula o placar final e determina o vencedor
     for (time1, time2), (gols_time1, gols_time2) in resultado.items():
-        atualizar_gols_acumulados_json(time1, gols_time1)
-        atualizar_gols_acumulados_json(time2, gols_time2)
+        # Atualiza os gols marcados e sofridos
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1: marcou e sofreu
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
+        atualizar_partidas_jogadas(time1)
+        atualizar_partidas_jogadas(time2)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
         # Caso de empate no tempo normal, simula pênaltis
@@ -832,22 +914,44 @@ def inicializar_classificacao(potes):
             classificacao[time] = {'pontos': 0, 'gols_marcados': 0, 'gols_sofridos': 0, 'vitorias': 0, 'derrotas': 0, 'empates': 0}
     return classificacao
 
+
+
+
+
+
+
+
 def simular_partida(time_casa, time_fora, resultados, classificacao):
+    # Verifica se o resultado já existe, para evitar recalcular
     if (time_casa, time_fora) in resultados:
         return resultados[(time_casa, time_fora)]
     if (time_fora, time_casa) in resultados:
         return resultados[(time_fora, time_casa)]
 
+    # Gera os gols para os dois times
     gols_casa, gols_fora = gerar_gols(time_casa, time_fora)
 
+    # Atualiza a classificação com os resultados dos gols
     atualizar_classificacao(time_casa, gols_casa, time_fora, gols_fora, classificacao)
-    atualizar_gols_acumulados_json(time_casa, gols_casa)
-    atualizar_gols_acumulados_json(time_fora, gols_fora)
 
+    # Atualiza o arquivo JSON com os gols marcados e sofridos
+    atualizar_gols_acumulados_json(time_casa, gols_casa, gols_fora)  # Time da casa marcou e sofreu
+    atualizar_gols_acumulados_json(time_fora, gols_fora, gols_casa)  # Time visitante marcou e sofreu
+    atualizar_partidas_jogadas(time_casa)
+    atualizar_partidas_jogadas(time_fora)
+
+    # Formata o resultado da partida e o salva nos resultados
     resultado = "{:>20} {:<1} x {:<1} {:<20}".format(time_casa, gols_casa, gols_fora, time_fora)
     resultados[(time_casa, time_fora)] = resultado
 
     return resultado
+
+
+
+
+
+
+
 
 def exibir_classificacao(classificacao):
     # Ordena primeiro por pontos e depois por saldo de gols
@@ -1241,6 +1345,78 @@ def criar_configuracao_padrao():
 
 
 
+import json
+import os
+
+def carregar_gols_acumulados():
+    """Carrega o arquivo de gols acumulados. Se o arquivo não existir, retorna um dicionário com a estrutura inicial."""
+    nome_arquivo_gols = "gols_simulacao_atual.json"
+    if os.path.exists(nome_arquivo_gols):
+        with open(nome_arquivo_gols, 'r') as file:
+            return json.load(file)
+    return {"gols": {}, "gols_sofridos": {}, "partidas_jogadas": {}}
+
+def analisar_estatisticas():
+    """Analisa o arquivo de gols acumulados e imprime estatísticas de ataque e defesa."""
+    gols_acumulados = carregar_gols_acumulados()
+    
+    gols = gols_acumulados["gols"]
+    gols_sofridos = gols_acumulados["gols_sofridos"]
+    partidas_jogadas = gols_acumulados["partidas_jogadas"]
+
+    # Inicializa variáveis para armazenar as estatísticas
+    melhor_ataque = {"time": None, "gols": -1, "partidas": 0}
+    pior_ataque = {"time": None, "gols": float('inf'), "partidas": 0}
+    melhor_defesa = {"time": None, "gols_sofridos": float('inf'), "partidas": 0}
+    pior_defesa = {"time": None, "gols_sofridos": -1, "partidas": 0}
+
+    # Análise das estatísticas
+    for time in gols:
+        # Melhor ataque
+        if gols[time] > melhor_ataque["gols"]:
+            melhor_ataque["gols"] = gols[time]
+            melhor_ataque["time"] = time
+            melhor_ataque["partidas"] = partidas_jogadas.get(time, 0)  # Número de partidas jogadas
+
+        # Pior ataque
+        if gols[time] < pior_ataque["gols"]:
+            pior_ataque["gols"] = gols[time]
+            pior_ataque["time"] = time
+            pior_ataque["partidas"] = partidas_jogadas.get(time, 0)
+
+        # Melhor defesa
+        if gols_sofridos[time] < melhor_defesa["gols_sofridos"]:
+            melhor_defesa["gols_sofridos"] = gols_sofridos[time]
+            melhor_defesa["time"] = time
+            melhor_defesa["partidas"] = partidas_jogadas.get(time, 0)
+
+        # Pior defesa
+        if gols_sofridos[time] > pior_defesa["gols_sofridos"]:
+            pior_defesa["gols_sofridos"] = gols_sofridos[time]
+            pior_defesa["time"] = time
+            pior_defesa["partidas"] = partidas_jogadas.get(time, 0)
+
+    # Impressão das estatísticas
+    print("Melhor Ataque:")
+    print(f"Time: {melhor_ataque['time']}, Gols: {melhor_ataque['gols']}, Partidas: {melhor_ataque['partidas']}")
+    
+    print("\nPior Ataque:")
+    print(f"Time: {pior_ataque['time']}, Gols: {pior_ataque['gols']}, Partidas: {pior_ataque['partidas']}")
+    
+    print("\nMelhor Defesa:")
+    print(f"Time: {melhor_defesa['time']}, Gols Sofridos: {melhor_defesa['gols_sofridos']}, Partidas: {melhor_defesa['partidas']}")
+    
+    print("\nPior Defesa:")
+    print(f"Time: {pior_defesa['time']}, Gols Sofridos: {pior_defesa['gols_sofridos']}, Partidas: {pior_defesa['partidas']}")
+
+# Chamar a função para exibir as estatísticas
+analisar_estatisticas()
+
+
+
+
+
+
 
 
 
@@ -1501,8 +1677,27 @@ def main():
                                                                                                                             
 
                                                                                                                     elif escolha_finais2 == '':
-                                                                                                                        print("\nstats")
-                                                                                                                        
+                                                                                                                            print("\n")
+                                                                                                                            analisar_estatisticas()
+                                                                                                                            print("\n")
+                                                                                                                            while True:
+
+                                                                                                                                voltar_ao_sorteio = input("\n1 - Voltar\nENTER - Finalizar\n\n").strip().upper()
+                                    
+                                                                                                                                print("\n")
+
+
+                                                                                                                                if voltar_ao_sorteio == '':
+                                                                                                                                    print("\n")
+                                                                                                                                    finalizar_simulacao()
+                                                                                                                                    raise ExitLoops
+                                                                                                                                elif voltar_ao_sorteio == '1':
+                                                                                                                                    break
+
+                                                                                                                                else:
+                                                                                                                                    print("\n")
+                                                                                                                                    print("\nOpção inválida. Por favor, tente novamente.\n\n")
+                                                                                                                            
 
                                                                                                                     else:
                                                                                                                         print("\n")

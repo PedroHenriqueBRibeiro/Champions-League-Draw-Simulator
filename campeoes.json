@@ -269,5 +269,16 @@
             "time": "Manchester City",
             "gols": "2 (5 PEN)"
         }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 0
+        }
     }
 ]
