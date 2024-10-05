@@ -280,5 +280,390 @@
             "time": "Bayern Munich",
             "gols": 0
         }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Liverpool",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Napoli",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Chelsea",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Arsenal",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Chelsea",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 1
+        },
+        "vice": {
+            "time": "PSG",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Barcelona",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "baixa",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "baixa",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": "0 (5 PEN)"
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": "0 (4 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "baixa",
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "muito_alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "muito_alta",
+        "campeao": {
+            "time": "Real Madrid",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "PSG",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Chelsea",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Milan",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": "0 (4 PEN)"
+        },
+        "vice": {
+            "time": "Sevilla",
+            "gols": "0 (3 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": "3 (5 PEN)"
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": "3 (4 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": "2 (3 PEN)"
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": "2 (1 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Juventus",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Real Madrid",
+            "gols": 3
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 5
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": "0 (5 PEN)"
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": "0 (4 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Juventus",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": 2
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 3
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 2
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": "0 (5 PEN)"
+        },
+        "vice": {
+            "time": "Juventus",
+            "gols": "0 (4 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": 1
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Bayern Munich",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Liverpool",
+            "gols": "2 (6 PEN)"
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": "2 (5 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Liverpool",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Bayern Munich",
+            "gols": 0
+        }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Barcelona",
+            "gols": 1
+        },
+        "vice": {
+            "time": "Liverpool",
+            "gols": 0
+        }
     }
 ]

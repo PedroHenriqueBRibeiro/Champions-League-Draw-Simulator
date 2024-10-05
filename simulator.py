@@ -114,8 +114,6 @@ def gerar_gols(time_casa, time_fora):
     return gols_casa, gols_fora
 
 
-import random
-
 def simular_penaltis(time1, time2):
     # Placar inicial
     gols_time1 = 0
@@ -345,6 +343,7 @@ def resetar_arquivo_gols():
     """Remove o arquivo de gols acumulados, iniciando uma nova simulação."""
     if os.path.exists(nome_arquivo_gols):
         os.remove(nome_arquivo_gols)
+    maiores_goleadas.clear()
 
 def finalizar_simulacao():
     """Transfere os gols marcados e sofridos da simulação atual para o histórico e reseta o arquivo de gols acumulados."""
@@ -420,6 +419,9 @@ def exibir_playoffs(classificacao):
 
 
 def simular_playoff(classificacao):
+    global maiores_goleadas_mata_mata  # Para garantir que a variável seja acessível
+    maiores_goleadas_mata_mata = []  # Inicializa ou limpa a lista
+
     # Obtém os classificados para os playoffs (9º a 24º)
     classificados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
 
@@ -435,43 +437,77 @@ def simular_playoff(classificacao):
     ]
 
     resultados_ida = {}
-    print("\n")
-    print("Jogo de ida - Playoffs:\n")
+    print("\nJogo de ida - Playoffs:\n")
     for time1, time2 in confrontos_playoffs:
         # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
         
         # Salva o resultado da partida de ida
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
+
+        # Atualiza as maiores goleadas da fase de mata-mata
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if len(maiores_goleadas_mata_mata) == 0 or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata = [{
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            }]
+        elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata.append({
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            })
         
-        # Atualiza os gols marcados e sofridos no arquivo JSON
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        # Atualiza o JSON e exibe o resultado
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
-        
-        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
-    print("\n")
-    print("Jogo de volta - Playoffs:\n")
+    print("\nJogo de volta - Playoffs:\n")
     for time2, time1 in confrontos_playoffs:
-        # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        
-        # Salva o resultado da partida de volta
+
         resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
         
-        # Atualiza os gols marcados e sofridos no arquivo JSON
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        # Atualiza as maiores goleadas da fase de mata-mata para o jogo de volta
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if len(maiores_goleadas_mata_mata) == 0 or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata = [{
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            }]
+        elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata.append({
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            })
+        
+        # Atualiza o JSON e exibe o resultado
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
-        # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     return resultados_ida, resultados_volta
+
+
+
 
 
 
@@ -535,6 +571,8 @@ def exibir_oitavas(classificacao, vencedores):
     return confrontos_oitavas
 
 def simular_oitavas(classificacao, vencedores):
+    global maiores_goleadas_mata_mata  # Certifica-se de que a variável é acessível
+
     # Ordena os primeiros colocados pela pontuação, saldo de gols e gols marcados
     primeiros_colocados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
 
@@ -551,8 +589,7 @@ def simular_oitavas(classificacao, vencedores):
     ]
 
     resultados_ida = {}
-    print("\n")
-    print("Jogos de ida - Oitavas de final:\n")
+    print("\nJogos de ida - Oitavas de final:\n")
     for time1, time2 in confrontos_oitavas:
         # Gera os gols para o jogo de ida
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -561,16 +598,35 @@ def simular_oitavas(classificacao, vencedores):
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
         
         # Atualiza os gols marcados e sofridos no arquivo JSON
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
+        
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if len(maiores_goleadas_mata_mata) == 0 or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata = [{
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            }]
+        elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata.append({
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            })
+
     resultados_volta = {}
-    print("\n")
-    print("Jogos de volta - Oitavas de final:\n")
+    print("\nJogos de volta - Oitavas de final:\n")
     for time2, time1 in confrontos_oitavas:
         # Gera os gols para o jogo de volta
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -579,14 +635,36 @@ def simular_oitavas(classificacao, vencedores):
         resultados_volta[(time1, time2)] = (gols_time1, gols_time2)
         
         # Atualiza os gols marcados e sofridos no arquivo JSON
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time 1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time 2 marcou gols_time2 e sofreu gols_time1
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
+        
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if len(maiores_goleadas_mata_mata) == 0 or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata = [{
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            }]
+        elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+            maiores_goleadas_mata_mata.append({
+                "time1": time1,
+                "gols_time1": gols_time1,
+                "time2": time2,
+                "gols_time2": gols_time2,
+                "diferenca": diferenca_gols
+            })
+
     return resultados_ida, resultados_volta
+
+
 
 def placar_final_oitavas(classificacao, vencedores):
     resultados_ida, resultados_volta = simular_oitavas(classificacao, vencedores)
@@ -634,10 +712,12 @@ def exibir_confrontos_quartas(quartas_de_final):
     for time1, time2 in quartas_de_final:
         print("{:>20} x {:<20}".format(time1, time2))
 
+
 def simular_quartas(quartas_de_final):
+    global maiores_goleadas_mata_mata  # Certifica-se de que a variável global é acessível
+
     resultados_ida = {}
-    print("\n")
-    print("Jogos de ida - Quartas de Final:\n")
+    print("\nJogos de ida - Quartas de Final:\n")
     
     # Simula jogos de ida
     for time1, time2 in quartas_de_final:
@@ -654,9 +734,24 @@ def simular_quartas(quartas_de_final):
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if diferenca_gols > 0:  # Ignora jogos sem gols
+            maior_goleada = {
+                'time1': time1,
+                'gols_time1': gols_time1,
+                'time2': time2,
+                'gols_time2': gols_time2,
+                'diferenca': diferenca_gols
+            }
+            # Se for a maior goleada ou igual à maior existente, adiciona
+            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata = [maior_goleada]
+            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata.append(maior_goleada)
+
     resultados_volta = {}
-    print("\n")
-    print("Jogos de volta - Quartas de Final:\n")
+    print("\nJogos de volta - Quartas de Final:\n")
     
     # Simula jogos de volta
     for time2, time1 in quartas_de_final:
@@ -673,7 +768,24 @@ def simular_quartas(quartas_de_final):
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if diferenca_gols > 0:  # Ignora jogos sem gols
+            maior_goleada = {
+                'time1': time1,
+                'gols_time1': gols_time1,
+                'time2': time2,
+                'gols_time2': gols_time2,
+                'diferenca': diferenca_gols
+            }
+            # Se for a maior goleada ou igual à maior existente, adiciona
+            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata = [maior_goleada]
+            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata.append(maior_goleada)
+
     return resultados_ida, resultados_volta
+
 
 
 def placar_final_quartas(quartas_de_final):
@@ -702,6 +814,7 @@ def placar_final_quartas(quartas_de_final):
 
     # Exibe os vencedores das quartas de final
     print("\nVencedores das quartas de final:\n")
+    print("\n")
     for vencedor_quartas in vencedores_quartas:
         print("{:<16}".format(vencedor_quartas)) 
     return vencedores_quartas
@@ -719,6 +832,8 @@ def exibir_semi_final(vencedores_quartas):
 
 
 def simular_semifinais(vencedores_quartas):
+    global maiores_goleadas_mata_mata  # Variável global para armazenar as maiores goleadas
+
     resultados_ida = {}
     resultados_volta = {}
 
@@ -741,6 +856,22 @@ def simular_semifinais(vencedores_quartas):
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if diferenca_gols > 0:  # Ignora jogos sem gols
+            maior_goleada = {
+                'time1': time1,
+                'gols_time1': gols_time1,
+                'time2': time2,
+                'gols_time2': gols_time2,
+                'diferenca': diferenca_gols
+            }
+            # Se for a maior goleada ou igual à maior existente, adiciona
+            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata = [maior_goleada]
+            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata.append(maior_goleada)
+
     print("\nJogos de volta - Semifinais:\n")
     
     # Simula os jogos de volta para os dois confrontos
@@ -760,7 +891,24 @@ def simular_semifinais(vencedores_quartas):
         # Exibe o resultado
         print("{:>20} {:<1} x {:<1} {:<20}".format(time2, gols_time2, gols_time1, time1))
 
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time2 - gols_time1)
+        if diferenca_gols > 0:  # Ignora jogos sem gols
+            maior_goleada = {
+                'time1': time2,
+                'gols_time1': gols_time2,
+                'time2': time1,
+                'gols_time2': gols_time1,
+                'diferenca': diferenca_gols
+            }
+            # Se for a maior goleada ou igual à maior existente, adiciona
+            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata = [maior_goleada]
+            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata.append(maior_goleada)
+
     return resultados_ida, resultados_volta
+
 
 
 
@@ -809,6 +957,8 @@ def exibir_final(vencedores_semis):
     # Confronto 1: [0] vs [1]
     print("{:>20} x {:<20}".format(vencedores_semis[0], vencedores_semis[1]))
 
+    
+
 def simular_final(vencedores_semis):
     resultado = {}
     
@@ -822,8 +972,8 @@ def simular_final(vencedores_semis):
     return resultado
 
 
-
 def placar_final_final(vencedores_semis):
+    global maiores_goleadas_mata_mata
     resultado = simular_final(vencedores_semis)
     vencedor_final = []
     vice_final = []
@@ -841,6 +991,22 @@ def placar_final_final(vencedores_semis):
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+
+        # Atualiza as maiores goleadas
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if diferenca_gols > 0:  # Ignora jogos sem gols
+            maior_goleada = {
+                'time1': time1,
+                'gols_time1': gols_time1,
+                'time2': time2,
+                'gols_time2': gols_time2,
+                'diferenca': diferenca_gols
+            }
+            # Se for a maior goleada ou igual à maior existente, adiciona
+            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata = [maior_goleada]
+            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
+                maiores_goleadas_mata_mata.append(maior_goleada)
 
         # Caso de empate no tempo normal, simula pênaltis
         if gols_time1 == gols_time2:
@@ -868,10 +1034,13 @@ def placar_final_final(vencedores_semis):
         vencedor_final.append(vencedor)
         vice_final.append(vice)
 
-    # Salva os resultados da final (campeão, vice, e os gols)
-    # salvar_resultado_final(vencedor_final[0], gols_vencedor, vice_final[0], gols_vice)
+    # Verifica se temos vencedores antes de tentar acessá-los
+    if vencedor_final and vice_final:
+        return vencedor_final[0], gols_vencedor, vice_final[0], gols_vice
+    else:
+        # Caso não haja vencedor, você pode retornar uma mensagem ou valores padrão
+        return None, None, None, None
 
-    return vencedor_final[0], gols_vencedor, vice_final[0], gols_vice
 
 
 
@@ -921,7 +1090,13 @@ def inicializar_classificacao(potes):
 
 
 
+maiores_goleadas = []
+
 def simular_partida(time_casa, time_fora, resultados, classificacao):
+    global maiores_goleadas
+    # Adicione uma nova estrutura para armazenar a maior goleada
+
+    # Declare a variável global para acessá-la
     # Verifica se o resultado já existe, para evitar recalcular
     if (time_casa, time_fora) in resultados:
         return resultados[(time_casa, time_fora)]
@@ -944,7 +1119,31 @@ def simular_partida(time_casa, time_fora, resultados, classificacao):
     resultado = "{:>20} {:<1} x {:<1} {:<20}".format(time_casa, gols_casa, gols_fora, time_fora)
     resultados[(time_casa, time_fora)] = resultado
 
+    # Calcula a diferença de gols
+    diferenca_gols = abs(gols_casa - gols_fora)
+    
+    # Se a diferença de gols é maior que a maior existente, reinicia a lista
+    if len(maiores_goleadas) == 0 or diferenca_gols > maiores_goleadas[0]['diferenca']:
+        maiores_goleadas = [{
+            "time1": time_casa,
+            "gols_time1": gols_casa,
+            "time2": time_fora,
+            "gols_time2": gols_fora,
+            "diferenca": diferenca_gols
+        }]
+    # Se a diferença de gols é igual à maior, adiciona à lista
+    elif diferenca_gols == maiores_goleadas[0]['diferenca']:
+        maiores_goleadas.append({
+            "time1": time_casa,
+            "gols_time1": gols_casa,
+            "time2": time_fora,
+            "gols_time2": gols_fora,
+            "diferenca": diferenca_gols
+        })
+
     return resultado
+
+
 
 
 
@@ -1345,80 +1544,80 @@ def criar_configuracao_padrao():
 
 
 
-import json
-import os
-
-def carregar_gols_acumulados():
-    """Carrega o arquivo de gols acumulados. Se o arquivo não existir, retorna um dicionário com a estrutura inicial."""
-    nome_arquivo_gols = "gols_simulacao_atual.json"
-    if os.path.exists(nome_arquivo_gols):
-        with open(nome_arquivo_gols, 'r') as file:
-            return json.load(file)
-    return {"gols": {}, "gols_sofridos": {}, "partidas_jogadas": {}}
 
 def analisar_estatisticas():
-    """Analisa o arquivo de gols acumulados e imprime estatísticas de ataque e defesa."""
+    """Analisa o arquivo de gols acumulados e imprime estatísticas de ataque, defesa e maior goleada."""
     gols_acumulados = carregar_gols_acumulados()
     
     gols = gols_acumulados["gols"]
     gols_sofridos = gols_acumulados["gols_sofridos"]
     partidas_jogadas = gols_acumulados["partidas_jogadas"]
 
-    # Inicializa variáveis para armazenar as estatísticas
-    melhor_ataque = {"time": None, "gols": -1, "partidas": 0}
-    pior_ataque = {"time": None, "gols": float('inf'), "partidas": 0}
-    melhor_defesa = {"time": None, "gols_sofridos": float('inf'), "partidas": 0}
-    pior_defesa = {"time": None, "gols_sofridos": -1, "partidas": 0}
-
+    # Inicializa as listas
+    melhores_ataques = []
+    piores_ataques = []
+    melhores_defesas = []
+    piores_defesas = []
+    
     # Análise das estatísticas
     for time in gols:
         # Melhor ataque
-        if gols[time] > melhor_ataque["gols"]:
-            melhor_ataque["gols"] = gols[time]
-            melhor_ataque["time"] = time
-            melhor_ataque["partidas"] = partidas_jogadas.get(time, 0)  # Número de partidas jogadas
+        if gols[time] > (melhores_ataques[0]['gols'] if melhores_ataques else -1):
+            melhores_ataques = [{"time": time, "gols": gols[time], "partidas": partidas_jogadas.get(time, 0)}]
+        elif gols[time] == (melhores_ataques[0]['gols'] if melhores_ataques else -1):
+            melhores_ataques.append({"time": time, "gols": gols[time], "partidas": partidas_jogadas.get(time, 0)})
 
         # Pior ataque
-        if gols[time] < pior_ataque["gols"]:
-            pior_ataque["gols"] = gols[time]
-            pior_ataque["time"] = time
-            pior_ataque["partidas"] = partidas_jogadas.get(time, 0)
+        if gols[time] < (piores_ataques[0]['gols'] if piores_ataques else float('inf')):
+            piores_ataques = [{"time": time, "gols": gols[time], "partidas": partidas_jogadas.get(time, 0)}]
+        elif gols[time] == (piores_ataques[0]['gols'] if piores_ataques else float('inf')):
+            piores_ataques.append({"time": time, "gols": gols[time], "partidas": partidas_jogadas.get(time, 0)})
 
         # Melhor defesa
-        if gols_sofridos[time] < melhor_defesa["gols_sofridos"]:
-            melhor_defesa["gols_sofridos"] = gols_sofridos[time]
-            melhor_defesa["time"] = time
-            melhor_defesa["partidas"] = partidas_jogadas.get(time, 0)
+        if gols_sofridos[time] < (melhores_defesas[0]['gols_sofridos'] if melhores_defesas else float('inf')):
+            melhores_defesas = [{"time": time, "gols_sofridos": gols_sofridos[time], "partidas": partidas_jogadas.get(time, 0)}]
+        elif gols_sofridos[time] == (melhores_defesas[0]['gols_sofridos'] if melhores_defesas else float('inf')):
+            melhores_defesas.append({"time": time, "gols_sofridos": gols_sofridos[time], "partidas": partidas_jogadas.get(time, 0)})
 
         # Pior defesa
-        if gols_sofridos[time] > pior_defesa["gols_sofridos"]:
-            pior_defesa["gols_sofridos"] = gols_sofridos[time]
-            pior_defesa["time"] = time
-            pior_defesa["partidas"] = partidas_jogadas.get(time, 0)
+        if gols_sofridos[time] > (piores_defesas[0]['gols_sofridos'] if piores_defesas else -1):
+            piores_defesas = [{"time": time, "gols_sofridos": gols_sofridos[time], "partidas": partidas_jogadas.get(time, 0)}]
+        elif gols_sofridos[time] == (piores_defesas[0]['gols_sofridos'] if piores_defesas else -1):
+            piores_defesas.append({"time": time, "gols_sofridos": gols_sofridos[time], "partidas": partidas_jogadas.get(time, 0)})
 
     # Impressão das estatísticas
-    print("Melhor Ataque:")
-    print(f"Time: {melhor_ataque['time']}, Gols: {melhor_ataque['gols']}, Partidas: {melhor_ataque['partidas']}")
-    
-    print("\nPior Ataque:")
-    print(f"Time: {pior_ataque['time']}, Gols: {pior_ataque['gols']}, Partidas: {pior_ataque['partidas']}")
-    
-    print("\nMelhor Defesa:")
-    print(f"Time: {melhor_defesa['time']}, Gols Sofridos: {melhor_defesa['gols_sofridos']}, Partidas: {melhor_defesa['partidas']}")
-    
-    print("\nPior Defesa:")
-    print(f"Time: {pior_defesa['time']}, Gols Sofridos: {pior_defesa['gols_sofridos']}, Partidas: {pior_defesa['partidas']}")
-
-# Chamar a função para exibir as estatísticas
-analisar_estatisticas()
+    print("Melhor(es) Ataque(s):")
+    for ataque in melhores_ataques:
+        print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
 
 
+        
+    print("\nPior(es) Ataque(s):")
+    for ataque in piores_ataques:
+        print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
 
+        
+    print("\nMelhor(es) Defesa(s):")
+    for defesa in melhores_defesas:
+        print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
 
+        
+    print("\nPior(es) Defesa(s):")
+    for defesa in piores_defesas:
+        print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
 
+    # Impressão das maiores goleadas
+    print("\n")
+    print("\nMaior(es) Goleada(s):")
+    print("\n")
+    for goleada in maiores_goleadas:
+        print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
 
-
-
+    print("\n")
+    print("\nMaiores goleadas da fase de mata-mata:")
+    print("\n")
+    for goleada in maiores_goleadas_mata_mata:
+        print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
 
 
 
