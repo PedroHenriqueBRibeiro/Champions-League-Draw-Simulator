@@ -328,11 +328,22 @@ def atualizar_gols_acumulados_json(time, gols_marcados, gols_sofridos):
 nome_arquivo_historico = "historico_gols.json"
 
 def carregar_historico_gols():
-    """Carrega o arquivo de histórico de gols. Se o arquivo não existir, retorna uma lista vazia."""
-    if os.path.exists(nome_arquivo_historico):
-        with open(nome_arquivo_historico, 'r') as file:
-            return json.load(file)
-    return []
+    if os.path.exists(nome_arquivo_historico_gols):
+        with open(nome_arquivo_historico_gols, 'r') as file:
+            try:
+                # Tenta carregar o arquivo JSON
+                return json.load(file)
+            except json.JSONDecodeError:
+                # Se o arquivo estiver vazio ou inválido, retorna uma lista vazia
+                
+                print(f"Arquivo vazio ou corrompido.")
+                print("\n")
+                return []
+    else:
+        # Se o arquivo não existir, retorna uma lista vazia
+        print(f"Arquivo {nome_arquivo_historico_gols} não encontrado.")
+        return []
+
 
 def salvar_historico_gols(historico_gols):
     """Salva o histórico de gols no arquivo JSON."""
