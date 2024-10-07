@@ -410,11 +410,9 @@ def historico_melhores_ataques():
     # Ordena os times com base nos gols totais
     melhores_ataques = sorted(totais_gols.items(), key=lambda x: x[1], reverse=True)
 
-    # Impressão dos melhores ataques
     print("Histórico de Melhores Ataques:")
     for time, gols in melhores_ataques:
-        print(f"{time}: {gols} gols")
-
+        print(f"{time.ljust(20)}¦ {gols}")
 
 
 def historico_melhores_defesas():
@@ -438,9 +436,9 @@ def historico_melhores_defesas():
     melhores_defesas = sorted(totais_gols_sofridos.items(), key=lambda x: x[1])
 
     # Impressão das melhores defesas
-    print("Histórico de Melhores Defesas:")
+    print("\nHistórico de gols sofridos:")
     for time, gols_sofridos in melhores_defesas:
-        print(f"{time}: {gols_sofridos} gols sofridos")
+        print(f"{time.ljust(20)}¦ {gols_sofridos}")
 
 
 
@@ -473,9 +471,10 @@ def media_gols_feitos():
     melhores_gols_feitos = sorted(medias_gols_feitos.items(), key=lambda x: x[1], reverse=True)
 
     # Impressão das médias de gols feitos
-    print("Média de Gols Feitos:")
+    print("Média de Gols Feitos por time:")
+    print("\n")
     for time, media in melhores_gols_feitos:
-        print(f"{time}: {media:.2f} gols por partida")
+        print(f"{time.ljust(20)}¦ {media:.2f}")
 
 
 def media_gols_sofridos():
@@ -505,10 +504,10 @@ def media_gols_sofridos():
     melhores_defesas = sorted(medias_gols_sofridos.items(), key=lambda x: x[1])
 
     # Impressão das médias de gols sofridos
-    print("Média de Gols Sofridos:")
+    print("\nMédia de Gols Sofridos por time:")
+    print("\n")
     for time, media in melhores_defesas:
-        print(f"{time}: {media:.2f} gols sofridos por partida")
-
+        print(f"{time.ljust(20)}¦ {media:.2f}")
 
 
 
@@ -1505,8 +1504,13 @@ def verificar_time_nos_potes(nome_time):
                 return True
     return False
 
+
+
+nome_arquivo_campeoes = "campeoes.json"
+nome_arquivo_historico_gols = "historico_gols.json"
+
+
 def pesquisar_campeao_por_time(nome_time):
-    nome_arquivo = "campeoes.json"
     contador_campeao = 0
     contador_vice = 0
 
@@ -1515,8 +1519,9 @@ def pesquisar_campeao_por_time(nome_time):
         print(f"\nO time {nome_time.upper()} não existe nos potes.")
         return 0
 
-    if os.path.exists(nome_arquivo):
-        with open(nome_arquivo, 'r') as file:
+    # Carregar campeões e vices do arquivo campeoes.json
+    if os.path.exists(nome_arquivo_campeoes):
+        with open(nome_arquivo_campeoes, 'r') as file:
             historico_finais = json.load(file)
 
             # Verifica se o time foi campeão ou vice-campeão
@@ -1532,18 +1537,95 @@ def pesquisar_campeao_por_time(nome_time):
                 if vice_time == nome_time.lower():
                     contador_vice += 1  # Incrementa o contador de vice-campeonatos
 
-    # Exibe os resultados
+    # Carregar estatísticas de gols do arquivo historico_gols.json
+    historico_gols = carregar_historico_gols()
+    gols_feitos = 0
+    gols_sofridos = 0
+    partidas_jogadas = 0
+    participacoes = 0  # Contador de participações para o time
+
+    # Percorrer o histórico para encontrar as estatísticas do time
+  
+    for simulacao in historico_gols:
+        nome_time_min = nome_time.lower()
+   
+
+        # Verifica se o nome do time existe nos gols
+        for time in simulacao['gols']:
+            if time.lower() == nome_time_min:  # Compara minúsculas
+                gols_feitos += simulacao['gols'][time]
+                gols_sofridos += simulacao['gols_sofridos'][time]
+                partidas_jogadas += simulacao['partidas_jogadas'][time]
+                participacoes += 1  # Conta a participação
+                break  # Para evitar múltiplas adições, podemos sair do loop após encontrar o time
+
+        # Cálculo das médias
+    media_gols_feitos = gols_feitos / partidas_jogadas if partidas_jogadas > 0 else 0
+    media_gols_sofridos = gols_sofridos / partidas_jogadas if partidas_jogadas > 0 else 0
+
+    print(f"Participações: {' ' * 10}{participacoes}\n")  # Exibe a quantidade de participações
+    print("\n")
+
     if contador_campeao == 0 and contador_vice == 0:
         print(f"\nO time {nome_time.upper()} não chegou à nenhuma final.")
     else:
         print("\n")
         print(f"Time: {nome_time.upper()}")
-        print(f"Campeão: {contador_campeao} vez(es)")
-        print(f"Vice-campeão: {contador_vice} vez(es)")
-        print("\n")
+        print(f"{'Campeão:'.ljust(30)}{contador_campeao} vez(es)")
+        print(f"{'Vice-campeão:'.ljust(30)}{contador_vice} vez(es)")
+    print("\n")
+
+    print("\nMais informações:")
+    print(f"{'Gols Feitos:'.ljust(30)}{gols_feitos}")
+    print(f"{'Gols Sofridos:'.ljust(30)}{gols_sofridos}")
+    print(f"{'Partidas Jogadas:'.ljust(30)}{partidas_jogadas}")
+
+    # Exibindo as médias
+    print(f"{'Média de Gols Feitos:'.ljust(30)}{media_gols_feitos:.2f}")
+    print(f"{'Média de Gols Sofridos:'.ljust(30)}{media_gols_sofridos:.2f}\n")
+
+    return contador_campeao, contador_vice, gols_feitos, gols_sofridos, partidas_jogadas, participacoes
 
 
-    return contador_campeao, contador_vice
+
+
+
+
+
+
+
+def buscar_estatisticas_por_time(nome_time):
+    """Busca o time nos potes e exibe as estatísticas de gols e partidas jogadas se encontrado."""
+    # Verifica se o time está nos potes
+    time_encontrado = False
+    for pote in potes:
+        if nome_time in pote:
+            time_encontrado = True
+            break
+
+    if not time_encontrado:
+        print(f"O time {nome_time} não foi encontrado nos potes.")
+        return
+
+    # Carrega o histórico de gols
+    historico_gols = carregar_historico_gols()
+
+    # Itera sobre as simulações e busca as estatísticas do time
+    for simulacao in historico_gols:
+        if nome_time in simulacao["gols"]:
+            gols_feitos = simulacao["gols"].get(nome_time, 0)
+            gols_sofridos = simulacao["gols_sofridos"].get(nome_time, 0)
+            partidas_jogadas = simulacao["partidas_jogadas"].get(nome_time, 0)
+
+            # Exibe as estatísticas do time
+            print(f"\nEstatísticas de {nome_time}:")
+            print(f"Gols Feitos: {gols_feitos}")
+            print(f"Gols Sofridos: {gols_sofridos}")
+            print(f"Partidas Jogadas: {partidas_jogadas}")
+            return
+
+    # Se o time não for encontrado no histórico de gols
+    print(f"O time {nome_time} não possui estatísticas registradas no histórico.")
 
 
 
@@ -1595,6 +1677,8 @@ def configurar_nivel_gols():
     print("\n")
     print("\n--- Configurações de Níveis de Gols ---\n".upper())
     print("\n")
+    print(f"Nível de gols atual: {config_atual['nivel_gols'].replace('_', ' ').upper()}")
+    print("\n")
     print("Escolha o nível da média de gols para as simulações:")
     print("\n")
     escolha = input("\n1 - Média de gols baixa\n2 - Média de gols média (recomendado)\n3 - Média de gols alta\n4 - Média de gols muito alta\n5 - Exibir detalhes\n\n")
@@ -1623,11 +1707,8 @@ def configurar_nivel_gols():
             print(f"  Divisor do Desvio: {config['desvio_divisor']}")
             print(f"  Soma: {config['soma']}")
         print("\n")
-        print("\n--- Detalhes da configuração atual ---".upper())
-        print("\n")
-        print("\n")
-        print(f"Nível de gols atual: {config_atual['nivel_gols'].replace('_', ' ').upper()}")
-        print("\n")
+        
+        
         
         
         # Após exibir os detalhes, retorna ao menu de configuração
@@ -1644,6 +1725,8 @@ def configurar_nivel_gols():
     print(f"Configuração do nível de gols ajustada para {nivel_gols.replace('_', ' ').upper()} com sucesso!")
     print("\nVoltando para o Menu...")
     print("\n\n")
+
+
 
 # Função para criar o arquivo JSON com configurações padrão
 def criar_configuracao_padrao():
@@ -1834,10 +1917,18 @@ def analisar_estatisticas():
 
     print("\n")
     # Impressão das novas estatísticas de médias
-    print("\nMelhor média de gols: {:.2f} ({})".format(melhor_media_gols, time_melhor_media_gols))
-    print("Pior média de gols: {:.2f} ({})".format(pior_media_gols, time_pior_media_gols))
-    print("Melhor média defensiva: {:.2f} ({})".format(melhor_media_defensiva, time_melhor_media_defensiva))
-    print("Pior média defensiva: {:.2f} ({})".format(pior_media_defensiva, time_pior_media_defensiva))
+    # Exibindo as médias com espaçamento formatado
+    print("\nMelhor média de gols:")
+    print(f"{time_melhor_media_gols}: {' ' * (20 - len(time_melhor_media_gols))} {melhor_media_gols:.2f} gols por partida")
+
+    print("\nPior média de gols:")
+    print(f"{time_pior_media_gols}: {' ' * (20 - len(time_pior_media_gols))} {pior_media_gols:.2f} gols por partida")
+
+    print("\nMelhor média defensiva:")
+    print(f"{time_melhor_media_defensiva}: {' ' * (20 - len(time_melhor_media_defensiva))} {melhor_media_defensiva:.2f} gols sofridos por partida")
+
+    print("\nPior média defensiva:")
+    print(f"{time_pior_media_defensiva}: {' ' * (20 - len(time_pior_media_defensiva))} {pior_media_defensiva:.2f} gols sofridos por partida")
 
 
 
@@ -2183,12 +2274,12 @@ def main():
                                         print("\n")
                                         exibir_finais()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n1 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
-                                        if voltar == '1':
+                                        if voltar == '':
                                             continue  # Volta para o loop de pesquisa
-                                        elif voltar == '2':
+                                        elif voltar == '1':
                                             break  # Sai do loop de pesquisa e volta para o início
 
                                     elif procurar_dados == '2':
@@ -2258,6 +2349,27 @@ def main():
                                             print("\n")
                                             print("\n")
                                             pesquisar_campeao_por_time(nome_time)
+
+                                            print("\n")
+                                            voltar = input("\n1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\nENTER - Pesquisar novamente\n\n".upper())
+                                            print("\n")
+
+                                            if voltar == '':
+                                                continue  # Volta para pesquisar outro time
+                                            elif voltar == '1':
+                                                break  # Volta para o menu de pesquisa de dados
+                                            elif voltar == '2':
+                                                break  # Volta para o sorteio
+
+                                        if voltar == '3':
+                                            break
+                                    elif procurar_dados == '9':
+                                        while True:  # Novo loop para pesquisar por time até o usuário escolher sair
+                                            print("\n")
+                                            nome_time = input("Digite o nome do time que deseja pesquisar: \n\n")
+                                            print("\n")
+                                           
+                                            buscar_estatisticas_por_time(nome_time)
 
                                             print("\n")
                                             voltar = input("\n1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\nENTER - Pesquisar novamente\n\n".upper())
