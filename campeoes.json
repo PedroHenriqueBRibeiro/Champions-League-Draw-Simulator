@@ -295,5 +295,27 @@
             "time": "Liverpool",
             "gols": "0 (2 PEN)"
         }
+    },
+    {
+        "nivel_simulacao": "alta",
+        "campeao": {
+            "time": "Liverpool",
+            "gols": "3 (5 PEN)"
+        },
+        "vice": {
+            "time": "Manchester City",
+            "gols": "3 (4 PEN)"
+        }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 4
+        },
+        "vice": {
+            "time": "Zenit",
+            "gols": 3
+        }
     }
 ]
