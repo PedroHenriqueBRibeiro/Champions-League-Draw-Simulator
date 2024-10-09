@@ -529,6 +529,84 @@ def historico_melhores_defesas():
 
 
 
+def historico_mais_vitorias():
+    """Exibe uma tabela com os times ordenados por vitórias, empates ou derrotas, conforme a escolha do usuário."""
+    # Carrega o histórico de gols, vitórias, empates e derrotas
+    while True:
+        historico_gols = carregar_historico_gols()
+
+        # Inicializa dicionários para armazenar os totais
+        totais_vitorias = {}
+        totais_empates = {}
+        totais_derrotas = {}
+        totais_partidas = {}
+
+        # Soma as vitórias, empates e derrotas de cada time em todas as simulações
+        for simulacao in historico_gols:
+            if "vitorias" in simulacao:
+                for time, vitorias in simulacao["vitorias"].items():
+                    if time not in totais_vitorias:
+                        totais_vitorias[time] = 0
+                    totais_vitorias[time] += vitorias
+            
+            if "empates" in simulacao:
+                for time, empates in simulacao["empates"].items():
+                    if time not in totais_empates:
+                        totais_empates[time] = 0
+                    totais_empates[time] += empates
+
+            if "derrotas" in simulacao:
+                for time, derrotas in simulacao["derrotas"].items():
+                    if time not in totais_derrotas:
+                        totais_derrotas[time] = 0
+                    totais_derrotas[time] += derrotas
+
+            if "partidas_jogadas" in simulacao:
+                for time, partidas in simulacao["partidas_jogadas"].items():
+                    if time not in totais_partidas:
+                        totais_partidas[time] = 0
+                    totais_partidas[time] += partidas
+
+        # Solicita que o usuário escolha o critério de ordenação
+        escolha = input("\nOrdenar por:\n\n1 - Vitórias\n2 - Empates\n3 - Derrotas\n4 - VOLTAR\n\n")
+
+        if escolha == '2':
+            # Ordena por empates em ordem decrescente
+            tabela_ordenada = sorted(totais_empates.items(), key=lambda x: x[1], reverse=True)
+            criterio = "empates"
+        elif escolha == '3':
+            # Ordena por derrotas em ordem decrescente
+            tabela_ordenada = sorted(totais_derrotas.items(), key=lambda x: x[1], reverse=True)
+            criterio = "derrotas"
+        elif escolha == '1':
+            # Ordena por vitórias em ordem decrescente
+            tabela_ordenada = sorted(totais_vitorias.items(), key=lambda x: x[1], reverse=True)
+            criterio = "vitórias"
+        elif escolha == '4':
+            break
+        else:
+            print("\n")
+            print("Opção inválida. Por favor, tente novamente.\n")
+            continue
+
+        # Exibição da tabela com a formatação desejada
+        print(f"\nTimes com mais {criterio}:")
+        print("\n")
+        print(f"{'    Time':<24} {criterio.capitalize():<10} {'Partidas'}")
+        print("\n")
+
+        # Exibição dos times e suas estatísticas
+        for i, (time, valor) in enumerate(tabela_ordenada, start=1):
+            partidas_jogadas = totais_partidas.get(time, 0)
+            print(f"{i:<4} {time:<20} {valor:<10} {partidas_jogadas:<10}")
+        print("\n")
+        continue
+
+
+
+
+
+
 
 
 def media_gols_feitos():
@@ -2423,7 +2501,7 @@ def main():
                             elif escolha == '2':
                                 while True:  # Loop secundário para voltar à pesquisa
                                     print("\n")
-                                    procurar_dados = input("\n1 - Exibir todas as finais\n2 - Listar campeões\n3 - Listar vice-campeões\n4 - Melhores Ataques Histŕico\n5 - Melhores Defesas histórico\n6 - Exibir médias de ataque e defesa\n7 - Pesquisar por time\n8 - Voltar para o sorteio\n\n".upper())
+                                    procurar_dados = input("\n1 - Exibir todas as finais\n2 - Listar campeões\n3 - Listar vice-campeões\n4 - Melhores Ataques Histórico\n5 - Melhores Defesas histórico\n6 - Exibir médias de ataque e defesa\n7 - Ordem por vitórias\n8 - Pesquisar por time\n9 - Voltar para o sorteio\n\n".upper())
                                     print("\n")
 
                                     if procurar_dados == '1':
@@ -2442,22 +2520,23 @@ def main():
                                         print("\n")
                                         listar_campeoes_ordenados()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
-                                        if voltar == '1':
+                                        if voltar == '':
                                             continue  # Volta para o loop de pesquisa
                                         elif voltar == '2':
                                             break  # Sai do loop de pesquisa e volta para o início
+
 
                                     elif procurar_dados == '3':
                                         print("\n")
                                         listar_vices_ordenados()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
-                                        if voltar == '1':
+                                        if voltar == '':
                                             continue  # Volta para o loop de pesquisa
                                         elif voltar == '2':
                                             break  # Sai do loop de pesquisa e volta para o início
@@ -2465,18 +2544,19 @@ def main():
                                         print("\n")
                                         historico_melhores_ataques()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
-                                        if voltar == '1':
+                                        if voltar == '':
                                             continue  # Volta para o loop de pesquisa
                                         elif voltar == '2':
                                             break  # Sai do loop de pesquisa e volta para o início
+
                                     elif procurar_dados == '5':
                                         print("\n")
                                         historico_melhores_defesas()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
                                         if voltar == '1':
@@ -2490,7 +2570,7 @@ def main():
                                         print("\n")
                                         media_gols_sofridos()
                                         print("\n")
-                                        voltar = input("1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
+                                        voltar = input("ENTER - Voltar para pesquisa de dados\n2 - Voltar para sorteio\n\n".upper())
                                         print("\n")
 
                                         if voltar == '1':
@@ -2498,7 +2578,7 @@ def main():
                                         elif voltar == '2':
                                             break  # Sai do loop de pesquisa e volta para o início
 
-                                    elif procurar_dados == '7':
+                                    elif procurar_dados == '8':
                                         while True:  # Novo loop para pesquisar por time até o usuário escolher sair
                                             print("\n")
                                             nome_time = input("Digite o nome do time que deseja pesquisar: \n\n")
@@ -2507,41 +2587,26 @@ def main():
                                             pesquisar_campeao_por_time(nome_time)
 
                                             print("\n")
-                                            voltar = input("\n1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\nENTER - Pesquisar novamente\n\n".upper())
+                                            voltar = input("\n1 - Voltar\nENTER - Pesquisar novamente\n\n".upper())
                                             print("\n")
 
                                             if voltar == '':
                                                 continue  # Volta para pesquisar outro time
                                             elif voltar == '1':
                                                 break  # Volta para o menu de pesquisa de dados
-                                            elif voltar == '2':
-                                                break  # Volta para o sorteio
+
 
                                         if voltar == '3':
                                             break
-                                    elif procurar_dados == '9':
+                                    elif procurar_dados == '7':
                                         while True:  # Novo loop para pesquisar por time até o usuário escolher sair
                                             print("\n")
-                                            nome_time = input("Digite o nome do time que deseja pesquisar: \n\n")
+                                            historico_mais_vitorias()
                                             print("\n")
-                                           
-                                            ##
-
-                                            print("\n")
-                                            voltar = input("\n1 - Voltar para pesquisa de dados\n2 - Voltar para sorteio\nENTER - Pesquisar novamente\n\n".upper())
-                                            print("\n")
-
-                                            if voltar == '':
-                                                continue  # Volta para pesquisar outro time
-                                            elif voltar == '1':
-                                                break  # Volta para o menu de pesquisa de dados
-                                            elif voltar == '2':
-                                                break  # Volta para o sorteio
-
-                                        if voltar == '3':
                                             break
+                                        
 
-                                    elif procurar_dados == '8':
+                                    elif procurar_dados == '9':
                                         break
                                     else:
                                         print("\n")
