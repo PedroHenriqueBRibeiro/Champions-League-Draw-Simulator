@@ -414,7 +414,8 @@ def carregar_historico_gols():
                 return []
     else:
         # Se o arquivo não existir, retorna uma lista vazia
-        print(f"Arquivo {nome_arquivo_historico_gols} não encontrado.")
+        print(f"Arquivo não encontrado.")
+        print("\n")
         return []
 
 
@@ -511,6 +512,7 @@ def historico_melhores_ataques():
     melhores_ataques = sorted(totais_gols.items(), key=lambda x: x[1], reverse=True)
 
     print("Histórico de Melhores Ataques:")
+    print("\n")
     print(f"{'Time'.ljust(20)}¦ {'Gols'.ljust(10)}¦ {'Partidas Jogadas'.ljust(15)}")
     print("-" * 50)
     
@@ -544,6 +546,7 @@ def historico_melhores_defesas():
     melhores_defesas = sorted(totais_gols_sofridos.items(), key=lambda x: x[1])
 
     print("Histórico de Melhores Defesas:")
+    print("\n")
     print(f"{'Time'.ljust(20)}¦ {'Gols Sofridos'.ljust(15)}¦ {'Partidas Jogadas'.ljust(15)}")
     print("-" * 55)
     
@@ -666,6 +669,7 @@ def media_gols_feitos():
 
     # Impressão das médias de gols feitos
     print("Média de Gols Feitos por Time:")
+    print("\n")
     print(f"{'Time'.ljust(20)}¦ {'Média de Gols Feitos'.ljust(14)}")
     print("-" * 36)
 
@@ -702,6 +706,7 @@ def media_gols_sofridos():
 
     # Impressão das médias de gols sofridos
     print("\nMédia de Gols Sofridos por Time:")
+    print("\n")
     print(f"{'Time'.ljust(20)}¦ {'Média de Gols Sofridos'.ljust(22)}")
     print("-" * 44)
 
@@ -776,7 +781,8 @@ def simular_playoff(classificacao):
     ]
 
     resultados_ida = {}
-    print("\nJogo de ida - Playoffs:\n")
+    print("\nJogo de ida - Playoffs:")
+    print("\n")
     for time1, time2 in confrontos_playoffs:
         # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -821,7 +827,8 @@ def simular_playoff(classificacao):
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
-    print("\nJogo de volta - Playoffs:\n")
+    print("\nJogo de volta - Playoffs:")
+    print("\n")
     for time2, time1 in confrontos_playoffs:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
 
@@ -948,7 +955,8 @@ def simular_oitavas(classificacao, vencedores):
     ]
 
     resultados_ida = {}
-    print("\nJogos de ida - Oitavas de final:\n")
+    print("\nJogos de ida - Oitavas de final:")
+    print("\n")
     for time1, time2 in confrontos_oitavas:
         # Gera os gols para o jogo de ida
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -994,7 +1002,8 @@ def simular_oitavas(classificacao, vencedores):
             })
 
     resultados_volta = {}
-    print("\nJogos de volta - Oitavas de final:\n")
+    print("\nJogos de volta - Oitavas de final:")
+    print("\n")
     for time2, time1 in confrontos_oitavas:
         # Gera os gols para o jogo de volta
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -1095,7 +1104,8 @@ def simular_quartas(quartas_de_final):
     global maiores_goleadas_mata_mata  # Certifica-se de que a variável global é acessível
 
     resultados_ida = {}
-    print("\nJogos de ida - Quartas de Final:\n")
+    print("\nJogos de ida - Quartas de Final:")
+    print("\n")
     
     # Simula jogos de ida
     for time1, time2 in quartas_de_final:
@@ -1139,7 +1149,8 @@ def simular_quartas(quartas_de_final):
                 maiores_goleadas_mata_mata.append(maior_goleada)
 
     resultados_volta = {}
-    print("\nJogos de volta - Quartas de Final:\n")
+    print("\nJogos de volta - Quartas de Final:")
+    print("\n")
     
     # Simula jogos de volta
     for time2, time1 in quartas_de_final:
@@ -1212,14 +1223,13 @@ def placar_final_quartas(quartas_de_final):
 
     # Exibe os vencedores das quartas de final
     print("\nVencedores das quartas de final:\n")
-    print("\n")
     for vencedor_quartas in vencedores_quartas:
         print("{:<16}".format(vencedor_quartas)) 
     return vencedores_quartas
 
 
 def exibir_semi_final(vencedores_quartas):
-    print("\nConfrontos das Semifinais:\n")
+    print("\nConfrontos das Semifinais:")
     print("\n")
     
     # Confronto 1: [0] vs [1]
@@ -1235,7 +1245,8 @@ def simular_semifinais(vencedores_quartas):
     resultados_ida = {}
     resultados_volta = {}
 
-    print("\nJogos de ida - Semifinais:\n")
+    print("\nJogos de ida - Semifinais:")
+    print("\n")
     
     # Simula os jogos de ida para os dois confrontos
     for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
@@ -1280,7 +1291,8 @@ def simular_semifinais(vencedores_quartas):
             elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata.append(maior_goleada)
 
-    print("\nJogos de volta - Semifinais:\n")
+    print("\nJogos de volta - Semifinais:")
+    print("\n")
     
     # Simula os jogos de volta para os dois confrontos
     for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
@@ -1334,7 +1346,7 @@ def placar_final_semis(vencedores_quartas):
     resultados_ida, resultados_volta = simular_semifinais(vencedores_quartas)
     vencedores_semis = []
     print("\n")
-    print("\nPlacar Agregado - Semifinais:\n")
+    print("\nPlacar Agregado - Semifinais:")
     print("\n")
 
     # Calcula o placar agregado e determina os vencedores
@@ -1355,7 +1367,6 @@ def placar_final_semis(vencedores_quartas):
             vencedores_semis.append(vencedor_semis)
 
     # Exibe os vencedores das semifinais
-    print("\n")
     print("\n")
     print("\nVencedores das semifinais:\n")
     print("\n")
@@ -1809,7 +1820,6 @@ def contar_campeoes():
 
             return contador_titulos
     else:
-        print("Nenhum campeão registrado ainda.")
         return {}
 
 def listar_campeoes_ordenados():
@@ -1825,6 +1835,7 @@ def listar_campeoes_ordenados():
 
         # Exibe a frase com o número total de simulações
         print(f"\nLista de campeões após {total_simulacoes} simulação(ões):")
+        print("\n")
         print(f"{'Nº'.ljust(4)}¦ {'Time'.ljust(30)}¦ {'Títulos'.ljust(10)}")
         print("-" * 50)
 
@@ -1859,7 +1870,6 @@ def contar_vices():
 
             return contador_vices
     else:
-        print("Nenhum vice-campeão registrado ainda.")
         return {}
 
 def listar_vices_ordenados():
@@ -1875,6 +1885,7 @@ def listar_vices_ordenados():
 
         # Exibe a frase com o número total de simulações
         print(f"\nLista de vice-campeões após {total_simulacoes} simulação(ões):")
+        print("\n")
         print(f"{'Nº'.ljust(4)}¦ {'Time'.ljust(30)}¦ {'Vice-Campeonatos'.ljust(18)}")
         print("-" * 54)
 
@@ -1981,44 +1992,55 @@ def pesquisar_campeao_por_time(nome_time):
     nome_time_min = nome_time.lower()  # Converte a entrada do usuário para minúsculas
 
     # Lê o arquivo historico_resultados.json
-    with open('historico_resultados.json', 'r') as file:
-        historico_resultados = json.load(file)
-
-        for simulacao in historico_resultados:
-            # Converte os nomes dos times para minúsculas para comparação
-            resultados = {time.lower(): jogos for time, jogos in simulacao['resultados'].items()}
-
-            # Verifica se o time participou da simulação
-            if nome_time_min in resultados:
-                jogos = resultados[nome_time_min]['jogos']
-                ultima_fase = None
+    if not os.path.exists('historico_resultados.json'):
+        print("\n")
+        print("Sem informações salvas. O histórico pode estar com informações faltantes.")
+        print("\n")
+    else:
+        try:
+            with open('historico_resultados.json', 'r') as file:
+                historico_resultados = json.load(file)
                 
-                for jogo in jogos:
-                    ultima_fase = jogo['fase']  # Atualiza a última fase jogada
+                # Verifica se o arquivo está vazio
+                if not historico_resultados:
+                    print("Histórico vazio")
+                else:
+                    for simulacao in historico_resultados:
+                        # Converte os nomes dos times para minúsculas para comparação
+                        resultados = {time.lower(): jogos for time, jogos in simulacao['resultados'].items()}
 
-                # Verifica a última fase jogada e se a próxima fase foi jogada
-                if ultima_fase == "grupos":
-                    if "playoffs" not in [jogo['fase'] for jogo in jogos]:
-                        eliminacoes_por_fase["grupos"] += 1
-                elif ultima_fase == "playoffs":
-                    if "oitavas" not in [jogo['fase'] for jogo in jogos]:
-                        eliminacoes_por_fase["playoffs"] += 1
-                elif ultima_fase == "oitavas":
-                    if "quartas" not in [jogo['fase'] for jogo in jogos]:
-                        eliminacoes_por_fase["oitavas"] += 1
-                elif ultima_fase == "quartas":
-                    if "semis" not in [jogo['fase'] for jogo in jogos]:
-                        eliminacoes_por_fase["quartas"] += 1
-                elif ultima_fase == "semis":
-                    if "final" not in [jogo['fase'] for jogo in jogos]:
-                        eliminacoes_por_fase["semis"] += 1
-                elif ultima_fase == "final":
-                    for jogo in jogos:
-                        if jogo['fase'] == "final":
-                            if jogo['gols_marcados'] < jogo['gols_sofridos']:
-                                eliminacoes_por_fase["final"] += 1
-                            break 
+                        # Verifica se o time participou da simulação
+                        if nome_time_min in resultados:
+                            jogos = resultados[nome_time_min]['jogos']
+                            ultima_fase = None
 
+                            for jogo in jogos:
+                                ultima_fase = jogo['fase']  # Atualiza a última fase jogada
+
+                            # Verifica a última fase jogada e se a próxima fase foi jogada
+                            if ultima_fase == "grupos":
+                                if "playoffs" not in [jogo['fase'] for jogo in jogos]:
+                                    eliminacoes_por_fase["grupos"] += 1
+                            elif ultima_fase == "playoffs":
+                                if "oitavas" not in [jogo['fase'] for jogo in jogos]:
+                                    eliminacoes_por_fase["playoffs"] += 1
+                            elif ultima_fase == "oitavas":
+                                if "quartas" not in [jogo['fase'] for jogo in jogos]:
+                                    eliminacoes_por_fase["oitavas"] += 1
+                            elif ultima_fase == "quartas":
+                                if "semis" not in [jogo['fase'] for jogo in jogos]:
+                                    eliminacoes_por_fase["quartas"] += 1
+                            elif ultima_fase == "semis":
+                                if "final" not in [jogo['fase'] for jogo in jogos]:
+                                    eliminacoes_por_fase["semis"] += 1
+                            elif ultima_fase == "final":
+                                for jogo in jogos:
+                                    if jogo['fase'] == "final":
+                                        if jogo['gols_marcados'] < jogo['gols_sofridos']:
+                                            eliminacoes_por_fase["final"] += 1
+                                        break
+        except json.JSONDecodeError:
+            print("Erro ao ler o histórico. O arquivo pode estar corrompido.")
 
 
     # Cálculo das médias
@@ -2032,18 +2054,18 @@ def pesquisar_campeao_por_time(nome_time):
     if contador_campeao == 0 and contador_vice == 0:
         print(f"\n{'-' * 44}")
         print(f"Time: {nome_time.upper()}")
+        print(f"{'Participações:'.ljust(30)}{participacoes}\n")
         print(f"\nO time {nome_time.upper()} não chegou à nenhuma final.")
         print(f"\n{'-' * 44}")
     else:
         print(f"\n{'-' * 44}")
         print(f"Time: {nome_time.upper()}")
-        print(f"Participações: {' ' * 10}{participacoes}\n")  # Exibe a quantidade de participações
+        print(f"{'Participações:'.ljust(30)}{participacoes}\n")  # Exibe a quantidade de participações
         print(f"{'Campeão:'.ljust(30)}{contador_campeao} vez(es)")
         print(f"{'Vice-campeão:'.ljust(30)}{contador_vice} vez(es)")
         print(f"{'-' * 44}")
     print("\n")
-    print("Mais informações:")
-    print("\n")
+    print("Mais informações:\n")
     print(f"{'-' * 44}")
 
     print(f"{'Gols Feitos:'.ljust(30)}{gols_feitos}")
