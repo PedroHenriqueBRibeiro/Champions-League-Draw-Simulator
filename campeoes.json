@@ -317,5 +317,16 @@
             "time": "Zenit",
             "gols": 3
         }
+    },
+    {
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "Manchester City",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 1
+        }
     }
 ]

@@ -3,55 +3,83 @@ import os
 import random
 import numpy as np
 
-# Definindo os potes com nomes de times reais
-pote_1 = ["Barcelona", "Real Madrid", "Manchester City", "Bayern Munich", "PSG", "Juventus", "Chelsea", "Liverpool", "Atlético Madrid"]
-pote_2 = ["Borussia Dortmund", "Inter de Milão", "Milan", "Tottenham", "Arsenal", "Napoli", "Leipzig", "Sevilla", "Ajax"]
-pote_3 = ["Benfica", "Porto", "Shakhtar", "Zenit", "Sporting", "Atalanta", "Lyon", "Monaco", "Leverkusen"]
-pote_4 = ["Fenerbahçe", "Galatasaray", "Olympiacos", "Red Bull Salzburg", "Celtic", "Rangers", "Club Brugge", "Dynamo Kiev", "Anderlecht"]
 
-potes = [pote_1, pote_2, pote_3, pote_4]
+def criar_json_predefinido():
+    potes = [
+        ["Barcelona", "Real Madrid", "Manchester City", "Bayern Munich", "PSG", "Juventus", "Chelsea", "Liverpool", "Atlético Madrid"],
+        ["Borussia Dortmund", "Inter de Milão", "Milan", "Tottenham", "Arsenal", "Napoli", "Leipzig", "Sevilla", "Ajax"],
+        ["Benfica", "Porto", "Shakhtar", "Zenit", "Sporting", "Atalanta", "Lyon", "Monaco", "Leverkusen"],
+        ["Fenerbahçe", "Galatasaray", "Olympiacos", "Red Bull Salzburg", "Celtic", "Rangers", "Club Brugge", "Dynamo Kiev", "Anderlecht"]
+    ]
 
-stats = {
-    "Barcelona": {"ataque": 90, "defesa": 85},
-    "Real Madrid": {"ataque": 88, "defesa": 83},
-    "Manchester City": {"ataque": 92, "defesa": 86},
-    "Bayern Munich": {"ataque": 91, "defesa": 84},
-    "PSG": {"ataque": 89, "defesa": 80},
-    "Juventus": {"ataque": 86, "defesa": 82},
-    "Chelsea": {"ataque": 87, "defesa": 81},
-    "Liverpool": {"ataque": 90, "defesa": 84},
-    "Atlético Madrid": {"ataque": 85, "defesa": 88},
-    
-    "Borussia Dortmund": {"ataque": 84, "defesa": 79},
-    "Inter de Milão": {"ataque": 82, "defesa": 80},
-    "Milan": {"ataque": 81, "defesa": 78},
-    "Tottenham": {"ataque": 83, "defesa": 77},
-    "Arsenal": {"ataque": 85, "defesa": 76},
-    "Napoli": {"ataque": 84, "defesa": 78},
-    "Leipzig": {"ataque": 82, "defesa": 76},
-    "Sevilla": {"ataque": 80, "defesa": 79},
-    "Ajax": {"ataque": 81, "defesa": 75},
-    
-    "Benfica": {"ataque": 78, "defesa": 74},
-    "Porto": {"ataque": 77, "defesa": 76},
-    "Shakhtar": {"ataque": 75, "defesa": 72},
-    "Zenit": {"ataque": 76, "defesa": 73},
-    "Sporting": {"ataque": 76, "defesa": 71},
-    "Atalanta": {"ataque": 79, "defesa": 74},
-    "Lyon": {"ataque": 78, "defesa": 72},
-    "Monaco": {"ataque": 77, "defesa": 70},
-    "Leverkusen": {"ataque": 79, "defesa": 73},
-    
-    "Fenerbahçe": {"ataque": 72, "defesa": 69},
-    "Galatasaray": {"ataque": 71, "defesa": 68},
-    "Olympiacos": {"ataque": 70, "defesa": 67},
-    "Red Bull Salzburg": {"ataque": 73, "defesa": 70},
-    "Celtic": {"ataque": 71, "defesa": 66},
-    "Rangers": {"ataque": 70, "defesa": 65},
-    "Club Brugge": {"ataque": 72, "defesa": 68},
-    "Dynamo Kiev": {"ataque": 69, "defesa": 66},
-    "Anderlecht": {"ataque": 67, "defesa": 65},
-}
+    stats = {
+        "Barcelona": {"ataque": 90, "defesa": 85},
+        "Real Madrid": {"ataque": 88, "defesa": 83},
+        "Manchester City": {"ataque": 92, "defesa": 86},
+        "Bayern Munich": {"ataque": 91, "defesa": 84},
+        "PSG": {"ataque": 89, "defesa": 80},
+        "Juventus": {"ataque": 86, "defesa": 82},
+        "Chelsea": {"ataque": 87, "defesa": 81},
+        "Liverpool": {"ataque": 90, "defesa": 84},
+        "Atlético Madrid": {"ataque": 85, "defesa": 88},
+        "Borussia Dortmund": {"ataque": 84, "defesa": 79},
+        "Inter de Milão": {"ataque": 82, "defesa": 80},
+        "Milan": {"ataque": 81, "defesa": 78},
+        "Tottenham": {"ataque": 83, "defesa": 77},
+        "Arsenal": {"ataque": 85, "defesa": 76},
+        "Napoli": {"ataque": 84, "defesa": 78},
+        "Leipzig": {"ataque": 82, "defesa": 76},
+        "Sevilla": {"ataque": 80, "defesa": 79},
+        "Ajax": {"ataque": 81, "defesa": 75},
+        "Benfica": {"ataque": 78, "defesa": 74},
+        "Porto": {"ataque": 77, "defesa": 76},
+        "Shakhtar": {"ataque": 75, "defesa": 72},
+        "Zenit": {"ataque": 76, "defesa": 73},
+        "Sporting": {"ataque": 76, "defesa": 71},
+        "Atalanta": {"ataque": 79, "defesa": 74},
+        "Lyon": {"ataque": 78, "defesa": 72},
+        "Monaco": {"ataque": 77, "defesa": 70},
+        "Leverkusen": {"ataque": 79, "defesa": 73},
+        "Fenerbahçe": {"ataque": 72, "defesa": 69},
+        "Galatasaray": {"ataque": 71, "defesa": 68},
+        "Olympiacos": {"ataque": 70, "defesa": 67},
+        "Red Bull Salzburg": {"ataque": 73, "defesa": 70},
+        "Celtic": {"ataque": 71, "defesa": 66},
+        "Rangers": {"ataque": 70, "defesa": 65},
+        "Club Brugge": {"ataque": 72, "defesa": 68},
+        "Dynamo Kiev": {"ataque": 69, "defesa": 66},
+        "Anderlecht": {"ataque": 67, "defesa": 65}
+    }
+
+    # Estrutura do JSON
+    dados = {
+        "potes": potes,
+        "stats": stats
+    }
+
+    # Salvando no arquivo JSON
+    with open("dados_times.json", "w") as file:
+        json.dump(dados, file, indent=4)
+
+
+
+# Chamar a função para criar o JSON predefinido
+criar_json_predefinido()
+
+# Verificar se existe o arquivo de personalização
+if os.path.exists("stats_personalizados.json"):
+    with open("stats_personalizados.json", "r") as file:
+        dados = json.load(file)
+        print("Carregando times e stats personalizados...")
+else:
+    with open("dados_times.json", "r") as file:
+        dados = json.load(file)
+        print("Carregando times e stats predefinidos...")
+
+# Carregar os potes e stats
+potes = dados["potes"]
+stats = dados["stats"]
+
 
 # Função para determinar o pote do time
 def get_pote(time):
@@ -59,6 +87,119 @@ def get_pote(time):
         if time in pote:
             return idx
     return None
+
+
+def listar_times(potes):
+    print("Lista de times:")
+    print("\n")
+    numero_time = 1
+    for pote in potes:
+        for time in pote:
+            print(f"{numero_time}. {time}")
+            numero_time += 1
+
+
+
+
+
+def salvar_times_stats_personalizados(potes, stats):
+    configuracao_personalizada = {
+        "potes": potes,
+        "stats": stats
+    }
+    with open("stats_personalizados.json", "w") as file:
+        json.dump(configuracao_personalizada, file, indent=4)
+
+
+
+
+def excluir_stats_personalizados():
+    print("\n")
+    confirmacao = input("Digite 'EXCLUIR' para apagar os stats personalizados: \n\n")
+    
+    if confirmacao == "EXCLUIR":
+        # Verificar se o arquivo existe antes de tentar excluir
+        if os.path.exists("stats_personalizados.json"):
+            os.remove("stats_personalizados.json")
+            print("\n")
+            print("Os times personalizados foram excluídos com sucesso.\n")
+            with open("dados_times.json", "r") as file:
+                dados = json.load(file)
+                print("Carregando times e stats predefinidos...")
+        else:
+            print("\n")
+            print("Não existem times personalizados.\n")
+    else:
+        print("\n")
+        print("Operação cancelada ou erro de digitação.")
+
+
+
+
+# Função para carregar o arquivo personalizado ou, caso não exista, o predefinido
+def carregar_times_stats():
+    if os.path.exists("stats_personalizados.json"):
+        with open("stats_personalizados.json", "r") as file:
+            configuracao = json.load(file)
+            return configuracao["potes"], configuracao["stats"]
+    else:
+        with open("dados_times.json", "r") as file:
+            configuracao = json.load(file)
+            return configuracao["potes"], configuracao["stats"]
+
+
+# Função para substituir o time e salvar no arquivo personalizado
+def substituir_time(potes, stats):
+    listar_times(potes)
+    while True:
+        try:
+            print("\n")
+            entrada = input("\n\nDigite o número do time que deseja substituir (1-36):\nS - sair\n\n").strip()
+            
+            if entrada.lower() == 's':
+                break  # Sai do loop se o usuário digitar 's' ou 'S'
+
+            numero_substituir = int(entrada)  # Tenta converter a entrada para inteiro
+
+            if numero_substituir < 1 or numero_substituir > 36:
+                print("\nNúmero inválido. Escolha um número entre 1 e 36.\n")
+                continue  # Volta para o início do loop para nova tentativa
+            
+            # Identificar o pote e o índice do time com base no número
+            pote_indice = (numero_substituir - 1) // 9
+            indice_no_pote = (numero_substituir - 1) % 9
+            
+            # Time que será substituído
+            time_substituido = potes[pote_indice][indice_no_pote]
+            
+            print(f"\nVocê escolheu substituir o time: {time_substituido}")
+            
+            # Nome do novo time
+            novo_time = input("\nDigite o nome do novo time: \n\n")
+            
+            # Stats do novo time
+            ataque = int(input(f"\nDigite o valor do ataque de {novo_time}: "))
+            defesa = int(input(f"Digite o valor da defesa de {novo_time}: "))
+            
+            # Substitui o time no pote e atualiza os stats
+            potes[pote_indice][indice_no_pote] = novo_time
+            stats[novo_time] = {"ataque": ataque, "defesa": defesa}
+            
+            # Remove os stats do time substituído
+            if time_substituido in stats:
+                del stats[time_substituido]
+            
+            print(f"\n\n{novo_time} foi adicionado com ataque {ataque} e defesa {defesa}.\n\n")
+            
+            # Salvar a alteração no arquivo personalizado
+            salvar_times_stats_personalizados(potes, stats)
+
+        except ValueError:
+            print("\n")
+            print("Opção inválida. Tente novamente.") 
+
+
+
 
 
 
@@ -473,7 +614,6 @@ def resetar_arquivo_resultados():
     """Remove o arquivo de resultados das partidas, iniciando uma nova simulação."""
     if os.path.exists('resultados_partidas_atual.json'):
         os.remove('resultados_partidas_atual.json')
-        print("Arquivo resultados_partidas removido.")
 
 
 
@@ -827,7 +967,8 @@ def simular_playoff(classificacao):
         print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
     resultados_volta = {}
-    print("\nJogo de volta - Playoffs:")
+    print("\n")
+    print("Jogo de volta - Playoffs:")
     print("\n")
     for time2, time1 in confrontos_playoffs:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -899,7 +1040,7 @@ def placar_final_playoffs(classificacao):
         else:
             vencedor = time1 if total_time1 > total_time2 else time2
             vencedores.append(vencedor)
-
+    print("\n")
     print("\nVencedores dos playoffs:\n")
     for vencedor in vencedores:
         print("{:<16}".format(vencedor)) 
@@ -1671,9 +1812,9 @@ def transferir_para_historico():
     # Deleta o arquivo de resultados atual
     if os.path.exists('resultados_partidas_atual.json'):
         os.remove('resultados_partidas_atual.json')
-        print("Arquivo de resultados atual foi deletado.")
+        print("")
     else:
-        print("O arquivo resultados_partidas.json não foi encontrado.")
+        print("O arquivo do histórico não foi encontrado.")
 
 
 
@@ -2191,7 +2332,6 @@ def configurar_nivel_gols():
     salvar_configuracao(nivel_gols)
     print("\n\n")
     print(f"Configuração do nível de gols ajustada para {nivel_gols.replace('_', ' ').upper()} com sucesso!")
-    print("\nVoltando para o Menu...")
     print("\n\n")
 
 
@@ -2239,6 +2379,8 @@ def criar_configuracao_padrao():
 
 
 
+import json
+
 def buscar_partidas_por_time():
     # Carrega os dados do arquivo resultados_partidas.json
     try:
@@ -2270,7 +2412,7 @@ def buscar_partidas_por_time():
     }
 
     # Filtra as partidas e as agrupa por fase
-    for partida in resultados_normalizados[nome_time]:
+    for partida in resultados_normalizados[nome_time]["jogos"]:  # Acesso à chave "jogos"
         fase = partida["fase"]
         adversario = partida["adversario"]
         gols_marcados = partida["gols_marcados"]
@@ -2294,6 +2436,7 @@ def buscar_partidas_por_time():
             for partida in partidas:
                 print(partida)
             print()  # Espaço entre as fases
+
 
 
 
@@ -2514,33 +2657,34 @@ def analisar_estatisticas():
                 time_pior_media_defensiva = time
 
     # Impressão das estatísticas
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
     print("Melhor(es) Ataque(s):")
     for ataque in melhores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
 
     print("\nMelhor(es) Defesa(s):")
     for defesa in melhores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
 
     print("\nPior(es) Ataque(s):")
     for ataque in piores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
 
     print("\nPior(es) Defesa(s):")
     for defesa in piores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
     # Impressão das maiores goleadas
-    print("\nMaior(es) Goleada(s):")
+    print("\nMaior(es) Goleada(s) da fase de liga:")
     print("\n")
     for goleada in maiores_goleadas:
         print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
-    print(f"{'-' * 44}\n")
-    print("\nMaiores goleadas da fase de mata-mata:")
+    print("\n")
+    print(f"{'-' * 64}\n")
+    print("\nMaior(s) goleada(s) da fase de mata-mata:")
     print("\n")
     for goleada in maiores_goleadas_mata_mata:
         print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
@@ -2553,15 +2697,15 @@ def analisar_estatisticas():
     print("\nMelhor média de gols:")
     print(f"{time_melhor_media_gols}: {' ' * (20 - len(time_melhor_media_gols))} {melhor_media_gols:.2f} gols por partida")
 
-    print("\nPior média de gols:")
-    print(f"{time_pior_media_gols}: {' ' * (20 - len(time_pior_media_gols))} {pior_media_gols:.2f} gols por partida")
-
     print("\nMelhor média defensiva:")
     print(f"{time_melhor_media_defensiva}: {' ' * (20 - len(time_melhor_media_defensiva))} {melhor_media_defensiva:.2f} gols sofridos por partida")
 
+    print("\nPior média de gols:")
+    print(f"{time_pior_media_gols}: {' ' * (20 - len(time_pior_media_gols))} {pior_media_gols:.2f} gols por partida")
+
     print("\nPior média defensiva:")
     print(f"{time_pior_media_defensiva}: {' ' * (20 - len(time_pior_media_defensiva))} {pior_media_defensiva:.2f} gols sofridos por partida")
-    print(f"{'-' * 44}\n")
+    print(f"{'-' * 64}\n")
 
 
 
@@ -2574,6 +2718,7 @@ def main():
     try:    
         if not os.path.exists("configuracao_gols.json"):
             criar_configuracao_padrao()
+
     
         voltar_menu_principal = False  # Inicializa fora de todos os loops
 
@@ -2582,15 +2727,34 @@ def main():
             escolha_menu = input("\nENTER - Entrar no simulador\n1 - Configurações\n2 - Sair\n\n".upper()).strip().upper()
 
             if escolha_menu == '1':
-                print("\n")
-                configs = input("\n1 - Editar média de gols no jogo\n2 - Voltar\n\n".upper())
-                print("\n")
-                print("\n")
-                if configs == '1':
-                    configurar_nivel_gols()
-                    continue
-                elif configs == '2':
-                    continue
+                while True:  # Adiciona um loop para o menu de configurações
+                    print("\n")
+                    configs = input("\n1 - Editar média de gols do jogo\n2 - Editar times\n3 - Excluir times personalizados\n4 - Voltar\n\n".upper())
+                    print("\n")
+                    print("\n")
+
+                    if configs == '1':
+                        configurar_nivel_gols()
+                    elif configs == '2':
+                        substituir_time(potes, stats)
+                        continue
+                    elif configs == '3':
+                        confirma = input("Tem certeza que deseja excluir os times personalizados e voltar para a configuração padrão?\n\n1 - SIM\n2 - NÃO\n\n")
+                        
+                        if confirma == '1':
+                            excluir_stats_personalizados()
+                            continue
+                        elif confirma == '2':
+                            print("\n")
+                            print("Operação cancelada.")
+                            continue
+                        else:
+                            print("\n")
+                            print("Opção inválida. Tente novamente.")
+                    elif configs == '4':
+                        break  # Sai do loop de configurações e volta para o menu principal
+                    else:
+                        print("Opção inválida. Tente novamente.")
 
             if escolha_menu == '2':
                 print("\n")
@@ -2772,7 +2936,7 @@ def main():
                                                                                                                 print_trophy(vencedorFinal)
                                                                                                                 print("\n")
                                                                                                                 print("\n")
-                                                                                                                salvar_resultado_final(vencedorFinal, gols_vencedor, viceFinal, gols_vice)
+                                                                                                                
 
                                                                                                                 # Alterações nesta parte
                                                                                                                 while True:
@@ -2794,6 +2958,7 @@ def main():
                                                                                                                                 print("\n")
                                                                                                                                 finalizar_simulacao()
                                                                                                                                 transferir_para_historico()
+                                                                                                                                salvar_resultado_final(vencedorFinal, gols_vencedor, viceFinal, gols_vice)
                                                                                                                                 raise ExitLoops
                                                                                                                             elif voltar_ao_sorteio == '1':
                                                                                                                                 break
