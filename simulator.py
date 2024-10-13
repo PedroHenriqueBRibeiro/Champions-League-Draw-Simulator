@@ -3,6 +3,57 @@ import os
 import random
 import numpy as np
 
+def resetar_aplicacao():
+    arquivos_para_excluir = [
+        "dados_times.json",
+        "campeoes.json",
+        "historico_gols.json",
+        "historico_resultados.json",
+        "configuracao_gols.json",
+        "stats_personalizados.json"
+    ]
+
+    arquivos_excluidos = []
+    arquivos_nao_encontrados = []
+
+    confirmar = input("\n\nDeseja excluir permanentemente todos os dados? (S/N).\n\n")
+    if confirmar == 'S' or confirmar == 's':
+        confirma2 = input("\n\nEsta ação não poderá ser desfeita. Digite 'RESETAR' para dar continuidade.\n\n")
+        if confirma2 == 'RESETAR':
+
+            for arquivo in arquivos_para_excluir:
+                if os.path.exists(arquivo):
+                    try:
+                        os.remove(arquivo)
+                        arquivos_excluidos.append(arquivo)
+                    except Exception as e:
+                        print(f"Erro ao excluir {arquivo}: {e}")
+                else:
+                    arquivos_nao_encontrados.append(arquivo)
+
+            print("\n\nReset da aplicação concluído.\n\n")
+            
+            if arquivos_excluidos:
+                print("\nArquivos excluídos:")
+                for arquivo in arquivos_excluidos:
+                    print(f"- {arquivo}")
+            else:
+                print("Nenhum arquivo excluído.")
+            
+            if arquivos_nao_encontrados:
+                print("\nArquivos não encontrados:")
+                for arquivo in arquivos_nao_encontrados:
+                    print(f"- {arquivo}")
+        else:
+            print("\n\nOperação cancelada.\n\n")
+    elif confirmar == 'N' or confirmar == 'n':
+        print("\n\nOperação cancelada.\n\n")
+        return
+    else:
+        print("\n\nOperação cancelada.\n\n")
+        return
+
+
 
 def criar_json_predefinido():
     potes = [
@@ -88,15 +139,28 @@ def get_pote(time):
             return idx
     return None
 
-
-def listar_times(potes):
-    print("Lista de times:")
+def listar_times(potes, stats):
+    print("\nLista de Times:")
     print("\n")
-    numero_time = 1
-    for pote in potes:
-        for time in pote:
-            print(f"{numero_time}. {time}")
-            numero_time += 1
+    
+    # Define o tamanho da linha baseado nos cabeçalhos
+    tamanho_linha = 65
+    
+    print("┌" + "─" * tamanho_linha + "┐")  # Início da borda superior
+    print("│" + f"{'Número':<10}{'Time':<25}{'Ataque':<15}{'Defesa':<15}│")  # Cabeçalho
+    print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal após o cabeçalho
+
+    for i in range(len(potes)):
+        for j in range(len(potes[i])):
+            time = potes[i][j]
+            ataque = stats.get(time, {}).get("ataque", "N/A")
+            defesa = stats.get(time, {}).get("defesa", "N/A")
+            numero = i * 9 + j + 1  # Número do time baseado no índice
+            print("│" + f"{numero:<10}{time:<25}{ataque:<15}{defesa:<15}│")  # Dados da tabela
+
+    print("└" + "─" * tamanho_linha + "┘")  # Borda inferior
+
+
 
 
 
@@ -115,6 +179,7 @@ def salvar_times_stats_personalizados(potes, stats):
 
 def excluir_stats_personalizados():
     print("\n")
+   
     confirmacao = input("Digite 'EXCLUIR' para apagar os stats personalizados: \n\n")
     
     if confirmacao == "EXCLUIR":
@@ -123,9 +188,6 @@ def excluir_stats_personalizados():
             os.remove("stats_personalizados.json")
             print("\n")
             print("Os times personalizados foram excluídos com sucesso.\n")
-            with open("dados_times.json", "r") as file:
-                dados = json.load(file)
-                print("Carregando times e stats predefinidos...")
         else:
             print("\n")
             print("Não existem times personalizados.\n")
@@ -133,6 +195,89 @@ def excluir_stats_personalizados():
         print("\n")
         print("Operação cancelada ou erro de digitação.")
 
+
+
+
+
+stats_atual = ""
+
+# Função para carregar os stats com base no arquivo existente (executada uma vez no início)
+def carregar_stats_inicial():
+    global potes, stats, stats_atual
+    # Verifica se o arquivo personalizado existe e carrega os dados correspondentes
+    if os.path.exists("stats_personalizados.json"):
+        with open("stats_personalizados.json", "r") as file:
+            dados = json.load(file)
+            potes = dados["potes"]
+            stats = dados["stats"]
+        stats_atual = "Personalizados"  # Atualiza a variável para indicar que os stats personalizados estão em uso
+    else:
+        with open("dados_times.json", "r") as file:
+            dados = json.load(file)
+            potes = dados["potes"]
+            stats = dados["stats"]
+        stats_atual = "Padrões"
+        
+
+def alternar_stats():
+    global potes, stats, stats_atual  # Usar as variáveis globais
+        # Verifica se existe o arquivo personalizado e define qual usar
+    #if not os.path.exists("stats_personalizados.json"):
+
+
+    # Exibe qual está em uso atualmente
+    print(f"\n\nTimes e stats atualmente em uso: {stats_atual}\n")
+
+    # Solicita que o usuário escolha entre os stats padrões ou personalizados
+    escolha = input("\nEscolha quais utilizar:\n1 - Dados padrões\n2 - Dados personalizados\n\n").strip()
+
+    if escolha == '1':
+        if os.path.exists("dados_times.json"):
+            with open("dados_times.json", "r") as file:
+                print("\n\nCarregando times e stats predefinidos...")
+                dados = json.load(file)
+                potes = dados["potes"]
+                stats = dados["stats"]  # Carregar os dados predefinidos
+            stats_atual = "Padrões"
+            print("\n\nAgora, os times e stats padrões estão em uso.\n\n")
+        else:
+            print("Erro: O arquivo não foi encontrado.")
+    
+    elif escolha == '2':
+        if os.path.exists("stats_personalizados.json"):
+            with open("stats_personalizados.json", "r") as file:
+                print("\n\nCarregando times e stats personalizados...")
+                dados = json.load(file)
+                potes = dados["potes"]
+                stats = dados["stats"]
+            stats_atual = "Personalizados"
+            print("\n\nAgora, os times e stats personalizados estão em uso.\n\n")
+        else:
+            print("\n\nErro: Não existem times e stats personalizados disponíveis.\n\n")
+    
+    else:
+        print("\nEscolha inválida. Por favor, selecione 1 ou 2.\n")
+
+
+
+
+
+def carregar_times_stats2():
+    """Função para carregar times e stats, verificando se existe um arquivo personalizado."""
+    if os.path.exists("stats_personalizados.json"):
+        with open("stats_personalizados.json", "r") as file:
+            print("\n\nCarregando times e stats personalizados...")
+            dados = json.load(file)
+            potes = dados["potes"]
+            stats = dados["stats"]
+    else:
+        with open("dados_times.json", "r") as file:
+            print("\n\nCarregando times e stats predefinidos...")
+            dados = json.load(file)
+            potes = dados["potes"]
+            stats = dados["stats"]
+
+    return potes, stats
 
 
 
@@ -148,9 +293,25 @@ def carregar_times_stats():
             return configuracao["potes"], configuracao["stats"]
 
 
+
+
+
 # Função para substituir o time e salvar no arquivo personalizado
 def substituir_time(potes, stats):
-    listar_times(potes)
+    # Verifica se existe um arquivo de stats personalizados
+    if os.path.exists("stats_personalizados.json"):
+        with open("stats_personalizados.json", "r") as file:
+            dados_personalizados = json.load(file)
+            potes = dados_personalizados["potes"]
+            stats = dados_personalizados["stats"]
+    else:
+        # Se não existir, carrega o arquivo de dados normais
+        with open("dados_times.json", "r") as file:
+            dados_normais = json.load(file)
+            potes = dados_normais["potes"]
+            stats = dados_normais["stats"]
+    
+    listar_times(potes, stats)
     while True:
         try:
             print("\n")
@@ -196,7 +357,7 @@ def substituir_time(potes, stats):
 
         except ValueError:
             print("\n")
-            print("Opção inválida. Tente novamente.") 
+            print("Opção inválida. Tente novamente.")
 
 
 
@@ -571,7 +732,7 @@ def resetar_arquivo_gols():
         os.remove(nome_arquivo_gols)
     maiores_goleadas.clear()
 
-def finalizar_simulacao():
+def finalizar_simulacao(vencedor_final, gols_vencedor, vice_final, gols_vice):
     """Transfere os gols marcados e sofridos da simulação atual para o histórico e reseta o arquivo de gols acumulados."""
     print("Finalização da simulação...")
 
@@ -600,6 +761,7 @@ def finalizar_simulacao():
         "empates": gols_acumulados["empates"],
         "derrotas": gols_acumulados["derrotas"]
     })
+    salvar_resultado_final(vencedor_final, gols_vencedor, vice_final, gols_vice)
 
     # Salva o novo histórico de gols
     salvar_historico_gols(historico_gols)
@@ -652,13 +814,15 @@ def historico_melhores_ataques():
     melhores_ataques = sorted(totais_gols.items(), key=lambda x: x[1], reverse=True)
 
     print("Histórico de Melhores Ataques:")
-    print("\n")
-    print(f"{'Time'.ljust(20)}¦ {'Gols'.ljust(10)}¦ {'Partidas Jogadas'.ljust(15)}")
-    print("-" * 50)
-    
+    print("┌" + "─" * 50 + "┐")
+    print(f"│{'Time'.ljust(20)}│ {'Gols'.ljust(10)}│{'Partidas Jogadas'.ljust(15)} │")
+    print("├" + "─" * 50 + "┤")
+
     for time, gols in melhores_ataques:
         partidas_jogadas = totais_partidas.get(time, 0)  # Obtém o número de partidas jogadas
-        print(f"{time.ljust(20)}¦ {str(gols).ljust(10)}¦ {str(partidas_jogadas).ljust(15)}")
+        print(f"│{time.ljust(20)}│ {str(gols).ljust(10)}│ {str(partidas_jogadas).ljust(15)} │")
+
+    print("└" + "─" * 50 + "┘")
 
 
 def historico_melhores_defesas():
@@ -686,13 +850,15 @@ def historico_melhores_defesas():
     melhores_defesas = sorted(totais_gols_sofridos.items(), key=lambda x: x[1])
 
     print("Histórico de Melhores Defesas:")
-    print("\n")
-    print(f"{'Time'.ljust(20)}¦ {'Gols Sofridos'.ljust(15)}¦ {'Partidas Jogadas'.ljust(15)}")
-    print("-" * 55)
-    
+    print("┌" + "─" * 55 + "┐")
+    print(f"│{'Time'.ljust(20)}│ {'Gols Sofridos'.ljust(15)}│{'Partidas Jogadas'.ljust(15)} │")
+    print("├" + "─" * 55 + "┤")
+
     for time, gols_sofridos in melhores_defesas:
         partidas_jogadas = totais_partidas.get(time, 0)  # Obtém o número de partidas jogadas
-        print(f"{time.ljust(20)}¦ {str(gols_sofridos).ljust(15)}¦ {str(partidas_jogadas).ljust(15)}")
+        print(f"│{time.ljust(20)}│ {str(gols_sofridos).ljust(15)}│ {str(partidas_jogadas).ljust(15)} │")
+
+    print("└" + "─" * 55 + "┘\n")
 
 
 
@@ -759,19 +925,25 @@ def historico_mais_vitorias():
             print("\nOpção inválida. Por favor, tente novamente.\n")
             continue
 
-        # Exibição da tabela com a formatação desejada
+# Exibição da tabela com a formatação desejada
         print(f"\nTimes com mais {criterio}:")
         print("\n")
-        print(f"{'Pos':<4} {'Time':<20} {criterio.capitalize():<10} {'Partidas':<10}")
-        print("-" * 44)
+
+        # Define o tamanho da linha baseado nos cabeçalhos
+        tamanho_linha = 47
+
+        print("┌" + "─" * tamanho_linha + "┐")  # Início da borda superior
+        print("│" + f"{'Pos':<4} {'Time':<20} {criterio.capitalize():<10} {'Partidas':<10}│")  # Cabeçalho
+        print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal após o cabeçalho
 
         # Exibição dos times e suas estatísticas
         for i, (time, valor) in enumerate(tabela_ordenada, start=1):
             partidas_jogadas = totais_partidas.get(time, 0)
-            print(f"{i:<4} {time:<20} {valor:<10} {partidas_jogadas:<10}")
-            
-        print("-" * 44)  # Linha horizontal após os dados
+            print("│" + f"{i:<4} {time:<20} {valor:<10} {partidas_jogadas:<10}│")  # Dados da tabela
+
+        print("└" + "─" * tamanho_linha + "┘")  # Borda inferior
         print("\n")
+
 
 
 
@@ -809,12 +981,15 @@ def media_gols_feitos():
 
     # Impressão das médias de gols feitos
     print("Média de Gols Feitos por Time:")
-    print("\n")
-    print(f"{'Time'.ljust(20)}¦ {'Média de Gols Feitos'.ljust(14)}")
-    print("-" * 36)
+    print("┌" + "─" * 44 + "┐")
+    print(f"│{'Time'.ljust(20)}│ {'Média de Gols Feitos'.ljust(22)}│")
+    print("├" + "─" * 44 + "┤")
 
     for time, media in melhores_gols_feitos:
-        print(f"{time.ljust(20)}¦ {media:.2f}".ljust(14))
+        print(f"│{time.ljust(20)}│ {media:.2f}                  │".ljust(22))
+
+    print("└" + "─" * 44 + "┘")
+
 
 
 
@@ -845,13 +1020,15 @@ def media_gols_sofridos():
     melhores_defesas = sorted(medias_gols_sofridos.items(), key=lambda x: x[1])
 
     # Impressão das médias de gols sofridos
-    print("\nMédia de Gols Sofridos por Time:")
-    print("\n")
-    print(f"{'Time'.ljust(20)}¦ {'Média de Gols Sofridos'.ljust(22)}")
-    print("-" * 44)
+    print("Média de Gols Sofridos por Time:")
+    print("┌" + "─" * 44 + "┐")
+    print(f"│{'Time'.ljust(20)}│ {'Média de Gols Sofridos'.ljust(22)}│")
+    print("├" + "─" * 44 + "┤")
 
     for time, media in melhores_defesas:
-        print(f"{time.ljust(20)}¦ {media:.2f}".ljust(22))
+        print(f"│{time.ljust(20)}│ {media:.2f}                  │".ljust(22))
+
+    print("└" + "─" * 44 + "┘")
 
 
 
@@ -884,9 +1061,10 @@ def media_gols_sofridos():
 def exibir_playoffs(classificacao):
     # Obtém os classificados para os playoffs (9º a 24º)
     classificados = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
-    
+
     print("\nConfrontos dos playoffs:")
     print("\n")
+    
     confrontos_playoffs = [
         (classificados[8][0], classificados[23][0]),  # 9º x 24º
         (classificados[9][0], classificados[22][0]),  # 10º x 23º
@@ -898,8 +1076,21 @@ def exibir_playoffs(classificacao):
         (classificados[15][0], classificados[16][0]),  # 16º x 17º
     ]
     
+    # Determina o maior comprimento de nomes de times para formatação
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_playoffs)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 5) // 2
+
+    # Exibe os confrontos formatados
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+    
     for time1, time2 in confrontos_playoffs:
-        print("{:>20} x {:<20}".format(time1, time2))
+        print("| {:>{}} x {:<{}} |".format(time1, metade, time2, metade))
+    
+    print("└" + "─" * tamanho_linha + "┘")
 
 
 def simular_playoff(classificacao):
@@ -920,13 +1111,24 @@ def simular_playoff(classificacao):
         (classificados[15][0], classificados[16][0]),  # 16º x 17º
     ]
 
+    # Calcula o comprimento máximo das linhas baseado no tamanho dos nomes dos times
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_playoffs)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 8 caracteres
+    metade = (tamanho_linha - 13) //2 
+
     resultados_ida = {}
     print("\nJogo de ida - Playoffs:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
+
     for time1, time2 in confrontos_playoffs:
         # Gera os gols para ambos os times
         gols_time1, gols_time2 = gerar_gols(time1, time2)
-        
+
         # Salva o resultado da partida de ida
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
 
@@ -964,12 +1166,18 @@ def simular_playoff(classificacao):
             atualizar_empate(time1)
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "playoffs")
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+
+    print("└" + "─" * tamanho_linha + "┘")
 
     resultados_volta = {}
     print("\n")
-    print("Jogo de volta - Playoffs:")
+    print("\nJogo de volta - Playoffs:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
+
     for time2, time1 in confrontos_playoffs:
         gols_time1, gols_time2 = gerar_gols(time1, time2)
 
@@ -1009,12 +1217,11 @@ def simular_playoff(classificacao):
             atualizar_empate(time1)
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "playoffs")
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+
+    print("└" + "─" * tamanho_linha + "┘")
 
     return resultados_ida, resultados_volta
-
-
-
 
 
 
@@ -1022,29 +1229,44 @@ def simular_playoff(classificacao):
 def placar_final_playoffs(classificacao):
     resultados_ida, resultados_volta = simular_playoff(classificacao)
     vencedores = []
+
+    # Calcula o comprimento máximo das linhas baseado no tamanho dos nomes dos times
+    confrontos_playoffs = [(time1, time2) for (time1, time2), _ in resultados_ida.items()]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_playoffs)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 13) // 2
     print("\n")
     print("\nPlacar Agregado - Playoffs:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
 
     for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
         gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
         total_time1 = gols_ida1 + gols_volta1
         total_time2 = gols_ida2 + gols_volta2
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+        
+        print("| {:>{}} | {:<5} | {:<{}} |".format(time1, metade, f"{total_time1} x {total_time2}", time2, metade))
 
         if total_time1 == total_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
-            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            print("| {:>{}}  {:^5}  {:<{}} |".format("Pen", metade, f"({gols_penaltis1} - {gols_penaltis2})", "", metade))
             vencedor = time1 if gols_penaltis1 > gols_penaltis2 else time2
             vencedores.append(vencedor)
         else:
             vencedor = time1 if total_time1 > total_time2 else time2
             vencedores.append(vencedor)
-    print("\n")
-    print("\nVencedores dos playoffs:\n")
+
+    print("└" + "─" * tamanho_linha + "┘")
+
+    print("\nVencedores dos Playoffs:\n")
     for vencedor in vencedores:
         print("{:<16}".format(vencedor)) 
+
     return vencedores
+
 
 
 
@@ -1072,10 +1294,23 @@ def exibir_oitavas(classificacao, vencedores):
         (primeiros_colocados[7][0], vencedores[7]),  # 8º x Vencedor 8
     ]
     
-    for time1, time2 in confrontos_oitavas:
-        print("{:>20} x {:<20}".format(time1, time2))
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_oitavas)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 5) // 2
 
-    return confrontos_oitavas
+    # Exibe os confrontos formatados
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+    
+    for time1, time2 in confrontos_oitavas:
+        print("| {:>{}} x {:<{}} |".format(time1, metade, time2, metade))
+    
+    print("└" + "─" * tamanho_linha + "┘")
+
+
+
 
 def simular_oitavas(classificacao, vencedores):
     global maiores_goleadas_mata_mata  # Certifica-se de que a variável é acessível
@@ -1095,9 +1330,18 @@ def simular_oitavas(classificacao, vencedores):
         (primeiros_colocados[7][0], vencedores[7]),  # 8º x Vencedor 8
     ]
 
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_oitavas)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 8 caracteres
+    metade = (tamanho_linha - 13) //2 
+
     resultados_ida = {}
-    print("\nJogos de ida - Oitavas de final:")
+    print("\nJogo de ida - Oitavas de Final:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
     for time1, time2 in confrontos_oitavas:
         # Gera os gols para o jogo de ida
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -1121,8 +1365,8 @@ def simular_oitavas(classificacao, vencedores):
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "oitavas")
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
-
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+    
         # Atualiza as maiores goleadas
         diferenca_gols = abs(gols_time1 - gols_time2)
         if len(maiores_goleadas_mata_mata) == 0 or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
@@ -1141,10 +1385,15 @@ def simular_oitavas(classificacao, vencedores):
                 "gols_time2": gols_time2,
                 "diferenca": diferenca_gols
             })
+    print("└" + "─" * tamanho_linha + "┘")
 
     resultados_volta = {}
-    print("\nJogos de volta - Oitavas de final:")
     print("\n")
+    print("\nJogo de volta - Oitavas de Final:")
+    print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
     for time2, time1 in confrontos_oitavas:
         # Gera os gols para o jogo de volta
         gols_time1, gols_time2 = gerar_gols(time1, time2)
@@ -1169,7 +1418,7 @@ def simular_oitavas(classificacao, vencedores):
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "oitavas")
         
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
 
         # Atualiza as maiores goleadas
         diferenca_gols = abs(gols_time1 - gols_time2)
@@ -1190,6 +1439,7 @@ def simular_oitavas(classificacao, vencedores):
                 "diferenca": diferenca_gols
             })
 
+    print("└" + "─" * tamanho_linha + "┘")
     return resultados_ida, resultados_volta
 
 
@@ -1197,24 +1447,35 @@ def simular_oitavas(classificacao, vencedores):
 def placar_final_oitavas(classificacao, vencedores):
     resultados_ida, resultados_volta = simular_oitavas(classificacao, vencedores)
     vencedores_oitavas = []
+    confrontos_oitavas = [(time1, time2) for (time1, time2), _ in resultados_ida.items()]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_oitavas)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 13) // 2
     print("\n")
-    print("\nPlacar Agregado:")
+    print("\nPlacar Agregado - Oitavas de Final:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+
 
     for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
         gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
         total_time1 = gols_ida1 + gols_volta1
         total_time2 = gols_ida2 + gols_volta2
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+        print("| {:>{}} | {:<5} | {:<{}} |".format(time1, metade, f"{total_time1} x {total_time2}", time2, metade))
 
         if total_time1 == total_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
-            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            print("| {:>{}}  {:^5}  {:<{}} |".format("Pen", metade, f"({gols_penaltis1} - {gols_penaltis2})", "", metade))
             vencedor_oitavas = time1 if gols_penaltis1 > gols_penaltis2 else time2
             vencedores_oitavas.append(vencedor_oitavas)
         else:
             vencedor_oitavas = time1 if total_time1 > total_time2 else time2
             vencedores_oitavas.append(vencedor_oitavas)
+
+    print("└" + "─" * tamanho_linha + "┘")
 
     print("\nVencedores das oitavas:\n")
     for vencedor_oitavas in vencedores_oitavas:
@@ -1237,16 +1498,38 @@ def sortear_quartas(vencedores_oitavas):
 def exibir_confrontos_quartas(quartas_de_final):
     print("\nConfrontos das Quartas de Final:")
     print("\n")
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in quartas_de_final)
+    tamanho_linha = max_len_time + 28
+    if tamanho_linha % 2 == 0:
+        tamanho_linha += 1
+    metade = (tamanho_linha - 5) // 2
+
+    # Exibe os confrontos formatados
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+    
     for time1, time2 in quartas_de_final:
-        print("{:>20} x {:<20}".format(time1, time2))
+        print("| {:>{}} x {:<{}} |".format(time1, metade, time2, metade))
+    
+    print("└" + "─" * tamanho_linha + "┘")
+
 
 
 def simular_quartas(quartas_de_final):
     global maiores_goleadas_mata_mata  # Certifica-se de que a variável global é acessível
 
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in quartas_de_final)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres para formatação
+    metade = (tamanho_linha - 13) // 2
+
     resultados_ida = {}
-    print("\nJogos de ida - Quartas de Final:")
+    print("\nJogo de ida - Quartas de Final:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
     
     # Simula jogos de ida
     for time1, time2 in quartas_de_final:
@@ -1271,27 +1554,17 @@ def simular_quartas(quartas_de_final):
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "quartas")
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
-
-        # Atualiza as maiores goleadas
-        diferenca_gols = abs(gols_time1 - gols_time2)
-        if diferenca_gols > 0:  # Ignora jogos sem gols
-            maior_goleada = {
-                'time1': time1,
-                'gols_time1': gols_time1,
-                'time2': time2,
-                'gols_time2': gols_time2,
-                'diferenca': diferenca_gols
-            }
-            # Se for a maior goleada ou igual à maior existente, adiciona
-            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
-                maiores_goleadas_mata_mata = [maior_goleada]
-            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
-                maiores_goleadas_mata_mata.append(maior_goleada)
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+    
+    print("└" + "─" * tamanho_linha + "┘")
 
     resultados_volta = {}
-    print("\nJogos de volta - Quartas de Final:")
     print("\n")
+    print("\nJogo de volta - Quartas de Final:")
+    print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
     
     # Simula jogos de volta
     for time2, time1 in quartas_de_final:
@@ -1316,54 +1589,52 @@ def simular_quartas(quartas_de_final):
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "quartas")
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
-
-        # Atualiza as maiores goleadas
-        diferenca_gols = abs(gols_time1 - gols_time2)
-        if diferenca_gols > 0:  # Ignora jogos sem gols
-            maior_goleada = {
-                'time1': time1,
-                'gols_time1': gols_time1,
-                'time2': time2,
-                'gols_time2': gols_time2,
-                'diferenca': diferenca_gols
-            }
-            # Se for a maior goleada ou igual à maior existente, adiciona
-            if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
-                maiores_goleadas_mata_mata = [maior_goleada]
-            elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
-                maiores_goleadas_mata_mata.append(maior_goleada)
-
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+    
+    print("└" + "─" * tamanho_linha + "┘")
+    
     return resultados_ida, resultados_volta
+
 
 
 
 def placar_final_quartas(quartas_de_final):
     resultados_ida, resultados_volta = simular_quartas(quartas_de_final)
     vencedores_quartas = []
+    confrontos_quartas = [(time1, time2) for (time1, time2), _ in resultados_ida.items()]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_quartas)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 13) // 2
     print("\n")
     print("\nPlacar Agregado - Quartas de Final:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+
 
     # Calcula o placar agregado e determina os vencedores
     for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
         gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
         total_time1 = gols_ida1 + gols_volta1
         total_time2 = gols_ida2 + gols_volta2
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+        print("| {:>{}} | {:<5} | {:<{}} |".format(time1, metade, f"{total_time1} x {total_time2}", time2, metade))
 
         # Caso de empate no placar agregado, simula pênaltis
         if total_time1 == total_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
-            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            print("| {:>{}}  {:^5}  {:<{}} |".format("Pen", metade, f"({gols_penaltis1} - {gols_penaltis2})", "", metade))
             vencedor_quartas = time1 if gols_penaltis1 > gols_penaltis2 else time2
             vencedores_quartas.append(vencedor_quartas)
         else:
             vencedor_quartas = time1 if total_time1 > total_time2 else time2
             vencedores_quartas.append(vencedor_quartas)
 
+    print("└" + "─" * tamanho_linha + "┘")
+
     # Exibe os vencedores das quartas de final
-    print("\nVencedores das quartas de final:\n")
+    print("\nVencedores das Quartas de Final:\n")
     for vencedor_quartas in vencedores_quartas:
         print("{:<16}".format(vencedor_quartas)) 
     return vencedores_quartas
@@ -1371,25 +1642,48 @@ def placar_final_quartas(quartas_de_final):
 
 def exibir_semi_final(vencedores_quartas):
     print("\nConfrontos das Semifinais:")
-    print("\n")
+    print("\n")    
+    confrontos_semis = [(vencedores_quartas[i], vencedores_quartas[i + 1]) for i in range(0, len(vencedores_quartas), 2)]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_semis)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 5) // 2
+    
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
     
     # Confronto 1: [0] vs [1]
-    print("{:>20} x {:<20}".format(vencedores_quartas[0], vencedores_quartas[1]))
+    print("| {:>{}} x {:<{}} |".format(vencedores_quartas[0], metade, vencedores_quartas[1], metade))
     
     # Confronto 2: [2] vs [3]
-    print("{:>20} x {:<20}".format(vencedores_quartas[2], vencedores_quartas[3]))
+    print("| {:>{}} x {:<{}} |".format(vencedores_quartas[2], metade, vencedores_quartas[3], metade))
+
+    print("└" + "─" * tamanho_linha + "┘")
+
 
 
 def simular_semifinais(vencedores_quartas):
     global maiores_goleadas_mata_mata  # Variável global para armazenar as maiores goleadas
 
+    # Calcula o tamanho da linha com base no comprimento dos nomes dos times
+    confrontos_semis = [(vencedores_quartas[i], vencedores_quartas[i + 1]) for i in range(0, len(vencedores_quartas), 2)]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_semis)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 13) // 2
+
     resultados_ida = {}
     resultados_volta = {}
 
-    print("\nJogos de ida - Semifinais:")
+    # Jogo de ida
+    print("\nJogos de ida - Semi-final:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
     
-    # Simula os jogos de ida para os dois confrontos
     for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
         time1 = vencedores_quartas[i]
         time2 = vencedores_quartas[i + 1]
@@ -1399,8 +1693,8 @@ def simular_semifinais(vencedores_quartas):
         resultados_ida[(time1, time2)] = (gols_time1, gols_time2)
         
         # Atualiza os gols marcados e sofridos
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
         if gols_time1 > gols_time2:
@@ -1413,12 +1707,13 @@ def simular_semifinais(vencedores_quartas):
             atualizar_empate(time1)
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "semis")
+        
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
 
         # Atualiza as maiores goleadas
         diferenca_gols = abs(gols_time1 - gols_time2)
-        if diferenca_gols > 0:  # Ignora jogos sem gols
+        if diferenca_gols > 0:
             maior_goleada = {
                 'time1': time1,
                 'gols_time1': gols_time1,
@@ -1426,27 +1721,32 @@ def simular_semifinais(vencedores_quartas):
                 'gols_time2': gols_time2,
                 'diferenca': diferenca_gols
             }
-            # Se for a maior goleada ou igual à maior existente, adiciona
             if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata = [maior_goleada]
             elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata.append(maior_goleada)
 
-    print("\nJogos de volta - Semifinais:")
+    print("└" + "─" * tamanho_linha + "┘")
+
+    # Jogo de volta
     print("\n")
-    
-    # Simula os jogos de volta para os dois confrontos
-    for i in range(0, len(vencedores_quartas), 2):  # Percorre a lista de 2 em 2
+    print("\nJogos de volta - Semi-Final:")
+    print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("| {:^{}} | {:^1} x {:^1} | {:^{}} |".format("Casa", metade, "", "", "Fora", metade))
+    print("├" + "─" * tamanho_linha + "┤")
+
+    for i in range(0, len(vencedores_quartas), 2):
         time1 = vencedores_quartas[i]
         time2 = vencedores_quartas[i + 1]
-        gols_time2, gols_time1 = gerar_gols(time2, time1)  # Inverte os times para o jogo de volta
+        gols_time2, gols_time1 = gerar_gols(time2, time1)
         
         # Salva os resultados
         resultados_volta[(time2, time1)] = (gols_time2, gols_time1)
         
         # Atualiza os gols marcados e sofridos
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1 marcou gols_time1 e sofreu gols_time2
-        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)  # Time2 marcou gols_time2 e sofreu gols_time1
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
+        atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
         if gols_time1 > gols_time2:
@@ -1459,25 +1759,26 @@ def simular_semifinais(vencedores_quartas):
             atualizar_empate(time1)
             atualizar_empate(time2)
         salvar_resultados_json(time1, gols_time1, time2, gols_time2, "semis")
+        
         # Exibe o resultado
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time2, gols_time2, gols_time1, time1))
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
 
         # Atualiza as maiores goleadas
-        diferenca_gols = abs(gols_time2 - gols_time1)
-        if diferenca_gols > 0:  # Ignora jogos sem gols
+        diferenca_gols = abs(gols_time1 - gols_time2)
+        if diferenca_gols > 0:
             maior_goleada = {
-                'time1': time2,
-                'gols_time1': gols_time2,
-                'time2': time1,
-                'gols_time2': gols_time1,
+                'time1': time1,
+                'gols_time1': gols_time1,
+                'time2': time2,
+                'gols_time2': gols_time2,
                 'diferenca': diferenca_gols
             }
-            # Se for a maior goleada ou igual à maior existente, adiciona
             if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata = [maior_goleada]
             elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata.append(maior_goleada)
 
+    print("└" + "─" * tamanho_linha + "┘")
     return resultados_ida, resultados_volta
 
 
@@ -1486,26 +1787,37 @@ def simular_semifinais(vencedores_quartas):
 def placar_final_semis(vencedores_quartas):
     resultados_ida, resultados_volta = simular_semifinais(vencedores_quartas)
     vencedores_semis = []
+    confrontos_semis = [(time1, time2) for (time1, time2), _ in resultados_ida.items()]
+    max_len_time = max(len(time1) + len(time2) for time1, time2 in confrontos_semis)
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 13) // 2
     print("\n")
     print("\nPlacar Agregado - Semifinais:")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+
 
     # Calcula o placar agregado e determina os vencedores
     for (time1, time2), (gols_ida1, gols_ida2) in resultados_ida.items():
         gols_volta2, gols_volta1 = resultados_volta[(time2, time1)]  # Usar o par correto
         total_time1 = gols_ida1 + gols_volta1
         total_time2 = gols_ida2 + gols_volta2
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, total_time1, total_time2, time2))
+        print("| {:>{}} | {:<5} | {:<{}} |".format(time1, metade, f"{total_time1} x {total_time2}", time2, metade))
 
         # Caso de empate no placar agregado, simula pênaltis
         if total_time1 == total_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
-            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            print("| {:>{}}  {:^5}  {:<{}} |".format("Pen", metade, f"({gols_penaltis1} - {gols_penaltis2})", "", metade))
             vencedor_semis = time1 if gols_penaltis1 > gols_penaltis2 else time2
             vencedores_semis.append(vencedor_semis)
         else:
             vencedor_semis = time1 if total_time1 > total_time2 else time2
             vencedores_semis.append(vencedor_semis)
+    
+    print("└" + "─" * tamanho_linha + "┘")
 
     # Exibe os vencedores das semifinais
     print("\n")
@@ -1524,9 +1836,17 @@ def exibir_final(vencedores_semis):
     print("\n")
     print("\nFinal:\n")
     print("\n")
-    # Confronto 1: [0] vs [1]
-    print("{:>20} x {:<20}".format(vencedores_semis[0], vencedores_semis[1]))
 
+    max_len_time = max(len(vencedores_semis[0]), len(vencedores_semis[1]))
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+    metade = (tamanho_linha - 5) // 2
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
+    # Confronto 1: [0] vs [1]
+    print("| {:>{}} x {:<{}} |".format(vencedores_semis[0], metade, vencedores_semis[1], metade))
+    print("└" + "─" * tamanho_linha + "┘")
     
 
 def simular_final(vencedores_semis):
@@ -1550,17 +1870,30 @@ def placar_final_final(vencedores_semis):
     gols_vencedor = ""
     gols_vice = ""
 
+    # Combina o comprimento dos dois times em um confronto
+    confronto = [(time1, time2) for (time1, time2), _ in resultado.items()]
+    max_len_time = max(len(time1) + len(time2) + 3 for time1, time2 in confronto)  # +3 para o " x " no placar
+
+    if max_len_time % 2 == 0:
+        max_len_time += 1
+
+    # Tamanho da linha com margem para espaçamento e formatação
+    tamanho_linha = max_len_time + 28  
+    metade = (tamanho_linha - 13) // 2 
+
     print("\nResultado Final:\n")
     print("\n")
+    print("┌" + "─" * tamanho_linha + "┐")
+    print("├" + "─" * tamanho_linha + "┤")
 
     # Calcula o placar final e determina o vencedor
     for (time1, time2), (gols_time1, gols_time2) in resultado.items():
-        # Atualiza os gols marcados e sofridos
-        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)  # Time1: marcou e sofreu
+        atualizar_gols_acumulados_json(time1, gols_time1, gols_time2)
         atualizar_gols_acumulados_json(time2, gols_time2, gols_time1)
         atualizar_partidas_jogadas(time1)
         atualizar_partidas_jogadas(time2)
-            # Verifica o resultado da partida e atualiza vitórias, empates ou derrotas
+
+        # Verifica o resultado da partida e atualiza vitórias, empates ou derrotas
         if gols_time1 > gols_time2:
             atualizar_vitoria(time1)
             atualizar_derrota(time2)
@@ -1570,12 +1903,13 @@ def placar_final_final(vencedores_semis):
         else:
             atualizar_empate(time1)
             atualizar_empate(time2)
-        salvar_resultados_json(time1, gols_time1, time2, gols_time2, "final")
-        print("{:>20} {:<1} x {:<1} {:<20}".format(time1, gols_time1, gols_time2, time2))
 
-        # Atualiza as maiores goleadas
+        salvar_resultados_json(time1, gols_time1, time2, gols_time2, "final")
+        print("| {:>{}} | {:<1} x {:<1} | {:<{}} |".format(time1, metade, gols_time1, gols_time2, time2, metade))
+
+        # Verifica a maior goleada
         diferenca_gols = abs(gols_time1 - gols_time2)
-        if diferenca_gols > 0:  # Ignora jogos sem gols
+        if diferenca_gols > 0:
             maior_goleada = {
                 'time1': time1,
                 'gols_time1': gols_time1,
@@ -1583,16 +1917,15 @@ def placar_final_final(vencedores_semis):
                 'gols_time2': gols_time2,
                 'diferenca': diferenca_gols
             }
-            # Se for a maior goleada ou igual à maior existente, adiciona
             if not maiores_goleadas_mata_mata or diferenca_gols > maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata = [maior_goleada]
             elif diferenca_gols == maiores_goleadas_mata_mata[0]['diferenca']:
                 maiores_goleadas_mata_mata.append(maior_goleada)
 
-        # Caso de empate no tempo normal, simula pênaltis
+        # Caso de empate no tempo normal
         if gols_time1 == gols_time2:
             gols_penaltis1, gols_penaltis2 = simular_penaltis(time1, time2)
-            print(f"{'':>16}Pen ({gols_penaltis1} - {gols_penaltis2})")
+            print("| {:>{}}  {:^5}  {:<{}} |".format("Pen", metade, f"({gols_penaltis1} - {gols_penaltis2})", "", metade))
             
             if gols_penaltis1 > gols_penaltis2:
                 vencedor = time1
@@ -1605,23 +1938,20 @@ def placar_final_final(vencedores_semis):
                 gols_vencedor = f"{gols_time2} ({gols_penaltis2} PEN)"
                 gols_vice = f"{gols_time1} ({gols_penaltis1} PEN)"
         else:
-            # Vencedor no tempo normal
             vencedor = time1 if gols_time1 > gols_time2 else time2
             vice = time2 if vencedor == time1 else time1
             gols_vencedor = gols_time1 if vencedor == time1 else gols_time2
             gols_vice = gols_time2 if vencedor == time1 else gols_time1
 
-        # Adiciona o vencedor e o vice às listas
         vencedor_final.append(vencedor)
         vice_final.append(vice)
+    
+    print("└" + "─" * tamanho_linha + "┘")
 
-    # Verifica se temos vencedores antes de tentar acessá-los
     if vencedor_final and vice_final:
         return vencedor_final[0], gols_vencedor, vice_final[0], gols_vice
     else:
-        # Caso não haja vencedor, você pode retornar uma mensagem ou valores padrão
         return None, None, None, None
-
 
 
 
@@ -1732,6 +2062,7 @@ def simular_partida(time_casa, time_fora, resultados, classificacao):
         })
 
     return resultado
+    
 
 
 
@@ -1819,6 +2150,126 @@ def transferir_para_historico():
 
 
 
+def listar_simulacoes():
+
+    if not all(os.path.exists(arquivo) for arquivo in ["campeoes.json", "historico_gols.json", "historico_resultados.json"]):
+        print("\nArquivo(s) não encontrado(s).\n")
+        return
+    try:
+        # Carrega o arquivo campeões
+        with open("campeoes.json", "r") as file:
+            campeoes = json.load(file)
+    except FileNotFoundError:
+        campeoes = []
+
+    # Cria uma lista com os dados formatados para calcular o comprimento máximo
+    sim_data = []
+    for final in campeoes:
+        simulacao = str(final.get("simulacao"))
+        vencedor = final["campeao"]["time"]
+        placar_vencedor = str(final["campeao"]["gols"])
+        vice = final["vice"]["time"]
+        placar_vice = str(final["vice"]["gols"])
+        nivel = final.get("nivel_simulacao", "Desconhecido")
+        sim_data.append(f"{simulacao}│ {vencedor}│ {placar_vencedor} x {placar_vice}│ {vice}│ {nivel}")
+
+    # Determina o comprimento máximo baseado nos dados de simulações
+    max_len_sim_data = max(len(line) for line in sim_data)
+    
+    # Define o tamanho da linha como a maior string + margem adicional
+    tamanho_linha = max_len_sim_data + 28  # Margem adicional de 28 caracteres
+    if tamanho_linha % 2 == 0:
+        tamanho_linha += 1  # Garante que a linha tenha um comprimento ímpar
+    
+    metade = (tamanho_linha - 13) // 2
+
+    # Cabeçalho formatado
+    print(f"{'┌' + '─' * tamanho_linha + '┐'}")
+    print(f"│{'Simulação'.ljust(10)}│{'Vencedor'.ljust(20)}│{'Placar'.ljust(21)}│{'Vice-Campeão'.ljust(18)}│{'Nível da Simulação'.ljust(10)}│")
+    print(f"{'├' + '─' * tamanho_linha + '┤'}")
+
+    for final in campeoes:
+        simulacao = str(final.get("simulacao")).ljust(10)
+        vencedor = final["campeao"]["time"].ljust(20)
+        placar_vencedor = str(final["campeao"]["gols"])
+        placar_vice = str(final["vice"]["gols"])
+        placar = f"{placar_vencedor} x {placar_vice}".ljust(21)
+        vice = final["vice"]["time"].ljust(18)
+        nivel = final.get("nivel_simulacao", "Desconhecido").ljust(10)
+
+        # Formata a linha com os dados
+        linha_formatada = f"│{simulacao}│{vencedor}│{placar}│{vice}│{nivel}        │"
+        print(linha_formatada)
+
+    # Rodapé formatado
+    print(f"{'└' + '─' * tamanho_linha + '┘'}")
+
+
+def excluir_simulacao_por_numero(simulacao_numero):
+    arquivos = ["campeoes.json", "historico_gols.json", "historico_resultados.json"]
+
+    # Função auxiliar para carregar e remover simulação de um arquivo
+    def remover_simulacao_arquivo(nome_arquivo):
+        if os.path.exists(nome_arquivo):
+            with open(nome_arquivo, 'r') as file:
+                dados = json.load(file)
+
+            # Filtra as simulações para remover aquela com o número desejado
+            dados_filtrados = [simulacao for simulacao in dados if simulacao.get("simulacao") != simulacao_numero]
+
+            # Escreve os dados filtrados de volta no arquivo
+            with open(nome_arquivo, 'w') as file:
+                json.dump(dados_filtrados, file, indent=4)
+
+    # Aplica a exclusão nos três arquivos
+    for arquivo in arquivos:
+        remover_simulacao_arquivo(arquivo)
+
+    print(f"\nSimulação {simulacao_numero} removida dos arquivos!\n")
+
+# Função principal para interação com o usuário
+def excluir_simulacao():
+    if not all(os.path.exists(arquivo) for arquivo in ["campeoes.json", "historico_gols.json", "historico_resultados.json"]):
+        print("\nArquivo(s) não encontrado(s).\n")
+        return
+    else:
+    # Lista todas as simulações
+        while True:
+            
+            listar_simulacoes()
+
+            # Solicita ao usuário o número da simulação a ser excluída
+            entrada = input("\n\nDigite o número da simulação que deseja excluir ou 'S' para voltar:\n\n")
+            
+            # Verifica se o usuário deseja voltar
+            if entrada.lower() == 's':
+                print("\nVoltando...\n")
+                return
+
+            # Tenta converter a entrada em número
+            try:
+                simulacao_numero = int(entrada)
+
+                # Verifica se o número da simulação é válido
+                with open("campeoes.json", "r") as file:
+                    campeoes = json.load(file)
+                
+                if simulacao_numero < 1 or simulacao_numero > len(campeoes):
+                    print(f"\n\nSimulação {simulacao_numero} não existe. Tente novamente.\n\n")
+                else:
+                    # Confirmação antes da exclusão
+                    confirmacao = input(f"\n\nTem certeza de que deseja excluir a simulação {simulacao_numero}? Digite 'S' para confirmar a exclusão:\n\n")
+                    if confirmacao.lower() == 's':
+                        excluir_simulacao_por_numero(simulacao_numero)
+                    else:
+                        print("\n\nExclusão cancelada.\n\n")
+
+            except ValueError:
+                # Entrada inválida (não é um número)
+                print("\n\nEntrada inválida! Por favor, insira um número de simulação válido.\n\n")
+
+
+
 
 
 
@@ -1833,13 +2284,21 @@ def exibir_classificacao(classificacao):
     classificacao_ordenada = sorted(classificacao.items(), key=lambda x: (x[1]['pontos'], x[1]['saldo_gols'], x[1]['gols_marcados']), reverse=True)
     
     print("\nTabela de Classificação Final:")
-    print("-" * 90)  # Linha horizontal antes da tabela
-    print("{:<4} | {:<20} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6}|".format("Pos", "Time", "Pts", "GM", "GS", "SG", "V", "E", "D"))
-    print("-" * 90)  # Linha horizontal após o cabeçalho
+    
+    # Define o tamanho da linha baseado nos cabeçalhos
+    tamanho_linha = 90
+    print("\n")
+
+    print("|" + "─" * tamanho_linha + "|")
+    print("┌" + "─" * tamanho_linha + "┐")  # Início da borda superior
+    print("│" + "{:<4} | {:<20} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6} | {:<6}".format("Pos", "Time", "Pts", "GM", "GS", "SG", "V", "E", "D") + "│")  # Cabeçalho
+    print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal após o cabeçalho
     
     for i, (time, dados) in enumerate(classificacao_ordenada, start=1):
-        print(f"{i:<4} | {time:<20} | {dados['pontos']:<6} | {dados['gols_marcados']:<6} | {dados['gols_sofridos']:<6} | {dados['saldo_gols']:<6} | {dados['vitorias']:<6} | {dados['empates']:<6} | {dados['derrotas']:<6}|")
-        print("-" * 90)  # Linha horizontal entre as linhas da tabela
+        print("│" + f"{i:<4} | {time:<20} | {dados['pontos']:<6} | {dados['gols_marcados']:<6} | {dados['gols_sofridos']:<6} | {dados['saldo_gols']:<6} | {dados['vitorias']:<6} | {dados['empates']:<6} | {dados['derrotas']:<6}│")  # Dados da tabela
+        print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal entre as linhas da tabela
+    
+    print("└" + "─" * tamanho_linha + "┘")  # Borda inferior
 
 
 
@@ -1890,43 +2349,58 @@ def print_trophy(vencedorFinal):
 
 
 def salvar_resultado_final(vencedor_final, gols_vencedor, vice_final, gols_vice):
-    nome_arquivo = "campeoes.json"
-    
-    # Se o arquivo já existir, carregue o conteúdo
-    if os.path.exists(nome_arquivo):
-        with open(nome_arquivo, 'r') as file:
-            historico_finais = json.load(file)
-    else:
-        historico_finais = []
+    try:
+        nome_arquivo = "campeoes.json"
+        
+        # Se o arquivo já existir, carregue o conteúdo
+        if os.path.exists(nome_arquivo):
+            with open(nome_arquivo, 'r') as file:
+                historico_finais = json.load(file)
+        else:
+            historico_finais = []
 
-    configuracao_atual = carregar_configuracao()
-    nivel_gols_simulacao = configuracao_atual["nivel_gols"]
+        # Define o número da nova simulação com base na última
+        numero_simulacao = len(historico_finais) + 1
 
-    # Adiciona os dados da final atual (incluindo os gols do vencedor e do vice)
-    final = {
-        "nivel_simulacao": nivel_gols_simulacao,
-        "campeao": {
-            "time": vencedor_final,
-            "gols": gols_vencedor
-        },
-        "vice": {
-            "time": vice_final,
-            "gols": gols_vice
+        configuracao_atual = carregar_configuracao()
+        nivel_gols_simulacao = configuracao_atual["nivel_gols"]
+
+        # Adiciona os dados da final atual, incluindo o número da simulação
+        final = {
+            "simulacao": numero_simulacao,
+            "nivel_simulacao": nivel_gols_simulacao,
+            "campeao": {
+                "time": vencedor_final,
+                "gols": gols_vencedor
+            },
+            "vice": {
+                "time": vice_final,
+                "gols": gols_vice
+            }
         }
-    }
-    historico_finais.append(final)
 
-    # Escreve o conteúdo atualizado no arquivo
-    with open(nome_arquivo, 'w') as file:
-        json.dump(historico_finais, file, indent=4)
+        historico_finais.append(final)
+
+        # Escreve o conteúdo atualizado no arquivo
+        with open(nome_arquivo, 'w') as file:
+            json.dump(historico_finais, file, indent=4)
+
+    except Exception as e:
+        print(f"Erro ao salvar o resultado final: {e}")
+
+
+
+
+
 def exibir_finais():
     nome_arquivo = "campeoes.json"
     if os.path.exists(nome_arquivo):
         with open(nome_arquivo, 'r') as file:
             historico_finais = json.load(file)
             print("\nHistórico de Finais:")
-            print(f"{'Nº'.ljust(4)}¦ {'Campeão'.ljust(20)}¦ {'Gols Campeão'.ljust(15)}¦ {'Vice'.ljust(20)}¦ {'Gols Vice'.ljust(15)}")
-            print("-" * 80)
+            print("\n")
+            print(f"{'Nº'.ljust(4)}│ {'Campeão'.ljust(20)}│ {'Gols Campeão'.ljust(15)}│ {'Vice'.ljust(20)}│ {'Gols Vice'.ljust(15)}")
+            print("_" * 80)
 
             for i, final in enumerate(historico_finais, start=1):
                 campeao = final['campeao']['time'].upper()
@@ -1934,7 +2408,7 @@ def exibir_finais():
                 vice = final['vice']['time']
                 gols_vice = final['vice']['gols']
 
-                print(f"{str(i).ljust(4)}¦ {campeao.ljust(20)}¦ {str(gols_campeao).ljust(15)}¦ {vice.ljust(20)}¦ {str(gols_vice).ljust(15)}")
+                print(f"{str(i).ljust(4)}│ {campeao.ljust(20)}│ {str(gols_campeao).ljust(15)}│ {vice.ljust(20)}│ {str(gols_vice).ljust(15)}")
     else:
         print("Nenhum campeão registrado ainda.")
 
@@ -1977,12 +2451,12 @@ def listar_campeoes_ordenados():
         # Exibe a frase com o número total de simulações
         print(f"\nLista de campeões após {total_simulacoes} simulação(ões):")
         print("\n")
-        print(f"{'Nº'.ljust(4)}¦ {'Time'.ljust(30)}¦ {'Títulos'.ljust(10)}")
-        print("-" * 50)
+        print(f"{'Nº'.ljust(4)}│ {'Time'.ljust(30)}│ {'Títulos'.ljust(10)}")
+        print("_" * 50)
 
         # Exibe os campeões em formato numerado
         for i, (time, titulos) in enumerate(campeoes_ordenados, start=1):
-            print(f"{str(i).ljust(4)}¦ {time.ljust(30)}¦ {str(titulos).ljust(10)}")
+            print(f"{str(i).ljust(4)}│ {time.ljust(30)}│ {str(titulos).ljust(10)}")
     else:
         print("\nNenhum campeão registrado ainda.")
 
@@ -2027,12 +2501,12 @@ def listar_vices_ordenados():
         # Exibe a frase com o número total de simulações
         print(f"\nLista de vice-campeões após {total_simulacoes} simulação(ões):")
         print("\n")
-        print(f"{'Nº'.ljust(4)}¦ {'Time'.ljust(30)}¦ {'Vice-Campeonatos'.ljust(18)}")
-        print("-" * 54)
+        print(f"{'Nº'.ljust(4)}│ {'Time'.ljust(30)}│ {'Vice-Campeonatos'.ljust(18)}")
+        print("_" * 54)
 
         # Exibe os vice-campeões em formato numerado
         for i, (time, vices_count) in enumerate(vices_ordenados, start=1):
-            print(f"{str(i).ljust(4)}¦ {time.ljust(30)}¦ {str(vices_count).ljust(18)}")
+            print(f"{str(i).ljust(4)}│ {time.ljust(30)}│ {str(vices_count).ljust(18)}")
     else:
         print("\nNenhum vice-campeão registrado ainda.")
 
@@ -2064,7 +2538,7 @@ def pesquisar_campeao_por_time(nome_time):
 
     # Verifica se o time está nos potes
     if not verificar_time_nos_potes(nome_time):
-        print(f"\nO time {nome_time.upper()} não existe nos potes.")
+        print(f"\nO time {nome_time.upper()} não existe nos registros.")
         return 0
 
     # Carregar campeões e vices do arquivo campeoes.json
@@ -2190,44 +2664,47 @@ def pesquisar_campeao_por_time(nome_time):
 
     # Exibição das estatísticas
 
-    print("\n")
 
     if contador_campeao == 0 and contador_vice == 0:
-        print(f"\n{'-' * 44}")
+        print(f"\n{'_' * 44}")
+        print("\n")
         print(f"Time: {nome_time.upper()}")
         print(f"{'Participações:'.ljust(30)}{participacoes}\n")
         print(f"\nO time {nome_time.upper()} não chegou à nenhuma final.")
-        print(f"\n{'-' * 44}")
+        print(f"\n{'_' * 44}")
     else:
-        print(f"\n{'-' * 44}")
+        print(f"\n{'_' * 44}")
+        print("\n")
         print(f"Time: {nome_time.upper()}")
         print(f"{'Participações:'.ljust(30)}{participacoes}\n")  # Exibe a quantidade de participações
         print(f"{'Campeão:'.ljust(30)}{contador_campeao} vez(es)")
         print(f"{'Vice-campeão:'.ljust(30)}{contador_vice} vez(es)")
-        print(f"{'-' * 44}")
+        print(f"{'_' * 44}")
     print("\n")
-    print("Mais informações:\n")
-    print(f"{'-' * 44}")
 
-    print(f"{'Gols Feitos:'.ljust(30)}{gols_feitos}")
-    print(f"{'Gols Sofridos:'.ljust(30)}{gols_sofridos}")
-    print(f"{'Partidas Jogadas:'.ljust(30)}{partidas_jogadas}")
-    print(f"{'Vitórias:'.ljust(30)}{vitorias}")
-    print(f"{'Empates:'.ljust(30)}{empates}")
-    print(f"{'Derrotas:'.ljust(30)}{derrotas}")
-    print(f"{'-' * 44}")
+    print("Mais informações:")
+    print("┌" + "─" * 44 + "┐")
+
+    print(f"│ {'Gols Feitos:'.ljust(30)}{gols_feitos:<10}   │")
+    print(f"│ {'Gols Sofridos:'.ljust(30)}{gols_sofridos:<10}   │")
+    print(f"│ {'Partidas Jogadas:'.ljust(30)}{partidas_jogadas:<10}   │")
+    print(f"│ {'Vitórias:'.ljust(30)}{vitorias:<10}   │")
+    print(f"│ {'Empates:'.ljust(30)}{empates:<10}   │")
+    print(f"│ {'Derrotas:'.ljust(30)}{derrotas:<10}   │")
+    print("└" + "─" * 44 + "┘")
 
     # Exibindo as médias
-    print(f"{'Média de Gols Feitos:'.ljust(30)}{media_gols_feitos:.2f}")
-    print(f"{'Média de Gols Sofridos:'.ljust(30)}{media_gols_sofridos:.2f}")
-    print(f"{'-' * 44}\n")
+    print("┌" + "─" * 44 + "┐")
+    print(f"│ {'Média de Gols Feitos:'.ljust(30)}{media_gols_feitos:.2f}         │")
+    print(f"│ {'Média de Gols Sofridos:'.ljust(30)}{media_gols_sofridos:.2f}         │")
+    print("└" + "─" * 44 + "┘\n")
 
     # Exibir as eliminações por fase
-    print(f"\nEliminações por fase:")
-    print("\n")
+    print("\nEliminações por fase:")
+    print("┌" + "─" * 44 + "┐")
     for fase, eliminacoes in eliminacoes_por_fase.items():
-        print(f"{fase.capitalize().ljust(30)} {eliminacoes} vez(es)")
-    print(f"{'-' * 44}\n")
+        print(f"│ {fase.capitalize().ljust(30)} {eliminacoes:<10}  │")
+    print("└" + "─" * 44 + "┘\n")
 
     return contador_campeao, contador_vice, gols_feitos, gols_sofridos, partidas_jogadas, participacoes, vitorias, empates, derrotas
 
@@ -2432,10 +2909,22 @@ def buscar_partidas_por_time():
 
     for fase, partidas in partidas_por_fase.items():
         if partidas:  # Exibe somente se houver partidas na fase
+            # Calcula o comprimento máximo das partidas para a formatação
+            max_len_time = max(len(nome_time), max(len(partida) for partida in partidas))
+            if max_len_time % 2 == 0:
+                max_len_time += 1
+            tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+            metade = (tamanho_linha - 5) // 2
+
             print(f"Fase {fase.capitalize()}:\n")
+            print("┌" + "─" * tamanho_linha + "┐")
+            print("├" + "─" * tamanho_linha + "┤")
+
             for partida in partidas:
-                print(partida)
-            print()  # Espaço entre as fases
+                print("| {:^{}} |".format(partida, tamanho_linha - 2))  # Alinha a partida no centro
+
+            print("└" + "─" * tamanho_linha + "┘\n")  # Finaliza a fase com um box
+
 
 
 
@@ -2506,13 +2995,24 @@ def buscar_partidas_historico():
                         else:
                             print(f"Fase desconhecida: {fase}")
 
-                    # Exibe as partidas agrupadas por fase
+                    # Exibe as partidas agrupadas por fase com a nova formatação
                     for fase, partidas in partidas_por_fase.items():
                         if partidas:
+                            # Calcula o comprimento máximo para a formatação
+                            max_len_time = max(len(nome_time), max(len(partida) for partida in partidas))
+                            if max_len_time % 2 == 0:
+                                max_len_time += 1
+                            tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+                            metade = (tamanho_linha - 5) // 2
+
                             print(f"Fase {fase.capitalize()}:\n")
+                            print("┌" + "─" * tamanho_linha + "┐")
+                            print("├" + "─" * tamanho_linha + "┤")
+
                             for partida in partidas:
-                                print(partida)
-                            print()  # Espaço entre as fases
+                                print("| {:^{}} |".format(partida, tamanho_linha - 2))  # Alinha a partida no centro
+
+                            print("└" + "─" * tamanho_linha + "┘\n")  # Finaliza a fase com um box
                     partidas_por_fase = {k: [] for k in partidas_por_fase}  # Limpa as partidas para a próxima simulação
         else:
             # Tenta converter a escolha para número de simulação
@@ -2555,15 +3055,28 @@ def buscar_partidas_historico():
                 else:
                     print(f"Fase desconhecida: {fase}")
 
-            # Exibe as partidas agrupadas por fase
+            # Exibe as partidas agrupadas por fase com a nova formatação
             print(f"\nPartidas jogadas pelo {nome_time.capitalize()} na simulação {num_simulacao}:\n")
 
             for fase, partidas in partidas_por_fase.items():
                 if partidas:  # Exibe somente se houver partidas na fase
+                    # Calcula o comprimento máximo para a formatação
+                    max_len_time = max(len(nome_time), max(len(partida) for partida in partidas))
+                    if max_len_time % 2 == 0:
+                        max_len_time += 1
+                    tamanho_linha = max_len_time + 28  # Adiciona uma margem de 28 caracteres
+                    metade = (tamanho_linha - 5) // 2
+
                     print(f"Fase {fase.capitalize()}:\n")
+                    print("┌" + "─" * tamanho_linha + "┐")
+                    print("├" + "─" * tamanho_linha + "┤")
+
                     for partida in partidas:
-                        print(partida)
-                    print()  # Espaço entre as fases
+                        print("| {:^{}} |".format(partida, tamanho_linha - 2))  # Alinha a partida no centro
+
+                    print("└" + "─" * tamanho_linha + "┘\n")  # Finaliza a fase com um box
+
+
 
 
 
@@ -2657,33 +3170,33 @@ def analisar_estatisticas():
                 time_pior_media_defensiva = time
 
     # Impressão das estatísticas
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
     print("Melhor(es) Ataque(s):")
     for ataque in melhores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
 
     print("\nMelhor(es) Defesa(s):")
     for defesa in melhores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
 
     print("\nPior(es) Ataque(s):")
     for ataque in piores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
 
     print("\nPior(es) Defesa(s):")
     for defesa in piores_defesas:
         print(f"{defesa['time']}: {' ' * (20 - len(defesa['time']))} {defesa['gols_sofridos']} gols sofridos em {defesa['partidas']} partidas")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
     # Impressão das maiores goleadas
     print("\nMaior(es) Goleada(s) da fase de liga:")
     print("\n")
     for goleada in maiores_goleadas:
         print("{:>20} {:<1} x {:<1} {:<20}".format(goleada['time1'], goleada['gols_time1'], goleada['gols_time2'], goleada['time2']))
     print("\n")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
     print("\nMaior(s) goleada(s) da fase de mata-mata:")
     print("\n")
     for goleada in maiores_goleadas_mata_mata:
@@ -2691,7 +3204,7 @@ def analisar_estatisticas():
 
 
     print("\n")
-    print(f"{'-' * 44}\n")
+    print(f"{'_' * 64}\n")
     # Impressão das novas estatísticas de médias
     # Exibindo as médias com espaçamento formatado
     print("\nMelhor média de gols:")
@@ -2705,7 +3218,7 @@ def analisar_estatisticas():
 
     print("\nPior média defensiva:")
     print(f"{time_pior_media_defensiva}: {' ' * (20 - len(time_pior_media_defensiva))} {pior_media_defensiva:.2f} gols sofridos por partida")
-    print(f"{'-' * 64}\n")
+    print(f"{'_' * 64}\n")
 
 
 
@@ -2714,10 +3227,13 @@ class ExitLoops(Exception):
     pass
 
 def main():
+    global potes, stats
 
     try:    
         if not os.path.exists("configuracao_gols.json"):
             criar_configuracao_padrao()
+
+        carregar_stats_inicial()
 
     
         voltar_menu_principal = False  # Inicializa fora de todos os loops
@@ -2729,29 +3245,44 @@ def main():
             if escolha_menu == '1':
                 while True:  # Adiciona um loop para o menu de configurações
                     print("\n")
-                    configs = input("\n1 - Editar média de gols do jogo\n2 - Editar times\n3 - Excluir times personalizados\n4 - Voltar\n\n".upper())
+                    configs = input("\n1 - Editar média de gols do jogo\n2 - Editar times\n3 - Trocar para configuração padrão ou personalizada\n4 - Excluir times personalizados\n5 - Excluir simulação\n6 - Voltar\n99 - RESETAR DADOS\n\n".upper())
                     print("\n")
                     print("\n")
 
-                    if configs == '1':
+                    if configs == '99':
+                        resetar_aplicacao()
+
+                    elif configs == '1':
                         configurar_nivel_gols()
                     elif configs == '2':
                         substituir_time(potes, stats)
                         continue
-                    elif configs == '3':
-                        confirma = input("Tem certeza que deseja excluir os times personalizados e voltar para a configuração padrão?\n\n1 - SIM\n2 - NÃO\n\n")
-                        
-                        if confirma == '1':
-                            excluir_stats_personalizados()
-                            continue
-                        elif confirma == '2':
-                            print("\n")
-                            print("Operação cancelada.")
-                            continue
-                        else:
-                            print("\n")
-                            print("Opção inválida. Tente novamente.")
                     elif configs == '4':
+                        if os.path.exists("stats_personalizados.json"):
+                            confirma = input("Tem certeza que deseja excluir os times personalizados e voltar para a configuração padrão?\n\n1 - SIM\n2 - NÃO\n\n")
+
+                        
+                            if confirma == '1':
+                                excluir_stats_personalizados()
+                                potes, stats = carregar_times_stats2()
+                                continue
+                            elif confirma == '2':
+                                print("\n")
+                                print("Operação cancelada.")
+                                continue
+                            else:
+                                print("\n")
+                                print("Opção inválida. Tente novamente.")
+                        else:
+                            print("\n\nArquivo não encontrado\n\n")
+                    elif configs == '3':
+                        alternar_stats()
+                        continue
+                    elif configs == '5':
+                        excluir_simulacao()
+                        continue
+
+                    elif configs == '6':
                         break  # Sai do loop de configurações e volta para o menu principal
                     else:
                         print("Opção inválida. Tente novamente.")
@@ -2931,9 +3462,9 @@ def main():
                                                                                                             print("\n")
 
                                                                                                             if simular_Final == '':
-                                                                                                                vencedorFinal, gols_vencedor, viceFinal, gols_vice = placar_final_final(vencedores_semis)
-                                                                                                                print("\n{:>16}\nCampeão: {}".format('', vencedorFinal))
-                                                                                                                print_trophy(vencedorFinal)
+                                                                                                                vencedor_final, gols_vencedor, vice_final, gols_vice = placar_final_final(vencedores_semis)
+                                                                                                                print("\n{:>16}\nCampeão: {}".format('', vencedor_final))
+                                                                                                                print_trophy(vencedor_final)
                                                                                                                 print("\n")
                                                                                                                 print("\n")
                                                                                                                 
@@ -2956,9 +3487,10 @@ def main():
 
                                                                                                                             if voltar_ao_sorteio == '':
                                                                                                                                 print("\n")
-                                                                                                                                finalizar_simulacao()
+                                                                                                                                
+                                                                                                                                finalizar_simulacao(vencedor_final, gols_vencedor, vice_final, gols_vice)
                                                                                                                                 transferir_para_historico()
-                                                                                                                                salvar_resultado_final(vencedorFinal, gols_vencedor, viceFinal, gols_vice)
+                                                                                                                               
                                                                                                                                 raise ExitLoops
                                                                                                                             elif voltar_ao_sorteio == '1':
                                                                                                                                 break
@@ -2975,7 +3507,8 @@ def main():
                                                                                                                     elif escolha_finais2 == '2':
                                                                                                                         while True:  # Novo loop para Outras Opções
                                                                                                                             print("\n")
-                                                                                                                            finalizar_simulacao()
+                                                                                                                            
+                                                                                                                            finalizar_simulacao(vencedor_final, gols_vencedor, vice_final, gols_vice)
                                                                                                                             transferir_para_historico()
                                                                                                                             outras_opcoes = input("\nENTER - Voltar para o menu\n\n").strip().upper()
                                                                                                                             print("\n")
@@ -3000,7 +3533,7 @@ def main():
 
                                                                                                                                 if voltar_ao_sorteio == '':
                                                                                                                                     print("\n")
-                                                                                                                                    finalizar_simulacao()
+                                                                                                                                    finalizar_simulacao(vencedor_final, gols_vencedor, vice_final, gols_vice)
                                                                                                                                     transferir_para_historico()
                                                                                                                                     raise ExitLoops
                                                                                                                                 elif voltar_ao_sorteio == '2':

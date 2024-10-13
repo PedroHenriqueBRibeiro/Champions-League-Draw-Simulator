@@ -1,0 +1,194 @@
+{
+    "potes": [
+        [
+            "Barcelona",
+            "Real Madrid",
+            "Manchester City",
+            "Bayern Munich",
+            "PSG",
+            "Juventus",
+            "Chelsea",
+            "Liverpool",
+            "Atl\u00e9tico Madrid"
+        ],
+        [
+            "Borussia Dortmund",
+            "Inter de Mil\u00e3o",
+            "Milan",
+            "Tottenham",
+            "Arsenal",
+            "Napoli",
+            "Leipzig",
+            "Sevilla",
+            "Ajax"
+        ],
+        [
+            "Benfica",
+            "Porto",
+            "Shakhtar",
+            "Zenit",
+            "Sporting",
+            "Atalanta",
+            "Lyon",
+            "Monaco",
+            "Leverkusen"
+        ],
+        [
+            "Fenerbah\u00e7e",
+            "Galatasaray",
+            "Olympiacos",
+            "Red Bull Salzburg",
+            "Celtic",
+            "Rangers",
+            "Club Brugge",
+            "Dynamo Kiev",
+            "VASCO"
+        ]
+    ],
+    "stats": {
+        "Barcelona": {
+            "ataque": 90,
+            "defesa": 85
+        },
+        "Real Madrid": {
+            "ataque": 88,
+            "defesa": 83
+        },
+        "Manchester City": {
+            "ataque": 92,
+            "defesa": 86
+        },
+        "Bayern Munich": {
+            "ataque": 91,
+            "defesa": 84
+        },
+        "PSG": {
+            "ataque": 89,
+            "defesa": 80
+        },
+        "Juventus": {
+            "ataque": 86,
+            "defesa": 82
+        },
+        "Chelsea": {
+            "ataque": 87,
+            "defesa": 81
+        },
+        "Liverpool": {
+            "ataque": 90,
+            "defesa": 84
+        },
+        "Atl\u00e9tico Madrid": {
+            "ataque": 85,
+            "defesa": 88
+        },
+        "Borussia Dortmund": {
+            "ataque": 84,
+            "defesa": 79
+        },
+        "Inter de Mil\u00e3o": {
+            "ataque": 82,
+            "defesa": 80
+        },
+        "Milan": {
+            "ataque": 81,
+            "defesa": 78
+        },
+        "Tottenham": {
+            "ataque": 83,
+            "defesa": 77
+        },
+        "Arsenal": {
+            "ataque": 85,
+            "defesa": 76
+        },
+        "Napoli": {
+            "ataque": 84,
+            "defesa": 78
+        },
+        "Leipzig": {
+            "ataque": 82,
+            "defesa": 76
+        },
+        "Sevilla": {
+            "ataque": 80,
+            "defesa": 79
+        },
+        "Ajax": {
+            "ataque": 81,
+            "defesa": 75
+        },
+        "Benfica": {
+            "ataque": 78,
+            "defesa": 74
+        },
+        "Porto": {
+            "ataque": 77,
+            "defesa": 76
+        },
+        "Shakhtar": {
+            "ataque": 75,
+            "defesa": 72
+        },
+        "Zenit": {
+            "ataque": 76,
+            "defesa": 73
+        },
+        "Sporting": {
+            "ataque": 76,
+            "defesa": 71
+        },
+        "Atalanta": {
+            "ataque": 79,
+            "defesa": 74
+        },
+        "Lyon": {
+            "ataque": 78,
+            "defesa": 72
+        },
+        "Monaco": {
+            "ataque": 77,
+            "defesa": 70
+        },
+        "Leverkusen": {
+            "ataque": 79,
+            "defesa": 73
+        },
+        "Fenerbah\u00e7e": {
+            "ataque": 72,
+            "defesa": 69
+        },
+        "Galatasaray": {
+            "ataque": 71,
+            "defesa": 68
+        },
+        "Olympiacos": {
+            "ataque": 70,
+            "defesa": 67
+        },
+        "Red Bull Salzburg": {
+            "ataque": 73,
+            "defesa": 70
+        },
+        "Celtic": {
+            "ataque": 71,
+            "defesa": 66
+        },
+        "Rangers": {
+            "ataque": 70,
+            "defesa": 65
+        },
+        "Club Brugge": {
+            "ataque": 72,
+            "defesa": 68
+        },
+        "Dynamo Kiev": {
+            "ataque": 69,
+            "defesa": 66
+        },
+        "VASCO": {
+            "ataque": 99,
+            "defesa": 90
+        }
+    }
+}
