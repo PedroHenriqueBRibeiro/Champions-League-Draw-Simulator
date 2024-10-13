@@ -9517,5 +9517,2422 @@
                 ]
             }
         }
+    },
+    {
+        "simulacao": 4,
+        "resultados": {
+            "Ajax": {
+                "jogos": [
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Shakhtar": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "VASCO": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 5,
+                        "gols_sofridos": 0,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "final"
+                    }
+                ]
+            },
+            "Inter de Mil\u00e3o": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Monaco": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Bayern Munich": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Borussia Dortmund": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Juventus": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "semis"
+                    }
+                ]
+            },
+            "Rangers": {
+                "jogos": [
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Arsenal": {
+                "jogos": [
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 5,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 5,
+                        "fase": "quartas"
+                    }
+                ]
+            },
+            "Liverpool": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 1,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "semis"
+                    }
+                ]
+            },
+            "Benfica": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Leverkusen": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Napoli": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Sevilla": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Ajax",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Club Brugge": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 5,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Real Madrid": {
+                "jogos": [
+                    {
+                        "adversario": "Arsenal",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 4,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Atalanta": {
+                "jogos": [
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Manchester City": {
+                "jogos": [
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "quartas"
+                    }
+                ]
+            },
+            "Barcelona": {
+                "jogos": [
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Tottenham": {
+                "jogos": [
+                    {
+                        "adversario": "Atalanta",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "quartas"
+                    }
+                ]
+            },
+            "Atl\u00e9tico Madrid": {
+                "jogos": [
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "semis"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "final"
+                    }
+                ]
+            },
+            "Chelsea": {
+                "jogos": [
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    }
+                ]
+            },
+            "Red Bull Salzburg": {
+                "jogos": [
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Fenerbah\u00e7e": {
+                "jogos": [
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 4,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Milan": {
+                "jogos": [
+                    {
+                        "adversario": "Barcelona",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Galatasaray": {
+                "jogos": [
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "PSG": {
+                "jogos": [
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Inter de Mil\u00e3o",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Porto",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "oitavas"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 4,
+                        "fase": "quartas"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "quartas"
+                    }
+                ]
+            },
+            "Olympiacos": {
+                "jogos": [
+                    {
+                        "adversario": "Bayern Munich",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Celtic": {
+                "jogos": [
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Lyon": {
+                "jogos": [
+                    {
+                        "adversario": "Benfica",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Porto": {
+                "jogos": [
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Fenerbah\u00e7e",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Manchester City",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "VASCO",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 4,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Atl\u00e9tico Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Dynamo Kiev": {
+                "jogos": [
+                    {
+                        "adversario": "Borussia Dortmund",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Celtic",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Shakhtar",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Olympiacos",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Zenit": {
+                "jogos": [
+                    {
+                        "adversario": "Chelsea",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Monaco",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Rangers",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sevilla",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 3,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    }
+                ]
+            },
+            "Sporting": {
+                "jogos": [
+                    {
+                        "adversario": "Club Brugge",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Galatasaray",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Juventus",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leipzig",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Liverpool",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Lyon",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Napoli",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Zenit",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    }
+                ]
+            },
+            "Leipzig": {
+                "jogos": [
+                    {
+                        "adversario": "Dynamo Kiev",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Leverkusen",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 2,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "PSG",
+                        "gols_marcados": 3,
+                        "gols_sofridos": 3,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Milan",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Sporting",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Real Madrid",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 1,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Red Bull Salzburg",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 0,
+                        "gols_sofridos": 0,
+                        "fase": "grupos"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 1,
+                        "gols_sofridos": 2,
+                        "fase": "playoffs"
+                    },
+                    {
+                        "adversario": "Tottenham",
+                        "gols_marcados": 2,
+                        "gols_sofridos": 3,
+                        "fase": "playoffs"
+                    }
+                ]
+            }
+        }
     }
 ]

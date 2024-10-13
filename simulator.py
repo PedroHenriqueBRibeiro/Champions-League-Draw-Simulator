@@ -2,14 +2,13 @@ import json
 import os
 import random
 import numpy as np
-import subprocess
 import sys
 import time
 
 def reiniciar_aplicacao():
-    print("A aplicação será reiniciada em 5 segundos...\n\n")
+    print("\n\nA aplicação será reiniciada em 5 segundos...\n")
     for i in range(5, 0, -1):
-        print(f"{i} segundos restantes...")
+        print(f"{i} segundo(s) restantes...", end='\r')
         time.sleep(1)  # Espera 1 segundo
     print("\nReiniciando a aplicação...")
     os.execv(sys.executable, ['python'] + sys.argv)
@@ -44,7 +43,7 @@ def resetar_aplicacao():
                     arquivos_nao_encontrados.append(arquivo)
 
             print("\n\nReset da aplicação concluído.\n\n")
-            reiniciar_aplicacao()
+
             
             if arquivos_excluidos:
                 print("\nArquivos excluídos:")
@@ -57,6 +56,8 @@ def resetar_aplicacao():
                 print("\nArquivos não encontrados:")
                 for arquivo in arquivos_nao_encontrados:
                     print(f"- {arquivo}")
+            reiniciar_aplicacao()
+
         else:
             print("\n\nOperação cancelada.\n\n")
     elif confirmar == 'N' or confirmar == 'n':
@@ -138,7 +139,7 @@ if os.path.exists("stats_personalizados.json"):
 else:
     with open("dados_times.json", "r") as file:
         dados = json.load(file)
-        print("Carregando times e stats predefinidos...")
+        print("Carregando configurações predefinidas...")
 
 # Carregar os potes e stats
 potes = dados["potes"]
@@ -247,7 +248,7 @@ def alternar_stats():
     if escolha == '1':
         if os.path.exists("dados_times.json"):
             with open("dados_times.json", "r") as file:
-                print("\n\nCarregando times e stats predefinidos...")
+                print("\n\nCarregando configurações predefinidas...")
                 dados = json.load(file)
                 potes = dados["potes"]
                 stats = dados["stats"]  # Carregar os dados predefinidos
@@ -285,7 +286,7 @@ def carregar_times_stats2():
             stats = dados["stats"]
     else:
         with open("dados_times.json", "r") as file:
-            print("\n\nCarregando times e stats predefinidos...")
+            print("\n\nCarregando configurações predefinidas...")
             dados = json.load(file)
             potes = dados["potes"]
             stats = dados["stats"]
@@ -402,7 +403,33 @@ def calcula_media_desvio(ataque_time, defesa_adversario):
 
 
 
+def momento():
 
+    return random.randint(0, 0)
+
+
+def print_stats_com_momento():
+    for time in stats:
+        # Obter os stats de ataque e defesa do time atual
+        ataque_time = stats[time]["ataque"]
+        defesa_time = stats[time]["defesa"]
+
+        # Gerar valores de momento para o ataque e defesa
+        momento_ataque = momento()
+        momento_defesa = momento()
+
+        # Aplicar o momento aos stats
+        ataque_time_com_momento = ataque_time + momento_ataque
+        defesa_time_com_momento = defesa_time + momento_defesa
+
+        # Printar os stats com o momento aplicado
+        print(f"Time: {time}")
+        print(f"Ataque com momento: {ataque_time_com_momento}")
+        print(f"Defesa com momento: {defesa_time_com_momento}")
+        print("-" * 30)  # Separador para melhor visualização
+
+
+# Chamar a função para imprimir os stats de todos os times
 
 
 
@@ -422,6 +449,17 @@ def gerar_gols(time_casa, time_fora):
     ataque_fora = stats[time_fora]["ataque"]
     defesa_casa = stats[time_casa]["defesa"]
 
+    momento_casa_ataque = momento()
+    momento_fora_defesa = momento()
+    momento_fora_ataque = momento()
+    momento_casa_defesa = momento()
+
+    ataque_casa = ataque_casa + momento_casa_ataque
+    defesa_fora = defesa_fora + momento_fora_defesa
+    ataque_fora = ataque_fora + momento_fora_ataque
+    defesa_casa = defesa_casa + momento_casa_defesa
+
+
     # Calcular médias e desvios
     media_casa, desvio_casa = calcula_media_desvio(ataque_casa, defesa_fora)
     media_fora, desvio_fora = calcula_media_desvio(ataque_fora, defesa_casa)
@@ -431,6 +469,7 @@ def gerar_gols(time_casa, time_fora):
     gols_fora = max(0, int(np.random.normal(media_fora, desvio_fora)))
 
     return gols_casa, gols_fora
+
 
 
 def simular_penaltis(time1, time2):
@@ -2134,6 +2173,13 @@ def transferir_para_historico():
         print("Arquivo de resultados não encontrado.")
         return
 
+    # Verifica se algum time tem mais de 8 jogos na fase "grupos"
+    for time, dados in resultados.items():
+        jogos_grupos = [jogo for jogo in dados["jogos"] if jogo["fase"].lower() == "grupos"]
+        if len(jogos_grupos) > 8:
+            print(f"Erro: Dados anormais detectados. Dados não salvos no histórico.")
+            return
+
     # Carrega o histórico ou cria um novo
     try:
         with open('historico_resultados.json', 'r') as file:
@@ -2160,7 +2206,6 @@ def transferir_para_historico():
     # Deleta o arquivo de resultados atual
     if os.path.exists('resultados_partidas_atual.json'):
         os.remove('resultados_partidas_atual.json')
-        print("")
     else:
         print("O arquivo do histórico não foi encontrado.")
 
@@ -2179,6 +2224,10 @@ def listar_simulacoes():
     except FileNotFoundError:
         campeoes = []
 
+    if not campeoes:
+        print("\n\nNenhuma simulação encontrada.\n\n")
+        return
+
     # Cria uma lista com os dados formatados para calcular o comprimento máximo
     sim_data = []
     for final in campeoes:
@@ -2190,19 +2239,17 @@ def listar_simulacoes():
         nivel = final.get("nivel_simulacao", "Desconhecido")
         sim_data.append(f"{simulacao}│ {vencedor}│ {placar_vencedor} x {placar_vice}│ {vice}│ {nivel}")
 
+    if not sim_data:
+        print("\n\nNenhuma simulação disponível para exibir.\n\n")
+        return
+
+
     # Determina o comprimento máximo baseado nos dados de simulações
-    max_len_sim_data = max(len(line) for line in sim_data)
-    
-    # Define o tamanho da linha como a maior string + margem adicional
-    tamanho_linha = max_len_sim_data + 28  # Margem adicional de 28 caracteres
-    if tamanho_linha % 2 == 0:
-        tamanho_linha += 1  # Garante que a linha tenha um comprimento ímpar
-    
-    metade = (tamanho_linha - 13) // 2
+    tamanho_linha = 97
 
     # Cabeçalho formatado
     print(f"{'┌' + '─' * tamanho_linha + '┐'}")
-    print(f"│{'Simulação'.ljust(10)}│{'Vencedor'.ljust(20)}│{'Placar'.ljust(21)}│{'Vice-Campeão'.ljust(18)}│{'Nível da Simulação'.ljust(10)}│")
+    print(f"│{'Simulação'.ljust(10)}│{'Vencedor'.ljust(20)}│{'Placar'.ljust(21)}│{'Vice-Campeão'.ljust(18)}│{'Nível da Simulação'.ljust(24)}│")
     print(f"{'├' + '─' * tamanho_linha + '┤'}")
 
     for final in campeoes:
@@ -2215,7 +2262,7 @@ def listar_simulacoes():
         nivel = final.get("nivel_simulacao", "Desconhecido").ljust(10)
 
         # Formata a linha com os dados
-        linha_formatada = f"│{simulacao}│{vencedor}│{placar}│{vice}│{nivel}        │"
+        linha_formatada = f"│{simulacao}│{vencedor}│{placar}│{vice}│{nivel}              │"
         print(linha_formatada)
 
     # Rodapé formatado
@@ -2233,6 +2280,9 @@ def excluir_simulacao_por_numero(simulacao_numero):
 
             # Filtra as simulações para remover aquela com o número desejado
             dados_filtrados = [simulacao for simulacao in dados if simulacao.get("simulacao") != simulacao_numero]
+
+            for i, simulacao in enumerate(dados_filtrados, start=1):
+                simulacao["simulacao"] = i
 
             # Escreve os dados filtrados de volta no arquivo
             with open(nome_arquivo, 'w') as file:
@@ -2312,12 +2362,27 @@ def exibir_classificacao(classificacao):
     print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal após o cabeçalho
     
     for i, (time, dados) in enumerate(classificacao_ordenada, start=1):
-        print("│" + f"{i:<4} | {time:<20} | {dados['pontos']:<6} | {dados['gols_marcados']:<6} | {dados['gols_sofridos']:<6} | {dados['saldo_gols']:<6} | {dados['vitorias']:<6} | {dados['empates']:<6} | {dados['derrotas']:<6}│")  # Dados da tabela
+        time = time.upper()
+        # Adiciona cor verde nos primeiros 8 colocados (apenas posição e nome)
+        if i <= 8:
+            posicao_nome = f"\033[32m{i:<4} | {time:<20}\033[0m"
+        # Adiciona cor azul do 9º ao 24º colocados (apenas posição e nome)
+        elif 9 <= i <= 24:
+            posicao_nome = f"\033[34m{i:<4} | {time:<20}\033[0m"
+        # Adiciona cor vermelha do 25º colocado em diante (apenas posição e nome)
+        else:
+            posicao_nome = f"\033[31m{i:<4} | {time:<20}\033[0m"
+        
+        # Exibe a linha da tabela com as cores aplicadas apenas na posição e no nome do time
+        linha = f"{posicao_nome} | {dados['pontos']:<6} | {dados['gols_marcados']:<6} | {dados['gols_sofridos']:<6} | {dados['saldo_gols']:<6} | {dados['vitorias']:<6} | {dados['empates']:<6} | {dados['derrotas']:<6}"
+        print("│" + linha + "│")
         print("├" + "─" * tamanho_linha + "┤")  # Linha horizontal entre as linhas da tabela
     
     print("└" + "─" * tamanho_linha + "┘")  # Borda inferior
-
-
+    print("\n")
+    print(f"\033[32m●\033[0m - Classificados para oitavas\n")
+    print(f"\033[34m●\033[0m - Classificados para playoffs\n")
+    print(f"\033[31m●\033[0m - Eliminados\n")
 
 
 
@@ -2326,13 +2391,42 @@ def exibir_classificacao(classificacao):
 
 
 def simular_confrontos(home_away, resultados, classificacao):
+    largura_total = 80  # Largura total para as caixas do nome e das partidas
     resultados_partidas = []
+
     for time in sorted(home_away.keys()):
-        resultados_partidas.append(f"\n{time}:\n")
+        # Caixa para o nome do time (mesma largura da caixa de partidas)
+        espacos_antes_time = (largura_total - len(time.upper()) - 4) // 2  # Centralizar o nome do time na caixa
+        linha_superior_time = "┌" + "─" * (largura_total - 2) + "┐"  # Linha superior da caixa do nome
+        resultado_time = f"|{' ' * espacos_antes_time}\033[32m{time.upper()}\033[0m{' ' * (largura_total - 2 - len(time.upper()) - espacos_antes_time)}|"
+        linha_inferior_time = "└" + "─" * (largura_total - 2) + "┘"  # Linha inferior da caixa do nome
+
+        # Adiciona a borda superior, nome do time centralizado, e borda inferior para a caixa do nome
+        resultados_partidas.append(f"\n\n\n{linha_superior_time}\n{resultado_time}\n{linha_inferior_time}")
+
+        # Caixa maior para as partidas
+        linha_superior_partidas = "┌" + "─" * (largura_total - 2) + "┐"  # Linha superior da caixa de partidas
+        linha_inferior_partidas = "└" + "─" * (largura_total - 2) + "┘"  # Linha inferior da caixa de partidas
+        resultados_partidas.append(linha_superior_partidas)
+
+        # Resultados das partidas (tanto "home" quanto "away")
         for adversario in home_away[time]["home"]:
-            resultados_partidas.append(simular_partida(time, adversario, resultados, classificacao))
+            resultado = simular_partida(time, adversario, resultados, classificacao)
+            resultado = resultado.replace(time, time.upper())  
+            espacos_antes_resultado = (largura_total - len(resultado) - 4) // 2  # Centralizar resultado na caixa
+            resultado_formatado = f"|{' ' * espacos_antes_resultado}{resultado}{' ' * (largura_total - 2 - len(resultado) - espacos_antes_resultado)}|"
+            resultados_partidas.append(resultado_formatado)
+        
         for adversario in home_away[time]["away"]:
-            resultados_partidas.append(simular_partida(adversario, time, resultados, classificacao))
+            resultado = simular_partida(adversario, time, resultados, classificacao)
+            resultado = resultado.replace(time, time.upper())  
+            espacos_antes_resultado = (largura_total - len(resultado) - 4) // 2  # Centralizar resultado na caixa
+            resultado_formatado = f"|{' ' * espacos_antes_resultado}{resultado}{' ' * (largura_total - 2 - len(resultado) - espacos_antes_resultado)}|"
+            resultados_partidas.append(resultado_formatado)
+
+        # Adiciona a borda inferior da caixa de partidas
+        resultados_partidas.append(linha_inferior_partidas)
+    
     return resultados_partidas
 
 
@@ -2346,11 +2440,15 @@ def simular_confrontos(home_away, resultados, classificacao):
 
 
 
-
 def print_trophy(vencedorFinal):
+    # Códigos de escape para cores
+    amarelo = "\033[33m"  # Cor amarela
+    laranja = "\033[38;5;214m"  # Cor laranja (usando 256 colors)
+    reset = "\033[0m"  # Reset para a cor padrão
+
     print("\n")
     print("\n")
-    print(f"""
+    print(f"""{amarelo}
              ___________
             '._==_==_=_.'
             .-\:      /-.
@@ -2358,7 +2456,7 @@ def print_trophy(vencedorFinal):
             '-|:.     |-'
               \::.    /
                '::. .'
-                 ){vencedorFinal}´´´´
+                 ){laranja}{vencedorFinal}{reset}´´´´
                _.' '._
           `"""""""`
     """)
@@ -3331,7 +3429,7 @@ def main():
                             print("\n")
                             for time in sorted(confrontos.keys()):
                                 rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
-                                print("{:<20}¦ {}".format(time, ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
+                                print("{:<20}| {}".format(time.upper(), ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
 
                             # Pergunta ao usuário se ele quer simular as partidas, pesquisar dados ou voltar ao menu principal
                             print("\n")
@@ -3343,6 +3441,7 @@ def main():
                                 print("\n")
                                 print("\nSimulando partidas...")
                                 print("\n")
+                                print_stats_com_momento()
                                 resultados_partidas = simular_confrontos(home_away, resultados, classificacao)
                                 inicializar_gols_acumulados(classificacao)
                                 print("\n")

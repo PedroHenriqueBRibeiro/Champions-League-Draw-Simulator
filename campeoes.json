@@ -350,5 +350,17 @@
             "time": "Bayern Munich",
             "gols": "1 (2 PEN)"
         }
+    },
+    {
+        "simulacao": 33,
+        "nivel_simulacao": "media",
+        "campeao": {
+            "time": "VASCO",
+            "gols": 2
+        },
+        "vice": {
+            "time": "Atl\u00e9tico Madrid",
+            "gols": 0
+        }
     }
 ]
