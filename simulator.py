@@ -2,6 +2,18 @@ import json
 import os
 import random
 import numpy as np
+import subprocess
+import sys
+import time
+
+def reiniciar_aplicacao():
+    print("A aplicação será reiniciada em 5 segundos...\n\n")
+    for i in range(5, 0, -1):
+        print(f"{i} segundos restantes...")
+        time.sleep(1)  # Espera 1 segundo
+    print("\nReiniciando a aplicação...")
+    os.execv(sys.executable, ['python'] + sys.argv)
+
 
 def resetar_aplicacao():
     arquivos_para_excluir = [
@@ -32,6 +44,7 @@ def resetar_aplicacao():
                     arquivos_nao_encontrados.append(arquivo)
 
             print("\n\nReset da aplicação concluído.\n\n")
+            reiniciar_aplicacao()
             
             if arquivos_excluidos:
                 print("\nArquivos excluídos:")
@@ -298,66 +311,70 @@ def carregar_times_stats():
 
 # Função para substituir o time e salvar no arquivo personalizado
 def substituir_time(potes, stats):
-    # Verifica se existe um arquivo de stats personalizados
-    if os.path.exists("stats_personalizados.json"):
-        with open("stats_personalizados.json", "r") as file:
-            dados_personalizados = json.load(file)
-            potes = dados_personalizados["potes"]
-            stats = dados_personalizados["stats"]
+    if not os.path.exists("dados_times.json"):
+        print("\n\nArquivo não encontrado.\n\n")
     else:
-        # Se não existir, carrega o arquivo de dados normais
-        with open("dados_times.json", "r") as file:
-            dados_normais = json.load(file)
-            potes = dados_normais["potes"]
-            stats = dados_normais["stats"]
-    
-    listar_times(potes, stats)
-    while True:
-        try:
-            print("\n")
-            entrada = input("\n\nDigite o número do time que deseja substituir (1-36):\nS - sair\n\n").strip()
-            
-            if entrada.lower() == 's':
-                break  # Sai do loop se o usuário digitar 's' ou 'S'
 
-            numero_substituir = int(entrada)  # Tenta converter a entrada para inteiro
+        # Verifica se existe um arquivo de stats personalizados
+        if os.path.exists("stats_personalizados.json"):
+            with open("stats_personalizados.json", "r") as file:
+                dados_personalizados = json.load(file)
+                potes = dados_personalizados["potes"]
+                stats = dados_personalizados["stats"]
+        else:
+            # Se não existir, carrega o arquivo de dados normais
+            with open("dados_times.json", "r") as file:
+                dados_normais = json.load(file)
+                potes = dados_normais["potes"]
+                stats = dados_normais["stats"]
+        
+        listar_times(potes, stats)
+        while True:
+            try:
+                print("\n")
+                entrada = input("\n\nDigite o número do time que deseja substituir (1-36):\nS - sair\n\n").strip()
+                
+                if entrada.lower() == 's':
+                    break  # Sai do loop se o usuário digitar 's' ou 'S'
 
-            if numero_substituir < 1 or numero_substituir > 36:
-                print("\nNúmero inválido. Escolha um número entre 1 e 36.\n")
-                continue  # Volta para o início do loop para nova tentativa
-            
-            # Identificar o pote e o índice do time com base no número
-            pote_indice = (numero_substituir - 1) // 9
-            indice_no_pote = (numero_substituir - 1) % 9
-            
-            # Time que será substituído
-            time_substituido = potes[pote_indice][indice_no_pote]
-            
-            print(f"\nVocê escolheu substituir o time: {time_substituido}")
-            
-            # Nome do novo time
-            novo_time = input("\nDigite o nome do novo time: \n\n")
-            
-            # Stats do novo time
-            ataque = int(input(f"\nDigite o valor do ataque de {novo_time}: "))
-            defesa = int(input(f"Digite o valor da defesa de {novo_time}: "))
-            
-            # Substitui o time no pote e atualiza os stats
-            potes[pote_indice][indice_no_pote] = novo_time
-            stats[novo_time] = {"ataque": ataque, "defesa": defesa}
-            
-            # Remove os stats do time substituído
-            if time_substituido in stats:
-                del stats[time_substituido]
-            
-            print(f"\n\n{novo_time} foi adicionado com ataque {ataque} e defesa {defesa}.\n\n")
-            
-            # Salvar a alteração no arquivo personalizado
-            salvar_times_stats_personalizados(potes, stats)
+                numero_substituir = int(entrada)  # Tenta converter a entrada para inteiro
 
-        except ValueError:
-            print("\n")
-            print("Opção inválida. Tente novamente.")
+                if numero_substituir < 1 or numero_substituir > 36:
+                    print("\nNúmero inválido. Escolha um número entre 1 e 36.\n")
+                    continue  # Volta para o início do loop para nova tentativa
+                
+                # Identificar o pote e o índice do time com base no número
+                pote_indice = (numero_substituir - 1) // 9
+                indice_no_pote = (numero_substituir - 1) % 9
+                
+                # Time que será substituído
+                time_substituido = potes[pote_indice][indice_no_pote]
+                
+                print(f"\nVocê escolheu substituir o time: {time_substituido}")
+                
+                # Nome do novo time
+                novo_time = input("\nDigite o nome do novo time: \n\n")
+                
+                # Stats do novo time
+                ataque = int(input(f"\nDigite o valor do ataque de {novo_time}: "))
+                defesa = int(input(f"Digite o valor da defesa de {novo_time}: "))
+                
+                # Substitui o time no pote e atualiza os stats
+                potes[pote_indice][indice_no_pote] = novo_time
+                stats[novo_time] = {"ataque": ataque, "defesa": defesa}
+                
+                # Remove os stats do time substituído
+                if time_substituido in stats:
+                    del stats[time_substituido]
+                
+                print(f"\n\n{novo_time} foi adicionado com ataque {ataque} e defesa {defesa}.\n\n")
+                
+                # Salvar a alteração no arquivo personalizado
+                salvar_times_stats_personalizados(potes, stats)
+
+            except ValueError:
+                print("\n")
+                print("Opção inválida. Tente novamente.")
 
 
 
@@ -2400,7 +2417,7 @@ def exibir_finais():
             print("\nHistórico de Finais:")
             print("\n")
             print(f"{'Nº'.ljust(4)}│ {'Campeão'.ljust(20)}│ {'Gols Campeão'.ljust(15)}│ {'Vice'.ljust(20)}│ {'Gols Vice'.ljust(15)}")
-            print("_" * 80)
+            print("─" * 80)
 
             for i, final in enumerate(historico_finais, start=1):
                 campeao = final['campeao']['time'].upper()
@@ -2452,7 +2469,7 @@ def listar_campeoes_ordenados():
         print(f"\nLista de campeões após {total_simulacoes} simulação(ões):")
         print("\n")
         print(f"{'Nº'.ljust(4)}│ {'Time'.ljust(30)}│ {'Títulos'.ljust(10)}")
-        print("_" * 50)
+        print("─" * 50)
 
         # Exibe os campeões em formato numerado
         for i, (time, titulos) in enumerate(campeoes_ordenados, start=1):
@@ -2502,7 +2519,7 @@ def listar_vices_ordenados():
         print(f"\nLista de vice-campeões após {total_simulacoes} simulação(ões):")
         print("\n")
         print(f"{'Nº'.ljust(4)}│ {'Time'.ljust(30)}│ {'Vice-Campeonatos'.ljust(18)}")
-        print("_" * 54)
+        print("─" * 50)
 
         # Exibe os vice-campeões em formato numerado
         for i, (time, vices_count) in enumerate(vices_ordenados, start=1):
@@ -2666,20 +2683,20 @@ def pesquisar_campeao_por_time(nome_time):
 
 
     if contador_campeao == 0 and contador_vice == 0:
-        print(f"\n{'_' * 44}")
+        print(f"\n{'─' * 44}")
         print("\n")
         print(f"Time: {nome_time.upper()}")
         print(f"{'Participações:'.ljust(30)}{participacoes}\n")
         print(f"\nO time {nome_time.upper()} não chegou à nenhuma final.")
-        print(f"\n{'_' * 44}")
+        print(f"\n{'─' * 44}")
     else:
-        print(f"\n{'_' * 44}")
+        print(f"\n{'─' * 44}")
         print("\n")
         print(f"Time: {nome_time.upper()}")
         print(f"{'Participações:'.ljust(30)}{participacoes}\n")  # Exibe a quantidade de participações
         print(f"{'Campeão:'.ljust(30)}{contador_campeao} vez(es)")
         print(f"{'Vice-campeão:'.ljust(30)}{contador_vice} vez(es)")
-        print(f"{'_' * 44}")
+        print(f"{'─' * 44}")
     print("\n")
 
     print("Mais informações:")
@@ -2758,58 +2775,61 @@ def salvar_configuracao(nivel_gols):
 
 
 def configurar_nivel_gols():
-    config_atual = carregar_configuracao()
-
-    print("\n")
-    print("\n--- Configurações de Níveis de Gols ---\n".upper())
-    print("\n")
-    print(f"Nível de gols atual: {config_atual['nivel_gols'].replace('_', ' ').upper()}")
-    print("\n")
-    print("Escolha o nível da média de gols para as simulações:")
-    print("\n")
-    escolha = input("\n1 - Média de gols baixa\n2 - Média de gols média (recomendado)\n3 - Média de gols alta\n4 - Média de gols muito alta\n5 - Exibir detalhes\n\n")
-    print("\n")
-    print("\n")
-    if escolha == "1":
-        nivel_gols = "baixa"
-    elif escolha == "2":
-        nivel_gols = "media"
-    elif escolha == "3":
-        nivel_gols = "alta"
-    elif escolha == "4":
-        nivel_gols = "muito_alta"
-    elif escolha == '5':
-        # Exibe os detalhes da configuração atual
-        print("\n")
-        print("Configurações disponíveis:")
-        print("\n")
-        for nivel, config in config_atual["configuracoes"].items():
-            print("\n")
-            print(f"\nNível: {nivel.capitalize()}")
-            print("\n")
-            print(f"  Média Base: {config['media_base']}")
-            print(f"  Divisor da Média: {config['media_divisor']}")
-            print(f"  Desvio Base: {config['desvio_base']}")
-            print(f"  Divisor do Desvio: {config['desvio_divisor']}")
-            print(f"  Soma: {config['soma']}")
-        print("\n")
-        
-        
-        
-        
-        # Após exibir os detalhes, retorna ao menu de configuração
-        return configurar_nivel_gols()
+    if not os.path.exists("configuracao_gols.json"):
+        print("\n\nArquivo não encontrado.\n\n")
     else:
-        print("\n")
-        print(f"Opção inválida. Usando configuração atual ({config_atual['nivel_gols']}).")
-        print("\n")
-        return configurar_nivel_gols()
+        config_atual = carregar_configuracao()
 
-    # Salvar a nova configuração
-    salvar_configuracao(nivel_gols)
-    print("\n\n")
-    print(f"Configuração do nível de gols ajustada para {nivel_gols.replace('_', ' ').upper()} com sucesso!")
-    print("\n\n")
+        print("\n")
+        print("\n--- Configurações de Níveis de Gols ---\n".upper())
+        print("\n")
+        print(f"Nível de gols atual: {config_atual['nivel_gols'].replace('_', ' ').upper()}")
+        print("\n")
+        print("Escolha o nível da média de gols para as simulações:")
+        print("\n")
+        escolha = input("\n1 - Média de gols baixa\n2 - Média de gols média (recomendado)\n3 - Média de gols alta\n4 - Média de gols muito alta\n5 - Exibir detalhes\n\n")
+        print("\n")
+        print("\n")
+        if escolha == "1":
+            nivel_gols = "baixa"
+        elif escolha == "2":
+            nivel_gols = "media"
+        elif escolha == "3":
+            nivel_gols = "alta"
+        elif escolha == "4":
+            nivel_gols = "muito_alta"
+        elif escolha == '5':
+            # Exibe os detalhes da configuração atual
+            print("\n")
+            print("Configurações disponíveis:")
+            print("\n")
+            for nivel, config in config_atual["configuracoes"].items():
+                print("\n")
+                print(f"\nNível: {nivel.capitalize()}")
+                print("\n")
+                print(f"  Média Base: {config['media_base']}")
+                print(f"  Divisor da Média: {config['media_divisor']}")
+                print(f"  Desvio Base: {config['desvio_base']}")
+                print(f"  Divisor do Desvio: {config['desvio_divisor']}")
+                print(f"  Soma: {config['soma']}")
+            print("\n")
+            
+        
+        
+        
+            # Após exibir os detalhes, retorna ao menu de configuração
+            return configurar_nivel_gols()
+        else:
+            print("\n")
+            print(f"Opção inválida. Usando configuração atual ({config_atual['nivel_gols']}).")
+            print("\n")
+            return configurar_nivel_gols()
+
+        # Salvar a nova configuração
+        salvar_configuracao(nivel_gols)
+        print("\n\n")
+        print(f"Configuração do nível de gols ajustada para {nivel_gols.replace('_', ' ').upper()} com sucesso!")
+        print("\n\n")
 
 
 
@@ -3228,11 +3248,9 @@ class ExitLoops(Exception):
 
 def main():
     global potes, stats
-
-    try:    
+    try:
         if not os.path.exists("configuracao_gols.json"):
             criar_configuracao_padrao()
-
         carregar_stats_inicial()
 
     
@@ -3274,7 +3292,7 @@ def main():
                                 print("\n")
                                 print("Opção inválida. Tente novamente.")
                         else:
-                            print("\n\nArquivo não encontrado\n\n")
+                            print("\n\nArquivo não encontrado.\n\n")
                     elif configs == '3':
                         alternar_stats()
                         continue
