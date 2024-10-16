@@ -231,6 +231,8 @@ def carregar_stats_inicial():
             potes = dados["potes"]
             stats = dados["stats"]
         stats_atual = "Padrões"
+        print("Stats padrão em uso.")
+
         
 
 def alternar_stats():
@@ -369,9 +371,21 @@ def substituir_time(potes, stats):
                     del stats[time_substituido]
                 
                 print(f"\n\n{novo_time} foi adicionado com ataque {ataque} e defesa {defesa}.\n\n")
+
                 
                 # Salvar a alteração no arquivo personalizado
                 salvar_times_stats_personalizados(potes, stats)
+                carregar_stats_inicial()
+                if os.path.exists("stats_personalizados.json"):
+                    with open("stats_personalizados.json", "r") as file:
+                        print("\n\nCarregando times e stats personalizados...")
+                        dados = json.load(file)
+                        potes = dados["potes"]
+                        stats = dados["stats"]
+                    stats_atual = "Personalizados"
+                    print("\n\nAgora, os times e stats personalizados estão em uso.\n\n")
+                else:
+                    print("\n\nErro: Não existem times e stats personalizados disponíveis.\n\n")
 
             except ValueError:
                 print("\n")
@@ -404,9 +418,9 @@ def calcula_media_desvio(ataque_time, defesa_adversario):
 
 
 def momento():
-
-    return random.randint(0, 0)
-
+    # Gera uma lista de números de -10 a 10 pulando de 2 em 2
+    numeros = list(range(-10, 11, 1))
+    return random.choice(numeros)
 
 def print_stats_com_momento():
     for time in stats:
@@ -2391,7 +2405,7 @@ def exibir_classificacao(classificacao):
 
 
 def simular_confrontos(home_away, resultados, classificacao):
-    largura_total = 80  # Largura total para as caixas do nome e das partidas
+    largura_total = 64  # Largura total para as caixas do nome e das partidas
     resultados_partidas = []
 
     for time in sorted(home_away.keys()):
@@ -2629,16 +2643,27 @@ def listar_vices_ordenados():
 
 
 
-def verificar_time_nos_potes(nome_time):
-    """Verifica se o time existe nos potes"""
+def verificar_time_no_historico(nome_time):
+    """Verifica se o time existe no histórico de resultados."""
     # Transforma o nome_time em minúsculas para uma comparação consistente
     nome_time = nome_time.lower()
-    
-    for pote in potes:
-        for time in pote:
+
+    # Carrega o histórico de resultados
+    try:
+        with open('historico_resultados.json', 'r') as file:
+            historico = json.load(file)
+    except FileNotFoundError:
+        print("Arquivo de histórico não encontrado.")
+        return False
+
+    # Verifica cada simulação no histórico
+    for simulacao in historico:
+        resultados = simulacao['resultados']
+        for time in resultados:
             # Compara os nomes convertidos para minúsculas para garantir consistência
             if nome_time == time.lower():
                 return True
+                
     return False
 
 
@@ -2652,7 +2677,7 @@ def pesquisar_campeao_por_time(nome_time):
     contador_vice = 0
 
     # Verifica se o time está nos potes
-    if not verificar_time_nos_potes(nome_time):
+    if not verificar_time_no_historico(nome_time):
         print(f"\nO time {nome_time.upper()} não existe nos registros.")
         return 0
 
@@ -2974,7 +2999,7 @@ def criar_configuracao_padrao():
 
 
 
-import json
+
 
 def buscar_partidas_por_time():
     # Carrega os dados do arquivo resultados_partidas.json
@@ -3087,6 +3112,7 @@ def buscar_partidas_historico():
 
         # Se a escolha for 'A', percorre todas as simulações
         if escolha == 'a':
+            time_encontrado = False
             for num_simulacao, simulacao in enumerate(historico, 1):
                 resultados = simulacao["resultados"]
 
@@ -3095,6 +3121,7 @@ def buscar_partidas_historico():
 
                 # Verifica se o time existe na simulação
                 if nome_time in resultados_normalizados:
+                    time_encontrado = True  
                     print(f"\nPartidas jogadas pelo {nome_time.capitalize()} na simulação {num_simulacao}:\n")
 
                     # Filtra as partidas e as agrupa por fase
@@ -3132,6 +3159,8 @@ def buscar_partidas_historico():
 
                             print("└" + "─" * tamanho_linha + "┘\n")  # Finaliza a fase com um box
                     partidas_por_fase = {k: [] for k in partidas_por_fase}  # Limpa as partidas para a próxima simulação
+            if not time_encontrado:
+                print(f"\nO time {nome_time} não existe nos registros.\n")
         else:
             # Tenta converter a escolha para número de simulação
             try:
