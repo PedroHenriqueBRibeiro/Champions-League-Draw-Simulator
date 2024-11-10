@@ -1,194 +1,230 @@
 {
     "potes": [
         [
-            "Barcelona",
-            "Real Madrid",
             "Manchester City",
             "Bayern Munich",
+            "Barcelona",
+            "Liverpool",
+            "Real Madrid",
+            "Atletico Madrid",
             "PSG",
             "Juventus",
-            "Chelsea",
-            "Liverpool",
-            "Atl\u00e9tico Madrid"
-        ],
-        [
-            "Borussia Dortmund",
-            "Inter de Mil\u00e3o",
-            "Milan",
-            "Tottenham",
-            "Arsenal",
-            "Napoli",
-            "Leipzig",
-            "Sevilla",
-            "Ajax"
-        ],
-        [
-            "Benfica",
-            "Porto",
-            "Shakhtar",
-            "Zenit",
-            "Sporting",
-            "Atalanta",
-            "Lyon",
-            "Monaco",
             "Leverkusen"
         ],
         [
-            "Fenerbah\u00e7e",
-            "Galatasaray",
-            "Olympiacos",
-            "Red Bull Salzburg",
-            "Celtic",
-            "Rangers",
+            "Borussia Dortmund",
+            "Aston Villa",
+            "Internazionale",
+            "Arsenal",
+            "Milan",
+            "Benfica",
+            "Atalanta",
+            "Leipzig",
+            "Monaco"
+        ],
+        [
+            "Sporting",
+            "Feyenoord",
+            "PSV",
+            "Girona",
+            "Lille",
+            "Bologna",
+            "RB Salzburg",
+            "Stuttgart",
+            "Celtic"
+        ],
+        [
+            "Shakhtar",
             "Club Brugge",
-            "Dynamo Kiev",
-            "Anderlecht"
+            "Estrela Vermelha",
+            "Dinamo Zagreb",
+            "Sparta Praga",
+            "Stade Brestois",
+            "Young Boys",
+            "Sturm",
+            "Slovan Bratislava"
         ]
     ],
     "stats": {
         "Barcelona": {
             "ataque": 90,
-            "defesa": 85
+            "defesa": 85,
+            "meio_campo": 88
         },
         "Real Madrid": {
             "ataque": 88,
-            "defesa": 83
+            "defesa": 83,
+            "meio_campo": 86
         },
         "Manchester City": {
             "ataque": 92,
-            "defesa": 86
+            "defesa": 86,
+            "meio_campo": 90
         },
         "Bayern Munich": {
             "ataque": 91,
-            "defesa": 84
+            "defesa": 84,
+            "meio_campo": 89
         },
         "PSG": {
             "ataque": 89,
-            "defesa": 80
+            "defesa": 80,
+            "meio_campo": 84
         },
         "Juventus": {
             "ataque": 86,
-            "defesa": 82
+            "defesa": 82,
+            "meio_campo": 83
         },
-        "Chelsea": {
-            "ataque": 87,
-            "defesa": 81
+        "Aston Villa": {
+            "ataque": 82,
+            "defesa": 78,
+            "meio_campo": 80
         },
         "Liverpool": {
             "ataque": 90,
-            "defesa": 84
+            "defesa": 84,
+            "meio_campo": 85
         },
-        "Atl\u00e9tico Madrid": {
+        "Atletico Madrid": {
             "ataque": 85,
-            "defesa": 88
+            "defesa": 88,
+            "meio_campo": 84
         },
         "Borussia Dortmund": {
             "ataque": 84,
-            "defesa": 79
+            "defesa": 79,
+            "meio_campo": 80
         },
-        "Inter de Mil\u00e3o": {
+        "Internazionale": {
             "ataque": 82,
-            "defesa": 80
+            "defesa": 80,
+            "meio_campo": 78
         },
         "Milan": {
             "ataque": 81,
-            "defesa": 78
+            "defesa": 78,
+            "meio_campo": 76
         },
-        "Tottenham": {
-            "ataque": 83,
-            "defesa": 77
+        "Girona": {
+            "ataque": 77,
+            "defesa": 74,
+            "meio_campo": 73
         },
         "Arsenal": {
             "ataque": 85,
-            "defesa": 76
+            "defesa": 76,
+            "meio_campo": 77
         },
-        "Napoli": {
-            "ataque": 84,
-            "defesa": 78
+        "Bologna": {
+            "ataque": 76,
+            "defesa": 73,
+            "meio_campo": 72
         },
         "Leipzig": {
             "ataque": 82,
-            "defesa": 76
+            "defesa": 76,
+            "meio_campo": 74
         },
-        "Sevilla": {
-            "ataque": 80,
-            "defesa": 79
+        "Stuttgart": {
+            "ataque": 75,
+            "defesa": 72,
+            "meio_campo": 71
         },
-        "Ajax": {
-            "ataque": 81,
-            "defesa": 75
+        "Leverkusen": {
+            "ataque": 84,
+            "defesa": 82,
+            "meio_campo": 85
+        },
+        "Feyenoord": {
+            "ataque": 78,
+            "defesa": 75,
+            "meio_campo": 74
         },
         "Benfica": {
-            "ataque": 78,
-            "defesa": 74
+            "ataque": 80,
+            "defesa": 77,
+            "meio_campo": 78
         },
-        "Porto": {
-            "ataque": 77,
-            "defesa": 76
+        "Sporting": {
+            "ataque": 79,
+            "defesa": 74,
+            "meio_campo": 75
         },
         "Shakhtar": {
             "ataque": 75,
-            "defesa": 72
+            "defesa": 70,
+            "meio_campo": 72
         },
-        "Zenit": {
-            "ataque": 76,
-            "defesa": 73
+        "PSV": {
+            "ataque": 78,
+            "defesa": 73,
+            "meio_campo": 74
         },
-        "Sporting": {
-            "ataque": 76,
-            "defesa": 71
+        "Estrela Vermelha": {
+            "ataque": 74,
+            "defesa": 71,
+            "meio_campo": 70
         },
         "Atalanta": {
-            "ataque": 79,
-            "defesa": 74
+            "ataque": 81,
+            "defesa": 76,
+            "meio_campo": 77
         },
-        "Lyon": {
-            "ataque": 78,
-            "defesa": 72
+        "Lille": {
+            "ataque": 77,
+            "defesa": 73,
+            "meio_campo": 74
         },
         "Monaco": {
-            "ataque": 77,
-            "defesa": 70
+            "ataque": 80,
+            "defesa": 75,
+            "meio_campo": 76
         },
-        "Leverkusen": {
-            "ataque": 79,
-            "defesa": 73
-        },
-        "Fenerbah\u00e7e": {
+        "Stade Brestois": {
             "ataque": 72,
-            "defesa": 69
+            "defesa": 68,
+            "meio_campo": 67
         },
-        "Galatasaray": {
-            "ataque": 71,
-            "defesa": 68
-        },
-        "Olympiacos": {
-            "ataque": 70,
-            "defesa": 67
-        },
-        "Red Bull Salzburg": {
+        "Sparta Praga": {
             "ataque": 73,
-            "defesa": 70
+            "defesa": 69,
+            "meio_campo": 68
+        },
+        "Dinamo Zagreb": {
+            "ataque": 74,
+            "defesa": 70,
+            "meio_campo": 69
+        },
+        "RB Salzburg": {
+            "ataque": 76,
+            "defesa": 72,
+            "meio_campo": 73
         },
         "Celtic": {
-            "ataque": 71,
-            "defesa": 66
+            "ataque": 75,
+            "defesa": 71,
+            "meio_campo": 72
         },
-        "Rangers": {
-            "ataque": 70,
-            "defesa": 65
+        "Young Boys": {
+            "ataque": 71,
+            "defesa": 67,
+            "meio_campo": 66
         },
         "Club Brugge": {
-            "ataque": 72,
-            "defesa": 68
+            "ataque": 75,
+            "defesa": 71,
+            "meio_campo": 70
         },
-        "Dynamo Kiev": {
+        "Sturm": {
+            "ataque": 70,
+            "defesa": 66,
+            "meio_campo": 65
+        },
+        "Slovan Bratislava": {
             "ataque": 69,
-            "defesa": 66
-        },
-        "Anderlecht": {
-            "ataque": 67,
-            "defesa": 65
+            "defesa": 65,
+            "meio_campo": 64
         }
     }
 }
