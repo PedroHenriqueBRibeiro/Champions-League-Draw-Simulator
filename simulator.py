@@ -9,7 +9,6 @@
 
 
 
-
 import time
 import json
 import os
@@ -34,9 +33,7 @@ def resetar_aplicacao():
         "historico_gols.json",
         "historico_resultados.json",
         "configuracao_gols.json",
-        "stats_personalizados.json",
-        "option.json",
-        "estado_time.json"
+        "stats_personalizados.json"
     ]
 
     arquivos_excluidos = []
@@ -3106,7 +3103,6 @@ def pesquisar_campeao_por_time(nome_time):
         "oitavas": 0,
         "quartas": 0,
         "semis": 0,
-        "final": 0
     }
 
 
@@ -3130,7 +3126,6 @@ def pesquisar_campeao_por_time(nome_time):
         "oitavas": 0,
         "quartas": 0,
         "semis": 0,
-        "final": 0
     }
 
     nome_time_min = nome_time.lower()  
@@ -3177,12 +3172,7 @@ def pesquisar_campeao_por_time(nome_time):
                             elif ultima_fase == "semis":
                                 if "final" not in [jogo['fase'] for jogo in jogos]:
                                     eliminacoes_por_fase["semis"] += 1
-                            elif ultima_fase == "final":
-                                for jogo in jogos:
-                                    if jogo['fase'] == "final":
-                                        if jogo['gols_marcados'] < jogo['gols_sofridos']:
-                                            eliminacoes_por_fase["final"] += 1
-                                        break
+
         except json.JSONDecodeError:
             print("Erro ao ler o histórico. O arquivo pode estar corrompido.")
 
