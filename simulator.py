@@ -33,9 +33,10 @@ def resetar_aplicacao():
         "historico_gols.json",
         "historico_resultados.json",
         "configuracao_gols.json",
-        "stats_personalizados.json"
+        "stats_personalizados.json",
+        "estado_time.json",
+        "option.json"
     ]
-
     arquivos_excluidos = []
     arquivos_nao_encontrados = []
 
