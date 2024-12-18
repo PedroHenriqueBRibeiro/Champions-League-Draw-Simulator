@@ -16,6 +16,8 @@ import random
 import numpy as np
 import sys
 import threading
+import questionary
+from questionary import Style
 
 def reiniciar_aplicacao():
     print("\n\nA aplicação será reiniciada em 5 segundos...\n")
@@ -23,7 +25,7 @@ def reiniciar_aplicacao():
         print(f"{i} segundo(s) restantes...", end='\r')
         time.sleep(1)  
     print("\nReiniciando a aplicação...")
-    os.execv(sys.executable, ['python'] + sys.argv) 
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 
 def resetar_aplicacao():
@@ -33,10 +35,9 @@ def resetar_aplicacao():
         "historico_gols.json",
         "historico_resultados.json",
         "configuracao_gols.json",
-        "stats_personalizados.json",
-        "estado_time.json",
-        "option.json"
+        "stats_personalizados.json"
     ]
+
     arquivos_excluidos = []
     arquivos_nao_encontrados = []
 
@@ -94,45 +95,42 @@ def criar_json_predefinido():
     ]
 
     stats = {
-        "Barcelona": {"ataque": 90, "defesa": 85, "meio_campo": 88},
-        "Real Madrid": {"ataque": 88, "defesa": 83, "meio_campo": 86},
-        "Manchester City": {"ataque": 92, "defesa": 86, "meio_campo": 90},
-        "Bayern Munich": {"ataque": 91, "defesa": 84, "meio_campo": 89},
-        "PSG": {"ataque": 89, "defesa": 80, "meio_campo": 84},
-        "Juventus": {"ataque": 86, "defesa": 82, "meio_campo": 83},
-        "Aston Villa": {"ataque": 82, "defesa": 78, "meio_campo": 80},
-        "Liverpool": {"ataque": 90, "defesa": 84, "meio_campo": 85},
-        "Atletico Madrid": {"ataque": 85, "defesa": 88, "meio_campo": 84},
-
-        "Borussia Dortmund": {"ataque": 84, "defesa": 79, "meio_campo": 80},
-        "Internazionale": {"ataque": 82, "defesa": 80, "meio_campo": 78},
-        "Milan": {"ataque": 81, "defesa": 78, "meio_campo": 76},
-        "Girona": {"ataque": 77, "defesa": 74, "meio_campo": 73},
-        "Arsenal": {"ataque": 85, "defesa": 76, "meio_campo": 77},
-        "Bologna": {"ataque": 76, "defesa": 73, "meio_campo": 72},
-        "Leipzig": {"ataque": 82, "defesa": 76, "meio_campo": 74},
-        "Stuttgart": {"ataque": 75, "defesa": 72, "meio_campo": 71},
-        "Leverkusen": {"ataque": 84, "defesa": 82, "meio_campo": 85},
-
-        "Feyenoord": {"ataque": 78, "defesa": 75, "meio_campo": 74},
-        "Benfica": {"ataque": 80, "defesa": 77, "meio_campo": 78},
-        "Sporting": {"ataque": 79, "defesa": 74, "meio_campo": 75},
-        "Shakhtar": {"ataque": 75, "defesa": 70, "meio_campo": 72},
-        "PSV": {"ataque": 78, "defesa": 73, "meio_campo": 74},
-        "Estrela Vermelha": {"ataque": 74, "defesa": 71, "meio_campo": 70},
-        "Atalanta": {"ataque": 81, "defesa": 76, "meio_campo": 77},
-        "Lille": {"ataque": 77, "defesa": 73, "meio_campo": 74},
-        "Monaco": {"ataque": 80, "defesa": 75, "meio_campo": 76},
-
-        "Stade Brestois": {"ataque": 72, "defesa": 68, "meio_campo": 67},
-        "Sparta Praga": {"ataque": 73, "defesa": 69, "meio_campo": 68},
-        "Dinamo Zagreb": {"ataque": 74, "defesa": 70, "meio_campo": 69},
-        "RB Salzburg": {"ataque": 76, "defesa": 72, "meio_campo": 73},
-        "Celtic": {"ataque": 75, "defesa": 71, "meio_campo": 72},
-        "Young Boys": {"ataque": 71, "defesa": 67, "meio_campo": 66},
-        "Club Brugge": {"ataque": 75, "defesa": 71, "meio_campo": 70},
-        "Sturm": {"ataque": 70, "defesa": 66, "meio_campo": 65},
-        "Slovan Bratislava": {"ataque": 69, "defesa": 65, "meio_campo": 64}
+        "Barcelona": {"ataque": 84, "defesa": 79, "meio_campo": 81},
+        "Real Madrid": {"ataque": 88, "defesa": 84, "meio_campo": 85},
+        "Manchester City": {"ataque":85, "defesa": 83, "meio_campo": 86},
+        "Bayern Munich": {"ataque": 90, "defesa": 82, "meio_campo": 84},
+        "PSG": {"ataque": 82, "defesa": 82, "meio_campo": 81},
+        "Juventus": {"ataque": 84, "defesa": 79, "meio_campo": 79},
+        "Aston Villa": {"ataque": 85, "defesa": 80, "meio_campo": 80},
+        "Liverpool": {"ataque": 84, "defesa": 84, "meio_campo": 82},
+        "Atletico Madrid": {"ataque": 84, "defesa": 81, "meio_campo": 82},
+        "Borussia Dortmund": {"ataque": 84, "defesa": 80, "meio_campo": 81},
+        "Internazionale": {"ataque": 86, "defesa": 83, "meio_campo": 83},
+        "Milan": {"ataque": 80, "defesa": 80, "meio_campo": 82},
+        "Girona": {"ataque": 76, "defesa": 79, "meio_campo": 79},
+        "Arsenal": {"ataque": 83, "defesa": 83, "meio_campo": 84},
+        "Bologna": {"ataque": 76, "defesa": 76, "meio_campo": 77},
+        "Leipzig": {"ataque": 81, "defesa": 80, "meio_campo": 80},
+        "Stuttgart": {"ataque": 75, "defesa": 75, "meio_campo": 77},
+        "Feyenoord": {"ataque": 73, "defesa": 75, "meio_campo": 74},
+        "Benfica": {"ataque": 79, "defesa": 78, "meio_campo": 78 },
+        "Shakhtar": {"ataque": 73, "defesa": 73, "meio_campo": 74},
+        "PSV": {"ataque": 78, "defesa": 74, "meio_campo": 78},
+        "Sporting": {"ataque": 81, "defesa": 77, "meio_campo": 79},
+        "Atalanta": {"ataque": 79, "defesa": 78, "meio_campo": 78},
+        "Lille": {"ataque": 81, "defesa": 75, "meio_campo": 76},
+        "Monaco": {"ataque": 74, "defesa": 77, "meio_campo": 77},
+        "Leverkusen": {"ataque": 82, "defesa": 83, "meio_campo": 83},
+        "Stade Brestois": {"ataque": 75, "defesa": 73, "meio_campo": 76},
+        "Sparta Praga": {"ataque": 75, "defesa": 75, "meio_campo": 74},
+        "Dinamo Zagreb": {"ataque": 77, "defesa": 71, "meio_campo": 71},
+        "RB Salzburg": {"ataque": 70, "defesa": 71, "meio_campo": 73},
+        "Celtic": {"ataque": 74, "defesa": 75, "meio_campo": 75},
+        "Young Boys": {"ataque": 70, "defesa": 69, "meio_campo": 71},
+        "Club Brugge": {"ataque": 71, "defesa": 65, "meio_campo": 68},
+        "Estrela Vermelha": {"ataque": 68, "defesa": 66, "meio_campo": 64},
+        "Sturm": {"ataque": 69, "defesa": 70, "meio_campo": 71},
+        "Slovan Bratislava": {"ataque": 67, "defesa": 65, "meio_campo": 64}
     }
 
 
@@ -499,14 +497,28 @@ def aplicar_momento(dados_times):
     for time, stats in dados_times['stats'].items():
 
         if time == ultimo_campeao:
-            momento_ataque = random.choice(range(-4, 16))
-            momento_defesa = random.choice(range(-4, 16))
-            momento_meio_campo = random.choice(range(-4, 16))
+            momento_ataque = random.choice(range(0, 6))
+            momento_defesa = random.choice(range(0, 6))
+            momento_meio_campo = random.choice(range(0, 6))
         else:
+            if stats['ataque'] + stats['defesa'] >= 168:
 
-            momento_ataque = random.choice(range(-10, 11))
-            momento_defesa = random.choice(range(-10, 11))
-            momento_meio_campo = random.choice(range(-10, 11))
+                momento_ataque = random.choice(range(-1, 5))
+                momento_defesa = random.choice(range(-1, 5))
+                momento_meio_campo = random.choice(range(-1, 5))
+            elif stats['ataque'] + stats['defesa'] < 168 and stats['ataque'] + stats['defesa'] >=160:
+                momento_ataque = random.choice(range(-3, 6))
+                momento_defesa = random.choice(range(-3, 6))
+                momento_meio_campo = random.choice(range(-3, 6))
+
+            elif stats['ataque'] + stats['defesa'] < 160 and stats['ataque'] + stats['defesa'] >=140:
+                momento_ataque = random.choice(range(-3, 7))
+                momento_defesa = random.choice(range(-3, 7))
+                momento_meio_campo = random.choice(range(-3, 7))
+            else:
+                momento_ataque = random.choice(range(-4, 8))
+                momento_defesa = random.choice(range(-4, 8))
+                momento_meio_campo = random.choice(range(-4, 8))
 
 
         momentos_aplicados[time] = {
@@ -589,8 +601,8 @@ def gerar_gols(time_casa, time_fora):
     if time_casa not in stats or time_fora not in stats:
         raise ValueError(f"Stats não definidos para {time_casa} ou {time_fora}")
 
-    numero_aleatorio = random.uniform(0, 0.07)
-    numero_aleatorio2 = random.uniform(0, 0.05)
+    numero_aleatorio = random.uniform(0.01, 0.05)
+    numero_aleatorio2 = random.uniform(0.01, 0.04)
     fator_casa = round(numero_aleatorio, 3)
     fator_fora = round(numero_aleatorio2, 3)
 
@@ -609,43 +621,45 @@ def gerar_gols(time_casa, time_fora):
 
 
 
-
     soma_stats_casa = ataque_casa + defesa_casa
     soma_stats_fora = ataque_fora + defesa_fora
 
 
-    if abs(soma_stats_casa - soma_stats_fora) <= 30 and abs(soma_stats_casa - soma_stats_fora) > 21:
-        if np.random.rand() <= 0.06:
+
+    if abs(soma_stats_casa - soma_stats_fora) <= 20:
+        if np.random.rand() <= 0.3:
             ataque_casa, ataque_fora = ataque_fora, ataque_casa
             defesa_casa, defesa_fora = defesa_fora, defesa_casa
+        #    print(f"Inversão! O ataque do time da casa ({time_casa}) foi trocado com a defesa do time visitante ({time_fora}).")
 
-
-    if abs(ataque_casa - defesa_fora) > 20 or abs(ataque_fora - defesa_casa) > 20:
+    if abs(ataque_casa - defesa_fora) > 5 or abs(ataque_fora - defesa_casa) > 5:
         chance = np.random.rand()
 
 
         if chance <= 0.333:
-            pass  
+            pass
 
 
         elif 0.333 < chance <= 0.666:
             if soma_stats_casa > soma_stats_fora:
-                incremento = random.randint(5, 10)
+                incremento = random.randint(5, 13)
+                incremento2 = random.randint(5, 13)
                 ataque_casa += incremento
-                defesa_casa += incremento
+                defesa_casa += incremento2
             else:
-                incremento = random.randint(5, 10)
+                incremento = random.randint(5, 13)
+                incremento2 = random.randint(5, 13)
                 ataque_fora += incremento
-                defesa_fora += incremento
+                defesa_fora += incremento2
 
 
         else:
             if soma_stats_casa > soma_stats_fora:
-                decremento = random.randint(8, 20)
+                decremento = random.randint(1, 3)
                 ataque_casa = max(0, ataque_casa - decremento)
                 defesa_casa = max(0, defesa_casa - decremento)
             else:
-                decremento = random.randint(8, 20)
+                decremento = random.randint(1, 3)
                 ataque_fora = max(0, ataque_fora - decremento)
                 defesa_fora = max(0, defesa_fora - decremento)
 
@@ -695,38 +709,38 @@ def gerar_gols_sem_fator_casa(time_casa, time_fora):
     soma_stats_fora = ataque_fora + defesa_fora
 
 
-    if abs(soma_stats_casa - soma_stats_fora) <= 30 and abs(soma_stats_casa - soma_stats_fora) > 21:
-        if np.random.rand() <= 0.06:
+    if abs(soma_stats_casa - soma_stats_fora) <= 20:
+        if np.random.rand() <= 0.12:
             ataque_casa, ataque_fora = ataque_fora, ataque_casa
             defesa_casa, defesa_fora = defesa_fora, defesa_casa
-
+    #        print(f"Inversão! O ataque do time da casa ({time_casa}) foi trocado com a defesa do time visitante ({time_fora}).")
 
     if abs(ataque_casa - defesa_fora) > 20 or abs(ataque_fora - defesa_casa) > 20:
         chance = np.random.rand()
 
 
         if chance <= 0.333:
-            pass  
+            pass
 
 
         elif 0.333 < chance <= 0.666:
             if soma_stats_casa > soma_stats_fora:
-                incremento = random.randint(5, 10)
+                incremento = random.randint(5, 13)
                 ataque_casa += incremento
                 defesa_casa += incremento
             else:
-                incremento = random.randint(5, 10)
+                incremento = random.randint(5, 13)
                 ataque_fora += incremento
                 defesa_fora += incremento
 
 
         else:
             if soma_stats_casa > soma_stats_fora:
-                decremento = random.randint(8, 20)
+                decremento = random.randint(1,7)
                 ataque_casa = max(0, ataque_casa - decremento)
                 defesa_casa = max(0, defesa_casa - decremento)
             else:
-                decremento = random.randint(8, 20)
+                decremento = random.randint(1, 7)
                 ataque_fora = max(0, ataque_fora - decremento)
                 defesa_fora = max(0, defesa_fora - decremento)
 
@@ -741,6 +755,7 @@ def gerar_gols_sem_fator_casa(time_casa, time_fora):
             else:
                 ataque_fora += incremento
                 defesa_fora += incremento
+
 
 
     media_casa, desvio_casa = calcula_media_desvio(ataque_casa, defesa_fora)
@@ -766,11 +781,11 @@ def simular_penaltis(time1, time2):
 
     for i in range(total_cobranças):
 
-        if random.random() < 0.75:
+        if random.random() < 0.72:
             gols_time1 += 1
 
 
-        if random.random() < 0.75:
+        if random.random() < 0.72:
             gols_time2 += 1
 
 
@@ -781,11 +796,11 @@ def simular_penaltis(time1, time2):
 
     while True:
 
-        if random.random() < 0.75:
+        if random.random() < 0.72:
             gols_time1 += 1
 
 
-        if random.random() < 0.75:
+        if random.random() < 0.72:
             gols_time2 += 1
 
 
@@ -1072,7 +1087,6 @@ def resetar_arquivo_gols():
     if os.path.exists(nome_arquivo_gols):
         os.remove(nome_arquivo_gols)
     maiores_goleadas.clear()
-    limpar_time_destacado()
     criar_json_predefinido()
 
 def finalizar_simulacao(vencedor_final, gols_vencedor, vice_final, gols_vice):
@@ -2537,22 +2551,21 @@ def listar_simulacoes():
 def excluir_simulacao_por_numero(simulacao_numero):
     arquivos = ["campeoes.json", "historico_gols.json", "historico_resultados.json"]
 
-
     def remover_simulacao_arquivo(nome_arquivo):
         if os.path.exists(nome_arquivo):
             with open(nome_arquivo, 'r') as file:
                 dados = json.load(file)
 
-
+          
             dados_filtrados = [simulacao for simulacao in dados if simulacao.get("simulacao") != simulacao_numero]
 
+           
             for i, simulacao in enumerate(dados_filtrados, start=1):
                 simulacao["simulacao"] = i
 
 
             with open(nome_arquivo, 'w') as file:
                 json.dump(dados_filtrados, file, indent=4)
-
 
     for arquivo in arquivos:
         remover_simulacao_arquivo(arquivo)
@@ -3711,7 +3724,7 @@ def analisar_estatisticas():
                 time_pior_media_defensiva = time
 
 
-    print(f"{'_' *56}\n")
+    print(f"{'_' * 56}\n")
     print("Melhor(es) Ataque(s):")
     for ataque in melhores_ataques:
         print(f"{ataque['time']}: {' ' * (20 - len(ataque['time']))} {ataque['gols']} gols em {ataque['partidas']} partidas")
@@ -3762,95 +3775,11 @@ def analisar_estatisticas():
     print(f"{'_' * 56}\n")
 
 
-def exibir_confrontos_destacados(confrontos, time_destacado):
-    print("\nConfrontos sorteados:")
-    lista_confrontos = []
-    confrontos_dict = {}
-    item = "🔴"
-    dist = 18 - len(time_destacado)
-    confrontos_formatados = {}
-
-    for time in sorted(confrontos.keys()):
-        rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
-
-
-        if time == time_destacado:
-            time = f"{time.upper()}".rstrip()
-
-
-        rivais_formatados = " | ".join(
-            f"{time_destacado:}{item:<{dist}}" if rival == time_destacado else f"{rival:<19}"
-            for rival in rivais_ordenados
-        )
-
-
-        item_confronto = f"{time.upper():<18}| {rivais_formatados}"
-        lista_confrontos.append(item_confronto)
-        confrontos_dict[item_confronto] = time  
-
-        confrontos_formatados[time.upper()] = rivais_ordenados
-
-
-    return lista_confrontos, confrontos_dict, confrontos_formatados
-
-def visualizacao_extra(confrontos_formatados):
-    print("\nConfrontos sorteados:")
-    for time, rivais in confrontos_formatados.items():
-
-        print("{:<20}| {}".format(time, ', '.join(f"{rival:<2}" for rival in rivais)))
-
-
-
-
-def salvar_estado_time_destacado(time_destacado, arquivo="estado_time.json"):
-    with open(arquivo, 'w') as f:
-        json.dump({"time_destacado": time_destacado}, f)
-
-def carregar_estado_time_destacado(arquivo="estado_time.json"):
-    try:
-        with open(arquivo, 'r') as f:
-            return json.load(f).get("time_destacado", "")
-    except FileNotFoundError:
-        return ""
-
-def limpar_time_destacado(arquivo="estado_time.json"):
-    with open(arquivo, 'w') as f:
-        json.dump({"time_destacado": ""}, f)
-
-def carregar_option(arquivo="option.json"):
-    try:
-        with open(arquivo, 'r') as f:
-            return json.load(f).get("option", "Sortear novamente")
-    except FileNotFoundError:
-        return "Sortear novamente"
-
-def salvar_option(option="Sortear novamente", arquivo="option.json"):
-    with open(arquivo, 'w') as f:
-        json.dump({"option": option}, f)
-
-
-def limpar_option(arquivo_estado="estado_time.json", arquivo_option="option.json"):
-
-    time_destacado = carregar_estado_time_destacado(arquivo_estado)
-
-
-    if time_destacado != "":
-
-        try:
-            with open(arquivo_option, 'w') as f:
-                json.dump({"option": ""}, f)
-            print("")
-        except IOError as e:
-            print(f"Erro ao tentar limpar o arquivo 'option.json': {e}")
-    else:
-        print("")
 
 
 
 
 
-
-from questionary import Style
 
 
 custom_style = Style([
@@ -3873,7 +3802,6 @@ class ExitLoops(Exception):
 class ExitToMainMenu(Exception):
     pass
 
-import questionary
 
 def main():
     global potes, stats
@@ -3900,10 +3828,9 @@ def main():
                     style=custom_style 
                 ).ask()
 
-                if escolha_menu == "Sair":
+                if escolha_menu == 'Sair':
                     print("\n")
                     print("\nSaindo do programa...\n\n")
-                    limpar_time_destacado()
                     break  
 
                 if escolha_menu == "Configurações":
@@ -3971,13 +3898,13 @@ def main():
                         aplicar_momento(dados_times)
                         salvar_dados_json(dados_times)
 
-
-
-
                         escolha = ""
+
                         while True:
 
                             dados_times = carregar_dados_times_2()
+
+
                             potes = dados_times["potes"]
                             confrontos = inicializa_confrontos(potes)
                             assign_all_internal_rivals(potes, confrontos)
@@ -3987,92 +3914,38 @@ def main():
                                 print("Falha ao sortear os confrontos.")
                                 continue
 
-                            visualizacao_alternativa = False
-
-                            while True:  
-                                home_away = assign_home_away(confrontos)
-                                classificacao = inicializar_classificacao(potes)
-                                time_destacado = carregar_estado_time_destacado()
-                                lista_confrontos, confrontos_dict, confrontos_formatados = exibir_confrontos_destacados(confrontos, time_destacado)
+                            home_away = assign_home_away(confrontos)
+                            classificacao = inicializar_classificacao(potes)
 
 
-                                option = carregar_option()
-                                salvar_option()
+                            print("\nConfrontos sorteados:")
+                            for time in sorted(confrontos.keys()):
+                                rivais_ordenados = agrupar_rivais_por_pote_intercalados(confrontos, time)
+                                print("{:<20}| {}".format(time.upper(), ', '.join(f"{rival:<2}" for rival in rivais_ordenados)))
+                            if escolha != "Sortear novamente":
 
-                                if option == "Sortear novamente":
-                                    default_option = "Sortear novamente"
-                                else:
-                                    default_option = next((item for item in lista_confrontos if item[:18].strip().upper() == time_destacado.upper()), "Sortear novamente")
+                                escolha = questionary.select(
+                                    "\n\nSimulador\n\n".upper(),
+                                    choices=[ 
+                                        "Sortear novamente",
+                                        "Exibir confrontos",                                        
+                                        "Pesquisar dados",
+                                        "Menu Principal"
+                                    ],
+                                    style=custom_style
+                                ).ask()
 
-
-                                if visualizacao_alternativa:
-
-                                    visualizacao_extra(confrontos_formatados)
-
-                                    escolha = questionary.select(
-                                        "\n\nSimulador\n\n".upper(),
-                                        choices=[
-                                            "Sortear novamente",
-                                            "Alterar visualização", 
-                                            "Menu Principal"
-                                        ],
-                                        style=custom_style,
-                                    ).ask()
-                                else:
-
-                                    escolha = questionary.select(
-                                        "\n\nSimulador\n\n".upper(),
-                                        choices=lista_confrontos + [
-                                            "",
-                                            "Sortear novamente",
-                                            "Ir para simulação",
-                                            "Alterar visualização",                                        
-                                            "Pesquisar dados",
-                                            "Menu Principal"
-                                        ],
-                                        style=custom_style,
-                                        default=default_option
-                                    ).ask()
-                                    if escolha == "Sortear novamente":
-                                        salvar_option()
-                                        escolha = ""
-                                        visualizacao_alternativa = not visualizacao_alternativa
-                                        break
-
-
-                                if escolha in confrontos_dict:
-                                    time_destacado = confrontos_dict[escolha]
-                                    salvar_estado_time_destacado(time_destacado)
-                                    limpar_option()
-
-                                elif escolha == "Menu Principal":
+                                if escolha == "Menu Principal":
                                     criar_json_predefinido()
                                     restaurar_stats_originais(dados_times)
-                                    limpar_time_destacado()
-                                    limpar_option()
                                     raise ExitLoops  
 
                                 elif escolha == "Sortear novamente":
-                                    salvar_option()
-                                    dados_times = carregar_dados_times_2()
-                                    potes = dados_times["potes"]
-                                    confrontos = inicializa_confrontos(potes)
-                                    assign_all_internal_rivals(potes, confrontos)
-                                    success = assign_all_external_rivals(potes, confrontos)
-                                    home_away = assign_home_away(confrontos)
-                                    classificacao = inicializar_classificacao(potes)
                                     escolha = ""
+                                    continue  
 
 
-
-
-                                elif escolha == "Alterar visualização":
-
-                                    visualizacao_alternativa = not visualizacao_alternativa
-
-
-
-                                elif escolha == "Ir para simulação":
+                                elif escolha == "Exibir confrontos":
 
                                     print("\n")
                                     print("\nExibindo confrontos...")
